@@ -10,15 +10,15 @@ assignees: ''
 ### Acceptance Criteria
 
 1. [If I do A.]
-1. [B should happen.]
+2. [B should happen.]
 
-[
+
 Also, here are a few points that need to be addressed:
 
 1. Constraint 1;
-1. Constraint 2;
-1. Constraint 3.
-]
+2. Constraint 2;
+3. Constraint 3;
+
 
 
 ### Resources:
