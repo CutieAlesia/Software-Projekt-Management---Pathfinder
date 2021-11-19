@@ -8,6 +8,7 @@ ___
 ```java
 public class MyFrontend implements IFrontend {}
 ```
+
 ##### 2. Get the APIManager through the constructor by the main class.
 ```java
 private APIManager api;
@@ -16,7 +17,9 @@ public Frontend(APIManager api) {
     this.api = api;
 }
 ```
+
 ##### 3. Override the Interface method
+**! Work-In-Progress !**
 ```java
 @Override
 public void update(int[][] data) {
@@ -25,10 +28,12 @@ public void update(int[][] data) {
 }
 ```
 _This function can receive either a completed matrix or single value changes._
+
 ##### 4. Mirror the created matrix so that it will be used for data transmission
 ```java
 api.initMatrix(this.matrix);
 ```
+
 ##### 5. Send the matrix to the backend to start the process
 _This will send the matrix to the backend_
 ```java
