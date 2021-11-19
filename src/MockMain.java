@@ -19,8 +19,7 @@ public class MockMain {
         api.attachFrontend(mockFrontend);
         api.attachBackend(mockBackend);
 
-        // Example Matrix | Can be called from the Frontend
-        api.initMatrix(10, 10);
+        mockFrontend.testStart();
 
         // Backend -> Frontend | Single changes in loop
         mockBackend.test();
