@@ -2,36 +2,28 @@ package MockFrontend;
 
 import API.APIManager;
 import API.Interfaces.IFrontend;
+import API.Models.Node;
+
+import java.util.Arrays;
 
 public class MockFrontend implements IFrontend {
 
     private APIManager api;
-    private int[][] matrix;
+    private Node[][] matrix;
 
     public MockFrontend(APIManager api) {
         this.api = api;
     }
 
     public void testStart() {
-        api.initMatrix(15, 15);
-        this.matrix = api.getMatrix();
-        api.sendToBackend();
-    }
-
-    public static void printm(int[][] matrix) {
-        System.out.println("<><><><><><><><><><><>");
-        for(int i = 0; i < 15; i++) {
-            for(int x = 0; x < 15; x++) {
-                System.out.print(" " + matrix[i][x]);
-            }
-            System.out.println("");
-        }
+        this.matrix = new Node[15][15];
+        api.initMatrix(matrix);
     }
 
     @Override
-    public void update(int[][] data) {
-        System.out.println("[API - Frontend] Update angekommen");
-        this.matrix = data;
-        printm(this.matrix);
+    public void update(Node node) {
+        System.out.println("[API - Frontend] Node update received");
+        this.matrix[node.getX()][node.getY()] = node;
+        System.out.println(node);
     }
 }
