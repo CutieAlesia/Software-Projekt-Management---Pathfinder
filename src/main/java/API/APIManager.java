@@ -1,11 +1,11 @@
-package API;
-
-import API.Interfaces.IBackend;
-import API.Interfaces.IFrontend;
-import API.Models.Node;
+package main.java.api;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import main.java.api.interfaces.IBackend;
+import main.java.api.interfaces.IFrontend;
+import main.java.api.models.Node;
 
 /**
  * @author Dubsky
@@ -19,8 +19,7 @@ public class APIManager {
 
     public APIManager() {}
 
-    /**
-     * Sends a node update to all attached frontends
+    /** Sends a node update to all attached frontends
      *
      * @param node The updated node
      */
@@ -32,8 +31,7 @@ public class APIManager {
         }
     }
 
-    /**
-     * Sends a matrix structure to all backends
+    /** Sends a matrix structure to all backends
      *
      * @param matrix A two-dimensional node array to simulate a grid structure
      */
@@ -44,8 +42,7 @@ public class APIManager {
         }
     }
 
-    /**
-     * Service layer between getting a new matrix and sending it to the backend
+    /** Service layer between getting a new matrix and sending it to the backend
      *
      * @param matrix A two-dimensional node array to simulate a grid structure
      */
@@ -54,8 +51,7 @@ public class APIManager {
         sendToBackend(matrix);
     }
 
-    /**
-     * Attaches a frontend to the managed list
+    /** Attaches a frontend to the managed list
      *
      * @param frontend Class with the IFrontend interface
      */
@@ -64,8 +60,7 @@ public class APIManager {
         System.out.println("[API] Frontend added");
     }
 
-    /**
-     * Attaches a backend to the managed list
+    /** Attaches a backend to the managed list
      *
      * @param backend Class with the IBackend interface
      */
