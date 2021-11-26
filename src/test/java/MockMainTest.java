@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 public class MockMainTest {
 
     @org.junit.Test
-    public void test() {
+    public void irgendwasTest() {
         Assert.assertTrue(true);
     }
 
     @org.junit.Test
-    public void test2() {
+    public void nochwasTest() {
         Assert.assertTrue(true);
     }
 
