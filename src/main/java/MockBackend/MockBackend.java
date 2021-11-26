@@ -18,8 +18,11 @@ public class MockBackend implements IBackend {
         Scanner scanner = new Scanner(System.in);
         int x, y, z;
         while(true) {
+            System.out.println("Row >> ");
             x = scanner.nextInt();
+            System.out.println("Column >> ");
             y = scanner.nextInt();
+            System.out.println("Value >> ");
             z = scanner.nextInt();
             sendToFrontEnd(x, y, z);
         }
@@ -31,6 +34,7 @@ public class MockBackend implements IBackend {
 
     @Override
     public void receive(int[][] matrix) {
+        System.out.println("[API - Backend] Matrix angekommen");
         //Hier kommt eine komplett neue Matrix
     }
 }
