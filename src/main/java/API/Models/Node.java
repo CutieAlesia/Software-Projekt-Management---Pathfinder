@@ -9,7 +9,6 @@ public class Node {
     private int[] data;
     private boolean isBlocked = false;
 
-
     public Node(int x, int y, int[] data, boolean isBlocked) {
         this.x = x;
         this.y = y;
@@ -49,11 +48,15 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node{" +
-                "x=" + x +
-                ", y=" + y +
-                ", data=" + Arrays.toString(data) +
-                ", isBlocked=" + isBlocked +
-                '}';
+        return "Node{"
+                + "x="
+                + x
+                + ", y="
+                + y
+                + ", data="
+                + Arrays.toString(data)
+                + ", isBlocked="
+                + isBlocked
+                + '}';
     }
 }

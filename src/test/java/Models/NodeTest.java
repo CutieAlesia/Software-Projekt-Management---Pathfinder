@@ -2,13 +2,12 @@ package Models;
 
 import API.Models.Node;
 import org.junit.Assert;
-import org.junit.Before;
 
 import java.util.Arrays;
 
 public class NodeTest {
 
-    private Node node = new Node(5, 5, new int[]{1, 4, 5}, false);
+    private Node node = new Node(5, 5, new int[] {1, 4, 5}, false);
 
     @org.junit.Test
     public void getXTest() {
@@ -22,7 +21,7 @@ public class NodeTest {
 
     @org.junit.Test
     public void getDataTest() {
-        Assert.assertEquals(Arrays.toString(node.getData()), Arrays.toString(new int[]{1, 4, 5}));
+        Assert.assertEquals(Arrays.toString(node.getData()), Arrays.toString(new int[] {1, 4, 5}));
     }
 
     @org.junit.Test
@@ -39,10 +38,11 @@ public class NodeTest {
 
     @org.junit.Test
     public void setData() {
-        Assert.assertEquals(Arrays.toString(node.getData()), Arrays.toString(new int[]{1, 4, 5}));
-        node.setData(new int[]{1,5,6,7});
-        Assert.assertNotEquals(Arrays.toString(node.getData()), Arrays.toString(new int[]{1, 4, 5}));
-        Assert.assertEquals(Arrays.toString(node.getData()), Arrays.toString(new int[]{1,5,6,7}));
+        Assert.assertEquals(Arrays.toString(node.getData()), Arrays.toString(new int[] {1, 4, 5}));
+        node.setData(new int[] {1, 5, 6, 7});
+        Assert.assertNotEquals(
+                Arrays.toString(node.getData()), Arrays.toString(new int[] {1, 4, 5}));
+        Assert.assertEquals(
+                Arrays.toString(node.getData()), Arrays.toString(new int[] {1, 5, 6, 7}));
     }
-
 }

@@ -18,5 +18,4 @@ public class MockMain {
 
         mockFrontend.testStart();
     }
-    
 }

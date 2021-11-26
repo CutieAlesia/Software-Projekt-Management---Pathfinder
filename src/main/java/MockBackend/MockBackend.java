@@ -14,8 +14,8 @@ public class MockBackend implements IBackend {
     }
 
     public void testStart() {
-        int[] data = {1,3,4};
-        sendToFrontEnd(0,0, data);
+        int[] data = {1, 3, 4};
+        sendToFrontEnd(0, 0, data);
     }
 
     public void sendToFrontEnd(int row, int column, int[] val) {

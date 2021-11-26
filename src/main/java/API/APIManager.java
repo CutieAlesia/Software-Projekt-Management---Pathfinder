@@ -13,8 +13,7 @@ public class APIManager {
     private List<IFrontend> frontends = new ArrayList<>();
     private List<IBackend> backends = new ArrayList<>();
 
-    public APIManager() {
-    }
+    public APIManager() {}
 
     public void sendToFrontend(int row, int column, int[] val) {
         this.node = new Node(row, column, val);
@@ -49,5 +48,4 @@ public class APIManager {
         backends.add(backend);
         System.out.println("[API] Backend added");
     }
-
 }

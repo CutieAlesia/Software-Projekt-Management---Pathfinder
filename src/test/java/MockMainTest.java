@@ -13,5 +13,4 @@ public class MockMainTest {
     public void nochwasTest() {
         Assert.assertTrue(true);
     }
-
 }

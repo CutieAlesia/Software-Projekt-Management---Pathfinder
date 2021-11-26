@@ -4,7 +4,6 @@ import API.APIManager;
 import API.Interfaces.IFrontend;
 import API.Models.Node;
 
-import java.util.Arrays;
 
 public class MockFrontend implements IFrontend {
 
