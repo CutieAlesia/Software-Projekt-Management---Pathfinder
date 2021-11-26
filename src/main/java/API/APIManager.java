@@ -2,46 +2,42 @@ package API;
 
 import API.Interfaces.IBackend;
 import API.Interfaces.IFrontend;
-import API.Models.Matrix;
+import API.Models.Node;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class APIManager {
 
-    private Matrix matrix;
-    private List<IFrontend> frontends = new ArrayList<>() {
-    };
-    private List<IBackend> backends = new ArrayList<>() {
-    };
+    private Node node;
+    private List<IFrontend> frontends = new ArrayList<>();
+    private List<IBackend> backends = new ArrayList<>();
 
     public APIManager() {
-        this.matrix = new Matrix(0, 0);
     }
 
-    public void sendToFrontend(int row, int column, int val) {
-        System.out.println("[API] Mirroring matrix");
-        this.matrix.setChanges(row, column, val);
+    public void sendToFrontend(int row, int column, int[] val) {
+        this.node = new Node(row, column, val);
         System.out.println("[API] Transmitting data to the frontend");
         for (IFrontend endpoint : frontends) {
-            endpoint.update(this.matrix.getData());
+            endpoint.update(this.node);
         }
     }
 
-    public void sendToBackend() {
+    public void sendToBackend(Node[][] matrix) {
         System.out.println("[API] Transmitting data to the backend");
         for (IBackend endpoint : backends) {
-            endpoint.receive(this.matrix.getData());
+            endpoint.receive(matrix);
         }
     }
 
-    public void initMatrix(int x, int y) {
+    public void initMatrix(Node[][] matrix) {
         System.out.println("[API] Initializing a new Matrix");
-        matrix.setData(x, y);
+        sendToBackend(matrix);
     }
 
-    public int[][] getMatrix() {
-        return matrix.getData();
+    public int[] getData() {
+        return node.getData();
     }
 
     public void attachFrontend(IFrontend frontend) {
