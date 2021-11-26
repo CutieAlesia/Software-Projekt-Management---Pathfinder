@@ -17,9 +17,6 @@ public class MockMain {
         api.attachBackend(mockBackend);
 
         mockFrontend.testStart();
-
-        // Backend -> Frontend | Single changes in loop
-        mockBackend.test();
     }
     
 }
