@@ -1,9 +1,6 @@
 import API.APIManager;
-import API.Interfaces.IFrontend;
 import MockBackend.MockBackend;
 import MockFrontend.MockFrontend;
-
-import java.util.Scanner;
 
 public class MockMain {
 
@@ -25,5 +22,5 @@ public class MockMain {
         // Backend -> Frontend | Single changes in loop
         mockBackend.test();
     }
-
+    
 }
