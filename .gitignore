@@ -1,6 +1,9 @@
 # Compiled class file
 *.class
 
+### bin stuff ###
+bin/
+
 # Log file
 *.log
 
@@ -9,6 +12,44 @@
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+
+### Ant, Gradle and Maven ###
+gradle-app.setting
+local.properties
+.gradle/
+assets/
+build/
+lib/
+libs/
+target/
+
+### Eclipse ###
+*.bak
+*.launch
+*.swp
+*.tmp
+.classpath
+.loadpath
+.project
+.externalToolBuilders/
+.metadata/
+.settings/
+
+### Intellij ###
+*.iml
+*.ipr
+*.iws
+.idea/
+out/
+
+### NetBeans ###
+dist/
+nbbuild/
+nbdist/
+nbproject/
+
+### VSCode ###
+.vscode
 
 # Package Files #
 *.jar
