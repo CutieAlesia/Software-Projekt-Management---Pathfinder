@@ -10,7 +10,7 @@ public class MockMainTest {
     }
 
     @org.junit.Test
-    public void nochwasTest() {
+    public void etwasandererTest() {
         Assert.assertTrue(true);
     }
 
