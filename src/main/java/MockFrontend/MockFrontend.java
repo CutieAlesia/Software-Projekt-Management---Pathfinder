@@ -4,7 +4,6 @@ import API.APIManager;
 import API.Interfaces.IFrontend;
 import API.Models.Node;
 
-
 public class MockFrontend implements IFrontend {
 
     private APIManager api;
