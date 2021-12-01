@@ -8,17 +8,21 @@ ___
 ```java
 import API.APIManager;
 import API.Interfaces.IFrontend;
+import API.Interfaces.IBackend;
 import API.Models.Node;
 ```
 ##### 2. Implement the Interface.
+
 ```java
-public class MyFrontend implements IFrontend {}
+public class MyFrontend implements IFrontend { }
+
+public class MyBackEnd implements IBackend { }
 ```
 ##### 2. Get the APIManager through the constructor by the main class.
 ```java
 private APIManager api;
 
-public Frontend(APIManager api) {
+public MyClass(APIManager api) {
     this.api = api;
 }
 ```
@@ -27,9 +31,10 @@ ___
 ##### 3. Override the Interface method
 ```java
 @Override
-public void update(Node[][] node) {
-    System.out.println("[API - Frontend] Node change received");
-    // USAGE
+public void update(Node node) {
+    System.out.println("[API - Frontend] Node update received");
+    this.matrix[node.getX()][node.getY()] = node;
+    System.out.println(node);
 }
 ```
 ##### 4. Transmit the Matrix created by the Frontend to the Backend
@@ -48,7 +53,7 @@ ___
 ```
 ##### 4. Send node changes to the Frontend
 ```java
-public void sendToFrontEnd(int row, int column, int[] val) {
-        api.sendToFrontend(row, column, val);
-    }
+public void sendToFrontEnd(Node node) {
+    api.sendToFrontend(node);
+}
 ```
