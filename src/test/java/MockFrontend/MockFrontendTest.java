@@ -1,6 +1,5 @@
 package MockFrontend;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,13 +14,12 @@ public class MockFrontendTest {
     @Before
     public void setUp() {
         api = new APIManager();
-        //matrix[0][0] = new Node(0,0);
+        // matrix[0][0] = new Node(0,0);
     }
 
     @Test
     public void updateTest() {
-        //Node obj = new Node(0,0, new int[]{1,3});
-        //Assert.assertEquals(matrix[0][0].toString(), obj.toString());
+        // Node obj = new Node(0,0, new int[]{1,3});
+        // Assert.assertEquals(matrix[0][0].toString(), obj.toString());
     }
-
 }

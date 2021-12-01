@@ -18,10 +18,7 @@ public class NodeTest {
     }
 
     @After
-    public void finish() {
-
-    }
-
+    public void finish() {}
 
     @org.junit.Test
     public void getXTest() {
@@ -36,7 +33,6 @@ public class NodeTest {
     @org.junit.Test
     public void getCostTest() {
         Assert.assertEquals(node.getCosts(), 5);
-
     }
 
     @org.junit.Test

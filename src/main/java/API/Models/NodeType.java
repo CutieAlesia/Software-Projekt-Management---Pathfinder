@@ -1,7 +1,10 @@
 package API.Models;
 
 public enum NodeType {
-
-    START, NORMAL, END, BLOCKED, VISITED, PATH
-
+    START,
+    NORMAL,
+    END,
+    BLOCKED,
+    VISITED,
+    PATH
 }

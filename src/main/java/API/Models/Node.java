@@ -13,8 +13,6 @@ public class Node {
     private NodeType type;
     private Node prev;
 
-
-
     public Node(int x, int y) {
         this.x = x;
         this.y = y;
@@ -70,13 +68,19 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node{" +
-                "x=" + x +
-                ", y=" + y +
-                ", costs=" + costs +
-                ", estimatedCosts=" + estimatedCosts +
-                ", type=" + type +
-                ", prev=" + prev +
-                '}';
+        return "Node{"
+                + "x="
+                + x
+                + ", y="
+                + y
+                + ", costs="
+                + costs
+                + ", estimatedCosts="
+                + estimatedCosts
+                + ", type="
+                + type
+                + ", prev="
+                + prev
+                + '}';
     }
 }
