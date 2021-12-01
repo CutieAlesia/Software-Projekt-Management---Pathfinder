@@ -4,6 +4,7 @@ import API.Models.Node;
 import API.Models.NodeType;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 
 public class NodeTest {
 
