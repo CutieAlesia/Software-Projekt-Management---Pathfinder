@@ -4,7 +4,6 @@ import API.Models.Node;
 import API.Models.NodeType;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 
 public class NodeTest {
 
@@ -36,6 +35,7 @@ public class NodeTest {
     @org.junit.Test
     public void getCostTest() {
         Assert.assertEquals(node.getCosts(), 5);
+
     }
 
     @org.junit.Test
@@ -47,5 +47,4 @@ public class NodeTest {
     public void getTypeTest() {
         Assert.assertEquals(node.getType(), NodeType.PATH);
     }
-
 }

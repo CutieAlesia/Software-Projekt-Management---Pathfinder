@@ -14,6 +14,7 @@ public class Node {
     private Node prev;
 
 
+
     public Node(int x, int y) {
         this.x = x;
         this.y = y;

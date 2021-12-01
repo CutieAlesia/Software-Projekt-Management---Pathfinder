@@ -17,8 +17,7 @@ public class APIManager {
     private List<IFrontend> frontends = new ArrayList<>();
     private List<IBackend> backends = new ArrayList<>();
 
-    public APIManager() {
-    }
+    public APIManager() {}
 
     /** Sends a node update to all attached frontends
      *
@@ -69,5 +68,4 @@ public class APIManager {
         backends.add(backend);
         System.out.println("[API] Backend added");
     }
-
 }
