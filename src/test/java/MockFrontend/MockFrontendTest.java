@@ -24,9 +24,4 @@ public class MockFrontendTest {
         //Assert.assertEquals(matrix[0][0].toString(), obj.toString());
     }
 
-    @Test
-    public void randomTest() {
-        Node obj = new Node(1, 1, new int[] {1, 1}, true);
-        Assert.assertTrue(obj.isBlocked());
-    }
 }
