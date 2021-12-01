@@ -4,8 +4,10 @@ import API.APIManager;
 import API.Interfaces.IFrontend;
 import API.Models.Node;
 
-import java.util.Arrays;
-
+/**
+ * @author Dubsky
+ * @version 1.4
+ */
 public class MockFrontend implements IFrontend {
 
     private APIManager api;
