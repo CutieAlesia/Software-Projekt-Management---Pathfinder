@@ -1,62 +1,82 @@
 package API.Models;
 
-import java.util.Arrays;
-
+/**
+ * @author Dubsky
+ * @version 1.2
+ */
 public class Node {
 
     private int x;
     private int y;
-    private int[] data;
-    private boolean isBlocked = false;
+    private int costs;
+    private int estimatedCosts;
+    private NodeType type;
+    private Node prev;
 
-    public Node(int x, int y, int[] data, boolean isBlocked) {
+
+
+    public Node(int x, int y) {
         this.x = x;
         this.y = y;
-        this.data = data;
-        this.isBlocked = isBlocked;
-    }
-
-    public Node(int x, int y, int[] data) {
-        this.x = x;
-        this.y = y;
-        this.data = data;
-    }
-
-    public boolean isBlocked() {
-        return isBlocked;
-    }
-
-    public void setBlocked(boolean blocked) {
-        isBlocked = blocked;
     }
 
     public int getX() {
         return x;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public int getY() {
         return y;
     }
 
-    public int[] getData() {
-        return data;
+    public void setY(int y) {
+        this.y = y;
     }
 
-    public void setData(int[] data) {
-        this.data = data;
+    public int getCosts() {
+        return costs;
+    }
+
+    public void setCosts(int costs) {
+        this.costs = costs;
+    }
+
+    public int getEstimatedCosts() {
+        return estimatedCosts;
+    }
+
+    public void setEstimatedCosts(int estimatedCosts) {
+        this.estimatedCosts = estimatedCosts;
+    }
+
+    public NodeType getType() {
+        return type;
+    }
+
+    public void setType(NodeType type) {
+        this.type = type;
+    }
+
+    public Node getPrev() {
+        return prev;
+    }
+
+    public void setPrev(Node prev) {
+        this.prev = prev;
     }
 
     @Override
     public String toString() {
-        return "Node{"
-                + "x="
-                + x
-                + ", y="
-                + y
-                + ", data="
-                + Arrays.toString(data)
-                + ", isBlocked="
-                + isBlocked
-                + '}';
+        return "Node{" +
+                "x=" + x +
+                ", y=" + y +
+                ", costs=" + costs +
+                ", estimatedCosts=" + estimatedCosts +
+                ", type=" + type +
+                ", prev=" + prev +
+                '}';
     }
 }

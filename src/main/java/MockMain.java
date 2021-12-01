@@ -2,6 +2,10 @@ import API.APIManager;
 import MockBackend.MockBackend;
 import MockFrontend.MockFrontend;
 
+/**
+ * @author Dubsky
+ * @version 1.1
+ */
 public class MockMain {
 
     private static APIManager api;

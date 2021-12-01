@@ -2,40 +2,58 @@
 
 ![](https://img.shields.io/badge/API%20version-18.11.2021-green?style=for-the-badge)
 
-### Frontend
+### Setup
 ___
-##### 1. Implement the "IFrontend" Interface from 'api.interfaces'.
+##### 1. Import the necessities
 ```java
-public class MyFrontend implements IFrontend {}
+import API.APIManager;
+import API.Interfaces.IFrontend;
+import API.Interfaces.IBackend;
+import API.Models.Node;
 ```
+##### 2. Implement the Interface.
 
+```java
+public class MyFrontend implements IFrontend { }
+
+public class MyBackEnd implements IBackend { }
+```
 ##### 2. Get the APIManager through the constructor by the main class.
 ```java
 private APIManager api;
 
-public Frontend(APIManager api) {
+public MyClass(APIManager api) {
     this.api = api;
 }
 ```
-
+### Frontend
+___
 ##### 3. Override the Interface method
-**! Work-In-Progress !**
 ```java
 @Override
-public void update(int[][] data) {
-    System.out.println("[API - Frontend] Update arrived");
-    // Usage of the update data
+public void update(Node node) {
+    System.out.println("[API - Frontend] Node update received");
+    this.matrix[node.getX()][node.getY()] = node;
+    System.out.println(node);
 }
 ```
-_This function can receive either a completed matrix or single value changes._
-
-##### 4. Mirror the created matrix so that it will be used for data transmission
+##### 4. Transmit the Matrix created by the Frontend to the Backend
 ```java
 api.initMatrix(this.matrix);
 ```
-
-##### 5. Send the matrix to the backend to start the process
-_This will send the matrix to the backend_
+### Backend
+___
+##### 3. Override the Interface method
 ```java
-api.sendToBackend();
+@Override
+    public void receive(Node[][] matrix) {
+        System.out.format("[API - Backend] New Matrix received");
+        this.matrix = matrix;
+    }
+```
+##### 4. Send node changes to the Frontend
+```java
+public void sendToFrontEnd(Node node) {
+    api.sendToFrontend(node);
+}
 ```

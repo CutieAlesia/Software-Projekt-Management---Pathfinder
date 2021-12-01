@@ -1,13 +1,27 @@
 package Models;
 
 import API.Models.Node;
+import API.Models.NodeType;
+import org.junit.After;
 import org.junit.Assert;
-
-import java.util.Arrays;
+import org.junit.Before;
 
 public class NodeTest {
 
-    private Node node = new Node(5, 5, new int[] {1, 4, 5}, false);
+    private final Node node = new Node(5, 5);
+
+    @Before
+    public void setup() {
+        this.node.setCosts(5);
+        this.node.setType(NodeType.PATH);
+        this.node.setEstimatedCosts(20);
+    }
+
+    @After
+    public void finish() {
+
+    }
+
 
     @org.junit.Test
     public void getXTest() {
@@ -20,29 +34,18 @@ public class NodeTest {
     }
 
     @org.junit.Test
-    public void getDataTest() {
-        Assert.assertEquals(Arrays.toString(node.getData()), Arrays.toString(new int[] {1, 4, 5}));
+    public void getCostTest() {
+        Assert.assertEquals(node.getCosts(), 5);
+
     }
 
     @org.junit.Test
-    public void getBockedNodeTest() {
-        Assert.assertFalse(node.isBlocked());
+    public void getEstimatedTest() {
+        Assert.assertEquals(node.getEstimatedCosts(), 20);
     }
 
     @org.junit.Test
-    public void setBockedNodeTest() {
-        Assert.assertFalse(node.isBlocked());
-        node.setBlocked(true);
-        Assert.assertTrue(node.isBlocked());
-    }
-
-    @org.junit.Test
-    public void setData() {
-        Assert.assertEquals(Arrays.toString(node.getData()), Arrays.toString(new int[] {1, 4, 5}));
-        node.setData(new int[] {1, 5, 6, 7});
-        Assert.assertNotEquals(
-                Arrays.toString(node.getData()), Arrays.toString(new int[] {1, 4, 5}));
-        Assert.assertEquals(
-                Arrays.toString(node.getData()), Arrays.toString(new int[] {1, 5, 6, 7}));
+    public void getTypeTest() {
+        Assert.assertEquals(node.getType(), NodeType.PATH);
     }
 }
