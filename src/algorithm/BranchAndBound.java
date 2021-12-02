@@ -2,14 +2,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import Util.*;
+import Util.Node;
+import Util.NodeType;
+import Util.Util;
 
 /**
- * A* Algorithm class
+ * Branch and Bound Algorithm class
  * 
  * @author Finn
  */
-public class AStar extends SearchAlgorithm {
+public class BranchAndBound extends SearchAlgorithm{
 	
 	private ArrayList<Node> relevantNodes;
 	
@@ -17,7 +19,7 @@ public class AStar extends SearchAlgorithm {
 	 * Initializes all fields
 	 * @param field
 	 */
-	public AStar(Node[][] field) {
+	public BranchAndBound(Node[][] field) {
 		super(field);
 		this.relevantNodes = new ArrayList<Node>();
 	}
@@ -31,7 +33,6 @@ public class AStar extends SearchAlgorithm {
 		if(found) {
 			Node node = end;
 			
-			// update the state for all nodes that are part of the found path
 			while(node != null) {
 				node.setType(NodeType.PATH);
 				node = node.getPrev();
@@ -81,16 +82,14 @@ public class AStar extends SearchAlgorithm {
 				
 				Node neighbour = field[node.getVertIndex() + i][node.getHorIndex() + j];
 				int costs = Util.getDistance(node, neighbour) + (node.getCosts() != -1 ? node.getCosts() : 0);
-				int estimatedCosts = Util.getDistance(neighbour, end);
 				
 				// skip the current neighbour if the node is blocked, already visited or the start node
 				if(neighbour.getType() == NodeType.START || neighbour.getType() == NodeType.BLOCKED || neighbour.getType() == NodeType.VISITED)
 					continue;
 				
 				// update the neighbours costs if the neighbour hasn't been calculated yet or the new costs are cheaper
-				if(costs + estimatedCosts < neighbour.getTotalCosts() || neighbour.getCosts() == -1) {
+				if(costs < neighbour.getCosts() || neighbour.getCosts() == -1) {
 					neighbour.setCosts(costs);
-					neighbour.setEstimatedCosts(estimatedCosts);
 					neighbour.setPrev(node);
 					
 					// indicate that the end node was found
@@ -110,9 +109,10 @@ public class AStar extends SearchAlgorithm {
 		// returns true if the end node was found, false if there is no valid path or recursively calls itself if there are still nodes to check
 		return found ? true : nextToUpdate == null ? false : updateNeighbours(nextToUpdate);
 	}
+		
 	
 	/**
-	 * returns the cheapest relevant node, based on the real path costs aswell as the heuristics
+	 * returns the cheapest relevant node, based on the costs
 	 * 
 	 * @return Node Currently cheapest relevant node
 	 */
@@ -125,13 +125,13 @@ public class AStar extends SearchAlgorithm {
 	}
 	
 	/**
-	 * sort all relevant nodes by their total costs (real path costs + heuristics)
+	 * sort all relevant nodes by their costs
 	 */
 	private void sortRelevantNodes() {
 		Collections.sort(relevantNodes, new Comparator<Node>() {
 		    @Override
 		    public int compare(Node node1, Node node2) {
-		        return ((Integer) node1.getTotalCosts()).compareTo(node2.getTotalCosts());
+		        return ((Integer) node1.getCosts()).compareTo(node2.getCosts());
 		    }
 		});
 	}

@@ -112,7 +112,7 @@ public class BestFirst extends SearchAlgorithm{
 		
 	
 	/**
-	 * returns the cheapest relevant node, based on the real path costs aswell as the heuristics
+	 * returns the cheapest relevant node, based on the estimated costs
 	 * 
 	 * @return Node Currently cheapest relevant node
 	 */
@@ -125,7 +125,7 @@ public class BestFirst extends SearchAlgorithm{
 	}
 	
 	/**
-	 * sort all relevant nodes by their total costs
+	 * sort all relevant nodes by their estimated costs
 	 */
 	private void sortRelevantNodes() {
 		Collections.sort(relevantNodes, new Comparator<Node>() {
