@@ -1,13 +1,22 @@
+package Util;
 
+/**
+ * Basic Node Class that can be used for all search algorithms
+ * 
+ * @author Finn
+ */
 public class Node {
 
+	// x and y coordinates
 	private int vertIndex;
 	private int horIndex;
+	
+	// path costs and heusristics
 	private int costs;
 	private int estimatedCosts;
+	
 	private NodeType type;
 	private Node prev;
-	private boolean test;
 	
 	public Node(int vertIndex, int horIndex) {
 		this.vertIndex = vertIndex;
@@ -15,17 +24,8 @@ public class Node {
 		this.costs = -1;
 		this.estimatedCosts = 0;
 		this.type = NodeType.NORMAL;
-		this.test = false;
 	}
-	
-	public boolean getTest() {
-		return this.test;
-	}
-	
-	public void setTest(boolean test) {
-		this.test = test;
-	}
-	
+
 	public int getCosts() {
 		return this.costs;
 	}

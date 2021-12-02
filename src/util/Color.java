@@ -1,5 +1,12 @@
+package Util;
 
-public class Colors {
+/**
+ * Wrapper Class for ascii color codes
+ * 
+ * @author Finn
+ */
+public class Color {
+	// Text colors
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_BLACK = "\u001B[30m";
 	public static final String ANSI_RED = "\u001B[31m";
@@ -10,6 +17,7 @@ public class Colors {
 	public static final String ANSI_CYAN = "\u001B[36m";
 	public static final String ANSI_WHITE = "\u001B[37m";
 	
+	// Background colors
 	public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
 	public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
 	public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
