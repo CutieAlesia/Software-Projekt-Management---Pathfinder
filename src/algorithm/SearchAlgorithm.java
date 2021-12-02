@@ -42,4 +42,9 @@ public abstract class SearchAlgorithm {
 			}
 		}
 	}
+	
+	/**
+	 * abstract method for starting an algorithm
+	 */
+	public abstract void run();
 }
