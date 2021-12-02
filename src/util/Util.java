@@ -1,14 +1,14 @@
 package Util;
 
 /**
- * Utility Class that contains methods for generating and handling Node[][] (fields)
+ * Utility Class that contains methods for generating and handling Node[][] (fields) and nodes
  * 
  * @author Finn
  */
 public class Util {
 
 	/**
-	 * Static method that takes a Node[][] and creates a colorful console output based on the nodes state (NodeType)
+	 * Iterates over all nodes of a given field and prints them
 	 * 
 	 * @param field Node[][] that is supposed to be printed
 	 */
@@ -16,23 +16,7 @@ public class Util {
 		for(int i=0; i<field.length; i++) {
 			for(int j=0; j<field[0].length; j++) {
 				Node node = field[i][j];
-				String ob = Color.ANSI_BLACK + "[";
-				String cb = Color.ANSI_BLACK + "]";
-				String cc = node.getType() == NodeType.NORMAL ? "" : node.getType() == NodeType.START ? Color.ANSI_GREEN : Color.ANSI_RED;
-				String formCosts = String.format("%03d", node.getCosts());
-				String formEstCosts = String.format("%03d", node.getEstimatedCosts());
-				String values = node.getCosts() == -1 ? "###, ###" : formCosts + ", " + formEstCosts;
-				String content = ob + cc + values + cb;
-				String prefix = Color.ANSI_WHITE_BACKGROUND;
-					
-				if(field[i][j].getType() == NodeType.PATH)
-					prefix = Color.ANSI_BLUE_BACKGROUND;
-				else if(field[i][j].getType() == NodeType.BLOCKED)
-					prefix = Color.ANSI_YELLOW_BACKGROUND;
-				else if(field[i][j].getType() == NodeType.VISITED)
-					prefix = Color.ANSI_CYAN_BACKGROUND;
-				
-				System.out.print(prefix + content);
+				System.out.print(node);
 			}
 			System.out.println("");
 		}
@@ -93,5 +77,21 @@ public class Util {
 	 */
 	public static Node getRandomNode(Node[][] field) {
 		return field[(int) (Math.random() * field.length)][(int) (Math.random() * field[0].length)];
+	}
+	
+	/**
+	 * Calculate the distance between two given nodes
+	 * 
+	 * @param node1 Start Node
+	 * @param node2 End Node
+	 * @return int Distance between the two given nodes
+	 */
+	public static int getDistance(Node node1, Node node2) {
+		int vertDiff = Math.abs(node1.getVertIndex() - node2.getVertIndex());
+		int horDiff = Math.abs(node1.getHorIndex() - node2.getHorIndex());
+		int diagonales = Math.min(vertDiff, horDiff);
+		int straightLines = Math.max(vertDiff, horDiff) - diagonales;
+		
+		return diagonales * 14 + straightLines * 10;
 	}
 }
