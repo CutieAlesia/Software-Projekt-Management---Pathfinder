@@ -188,26 +188,26 @@ public class DepthFirst implements LabyrinthGenerator{
 
 
 	
-	public static void  main(String[]args) {
-		DepthFirst a = new DepthFirst();
-		int x = 80;
-		int y = 40;
-		Node[][] b = a.generateLabyrinth(x, y);
-		for(int i=0; i<y;i++) {
-			for(int j=0; j<x; j++) {
-				if(b[j][i].getType() == NodeType.BLOCKED) {
-					System.out.print("II");
-				}else if (b[j][i].getType() == NodeType.START){
-					System.out.print("oo");
-				}else if (b[j][i].getType() == NodeType.END){
-					System.out.print("~~");
-				}else {
-					System.out.print("  ");
-				}
-			}
-			System.out.println();
-		}
-	}
+//	public static void  main(String[]args) {
+//		DepthFirst a = new DepthFirst();
+//		int x = 80;
+//		int y = 40;
+//		Node[][] b = a.generateLabyrinth(x, y);
+//		for(int i=0; i<y;i++) {
+//			for(int j=0; j<x; j++) {
+//				if(b[j][i].getType() == NodeType.BLOCKED) {
+//					System.out.print("II");
+//				}else if (b[j][i].getType() == NodeType.START){
+//					System.out.print("oo");
+//				}else if (b[j][i].getType() == NodeType.END){
+//					System.out.print("~~");
+//				}else {
+//					System.out.print("  ");
+//				}
+//			}
+//			System.out.println();
+//		}
+//	}
 }
 
 

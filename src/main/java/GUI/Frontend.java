@@ -44,12 +44,20 @@ public class Frontend implements IFrontend{
     }
 
     public void testStart() {
-        this.matrix = new Node[15][15];
+    	generateLabyrinth(new DepthFirst(), 60, 30);
         api.initMatrix(matrix);
     }
 
     @Override
     public void update(Node node) {
+    	
+    	
+    	int x = node.getX();
+    	int y = node.getY();
+    	
+    	matrix[x][y] = node;
+    	
+    	
         System.out.println("[API - Frontend] Node update received");
 		for(int i=0; i<matrix.length; i++) {
 			for(int j=0; j<matrix[0].length; j++) {
@@ -89,41 +97,41 @@ public class Frontend implements IFrontend{
     
     
     
-	public static void  main(String[]args) {
-		Frontend f = new Frontend(null);
-
-		int x = 80;
-		int y = 40;
-		f.generateLabyrinth(new DepthFirst(), x, y);
-		
-	
-	for(int i=0; i< f.getMatrix()[0].length ;i++) {
-		for(int j=0; j<f.getMatrix().length; j++) {
-			switch(f.getMatrix()[j][i].getType()) {
-			case BLOCKED:
-				System.out.print(ANSI_BLACK_BACKGROUND + "  "+ ANSI_RESET);
-				break;
-			case END:
-				System.out.print(ANSI_RED_BACKGROUND + "  "+ ANSI_RESET);
-				break;
-			case NORMAL:
-				System.out.print("  ");
-				break;
-			case PATH:
-				System.out.print(ANSI_GREEN_BACKGROUND + "  "+ ANSI_RESET);
-				break;
-			case START:
-				System.out.print(ANSI_BLUE_BACKGROUND + "  "+ ANSI_RESET);
-				break;
-			case VISITED:
-				System.out.print(ANSI_YELLOW_BACKGROUND + "  "+ ANSI_RESET);
-				break;
-			default:
-				break;
-			
-			}
-		}
-		System.out.println();
-	}
-	}
+//	public static void  main(String[]args) {
+//		Frontend f = new Frontend(null);
+//
+//		int x = 80;
+//		int y = 40;
+//		f.generateLabyrinth(new DepthFirst(), x, y);
+//		
+//	
+//		for(int i=0; i< f.getMatrix()[0].length ;i++) {
+//			for(int j=0; j<f.getMatrix().length; j++) {
+//				switch(f.getMatrix()[j][i].getType()) {
+//				case BLOCKED:
+//					System.out.print(ANSI_BLACK_BACKGROUND + "  "+ ANSI_RESET);
+//					break;
+//				case END:
+//					System.out.print(ANSI_RED_BACKGROUND + "  "+ ANSI_RESET);
+//					break;
+//				case NORMAL:
+//					System.out.print("  ");
+//					break;
+//				case PATH:
+//					System.out.print(ANSI_GREEN_BACKGROUND + "  "+ ANSI_RESET);
+//					break;
+//				case START:
+//					System.out.print(ANSI_BLUE_BACKGROUND + "  "+ ANSI_RESET);
+//					break;
+//				case VISITED:
+//					System.out.print(ANSI_YELLOW_BACKGROUND + "  "+ ANSI_RESET);
+//					break;
+//				default:
+//					break;
+//				
+//				}
+//			}
+//			System.out.println();
+//		}
+//	}
 }
