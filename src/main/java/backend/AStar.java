@@ -1,8 +1,12 @@
+package main.java.backend;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import Util.*;
+import main.java.api.APIManager;
+import main.java.api.models.Node;
+import main.java.api.models.NodeType;
+import main.java.util.Util;
 
 /**
  * A* Algorithm class
@@ -17,8 +21,8 @@ public class AStar extends SearchAlgorithm {
 	 * Initializes all fields
 	 * @param field
 	 */
-	public AStar(Node[][] field) {
-		super(field);
+	public AStar(APIManager manager) {
+		super(manager);
 		this.relevantNodes = new ArrayList<Node>();
 	}
 	
@@ -33,7 +37,13 @@ public class AStar extends SearchAlgorithm {
 			
 			// update the state for all nodes that are part of the found path
 			while(node != null) {
-				node.setType(NodeType.PATH);
+				if(node.getType() != NodeType.END && node.getType() != NodeType.START) {
+					node.setType(NodeType.PATH);
+					
+					// update frontend
+					manager.sendToFrontend(node);
+				}
+				
 				node = node.getPrev();
 			}
 		} else {
@@ -58,6 +68,9 @@ public class AStar extends SearchAlgorithm {
 		if(node.getType() != NodeType.START && node.getType() != NodeType.END) {
 			// mark the given node as visited
 			node.setType(NodeType.VISITED);
+			
+			// update frontend
+			manager.sendToFrontend(node);
 		}
 		
 		// remove the given node from the relevants node list so the algorithm
@@ -134,5 +147,15 @@ public class AStar extends SearchAlgorithm {
 		        return ((Integer) node1.getTotalCosts()).compareTo(node2.getTotalCosts());
 		    }
 		});
+	}
+
+	/**
+	 * receive a matrix from the api manager
+	 * 
+	 * @param Node[][] matrix that represents the labyrinth
+	 */
+	@Override
+	public void receive(Node[][] matrix) {
+		this.field = matrix;
 	}
 }

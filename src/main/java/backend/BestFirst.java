@@ -1,17 +1,19 @@
+package main.java.backend;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import Util.Node;
-import Util.NodeType;
-import Util.Util;
+import main.java.api.APIManager;
+import main.java.api.models.Node;
+import main.java.api.models.NodeType;
+import main.java.util.Util;
 
 /**
- * Branch and Bound Algorithm class
+ * Best First Algorithm class
  * 
  * @author Finn
  */
-public class BranchAndBound extends SearchAlgorithm{
+public class BestFirst extends SearchAlgorithm{
 	
 	private ArrayList<Node> relevantNodes;
 	
@@ -19,8 +21,8 @@ public class BranchAndBound extends SearchAlgorithm{
 	 * Initializes all fields
 	 * @param field
 	 */
-	public BranchAndBound(Node[][] field) {
-		super(field);
+	public BestFirst(APIManager manager) {
+		super(manager);
 		this.relevantNodes = new ArrayList<Node>();
 	}
 	
@@ -34,7 +36,13 @@ public class BranchAndBound extends SearchAlgorithm{
 			Node node = end;
 			
 			while(node != null) {
-				node.setType(NodeType.PATH);
+				if(node.getType() != NodeType.END && node.getType() != NodeType.START) {
+					node.setType(NodeType.PATH);
+					
+					// update frontend
+					manager.sendToFrontend(node);
+				}
+
 				node = node.getPrev();
 			}
 		} else {
@@ -59,6 +67,9 @@ public class BranchAndBound extends SearchAlgorithm{
 		if(node.getType() != NodeType.START && node.getType() != NodeType.END) {
 			// mark the given node as visited
 			node.setType(NodeType.VISITED);
+			
+			// update frontend
+			manager.sendToFrontend(node);
 		}
 		
 		// remove the given node from the relevants node list so the algorithm
@@ -81,15 +92,15 @@ public class BranchAndBound extends SearchAlgorithm{
 			if(leftInBound && rightInBound && topInBound && bottomInBound) {
 				
 				Node neighbour = field[node.getVertIndex() + i][node.getHorIndex() + j];
-				int costs = Util.getDistance(node, neighbour) + (node.getCosts() != -1 ? node.getCosts() : 0);
+				int estimatedCosts = Util.getDistance(neighbour, end);
 				
 				// skip the current neighbour if the node is blocked, already visited or the start node
 				if(neighbour.getType() == NodeType.START || neighbour.getType() == NodeType.BLOCKED || neighbour.getType() == NodeType.VISITED)
 					continue;
 				
-				// update the neighbours costs if the neighbour hasn't been calculated yet or the new costs are cheaper
-				if(costs < neighbour.getCosts() || neighbour.getCosts() == -1) {
-					neighbour.setCosts(costs);
+				// update the neighbours estimated costs if the neighbour hasn't been calculated yet or the new estimated costs are cheaper
+				if(estimatedCosts < neighbour.getEstimatedCosts() || neighbour.getEstimatedCosts() == 0) {
+					neighbour.setEstimatedCosts(estimatedCosts);
 					neighbour.setPrev(node);
 					
 					// indicate that the end node was found
@@ -112,7 +123,7 @@ public class BranchAndBound extends SearchAlgorithm{
 		
 	
 	/**
-	 * returns the cheapest relevant node, based on the costs
+	 * returns the cheapest relevant node, based on the estimated costs
 	 * 
 	 * @return Node Currently cheapest relevant node
 	 */
@@ -125,14 +136,24 @@ public class BranchAndBound extends SearchAlgorithm{
 	}
 	
 	/**
-	 * sort all relevant nodes by their costs
+	 * sort all relevant nodes by their estimated costs
 	 */
 	private void sortRelevantNodes() {
 		Collections.sort(relevantNodes, new Comparator<Node>() {
 		    @Override
 		    public int compare(Node node1, Node node2) {
-		        return ((Integer) node1.getCosts()).compareTo(node2.getCosts());
+		        return ((Integer) node1.getEstimatedCosts()).compareTo(node2.getEstimatedCosts());
 		    }
 		});
+	}
+
+	/**
+	 * receive a matrix from the api manager
+	 * 
+	 * @param Node[][] matrix that represents the labyrinth
+	 */
+	@Override
+	public void receive(Node[][] matrix) {
+		this.field = matrix;
 	}
 }

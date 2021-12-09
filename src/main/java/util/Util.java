@@ -1,4 +1,7 @@
-package Util;
+package main.java.util;
+
+import main.java.api.models.Node;
+import main.java.api.models.NodeType;
 
 /**
  * Utility Class that contains methods for generating and handling Node[][] (fields) and nodes

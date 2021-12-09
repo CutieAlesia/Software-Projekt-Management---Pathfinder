@@ -1,4 +1,4 @@
-package Util;
+package main.java.util;
 
 /**
  * Wrapper Class for ascii color codes
