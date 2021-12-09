@@ -1,4 +1,6 @@
-package Util;
+package main.java.api.models;
+
+import main.java.util.Color;
 
 /**
  * Basic Node Class that can be used for all search algorithms

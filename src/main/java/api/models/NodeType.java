@@ -1,4 +1,4 @@
-package Util;
+package main.java.api.models;
 
 /**
  * Enum for the different node types/states
