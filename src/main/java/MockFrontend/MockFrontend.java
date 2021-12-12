@@ -25,7 +25,7 @@ public class MockFrontend implements IFrontend {
     @Override
     public void update(Node node) {
         System.out.println("[API - Frontend] Node update received");
-        this.matrix[node.getX()][node.getY()] = node;
+        this.matrix[node.getHorIndex()][node.getVertIndex()] = node;
         System.out.println(node);
     }
 }

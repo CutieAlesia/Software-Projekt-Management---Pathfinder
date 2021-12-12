@@ -1,14 +1,14 @@
-package main.java.frontend;
+package frontend;
 
-import main.java.API.interfaces.IFrontend;
-import main.java.API.models.Node;
+import API.Interfaces.IFrontend;
+import API.Models.Node;
 
-public class Frontend implements IFrontend{
+public class Frontend implements IFrontend {
 
-	@Override
-	public void update(Node node) {
-		// TODO Auto-generated method stub
+    @Override
+    public void update(Node node) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
 }

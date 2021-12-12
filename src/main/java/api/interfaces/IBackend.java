@@ -1,8 +1,8 @@
-package main.java.api.interfaces;
+package API.Interfaces;
 
-import main.java.api.models.Node;
+import API.Models.Node;
 
 public interface IBackend {
     void receive(Node[][] matrix);
-    
+
 }

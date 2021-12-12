@@ -1,4 +1,4 @@
-package main.java.api.models;
+package API.Models;
 
 /**
  * Enum for the different node types/states
@@ -7,6 +7,6 @@ package main.java.api.models;
  */
 public enum NodeType {
 
-	START, NORMAL, END, BLOCKED, VISITED, PATH
-	
+    START, NORMAL, END, BLOCKED, VISITED, PATH
+
 }
