@@ -1,27 +1,22 @@
 import API.APIManager;
-import API.Interfaces.IBackend;
-import API.Interfaces.IFrontend;
 import API.Models.Node;
 import GUI.Frontend;
 import backend.AStar;
+import backend.SearchAlgorithm;
 import util.Util;
 
 public class Main {
 
     public static void main(String[] args) {
-        // Node[][] field = Util.generateField(10);
-        // SearchAlgorithm alg = new DepthFirst(field);
-        // alg.run();
-        // Util.printField(alg.getField());
-
         APIManager manager = new APIManager();
-        IFrontend frontend = new Frontend(manager);
-        IBackend backend = new AStar(manager);
-        Node[][] field = Util.generateField(10);
-
+        Frontend frontend = new Frontend(manager);
+        SearchAlgorithm backend = new AStar(manager);
         manager.attachFrontend(frontend);
         manager.attachBackend(backend);
+        Node[][] field = Util.generateField(5);
+        frontend.setMatrix(field);
         manager.initMatrix(field);
+        backend.run();
 
         // daten im apimanager nur an ein backend bzw. frontend schicken
         // backend starten

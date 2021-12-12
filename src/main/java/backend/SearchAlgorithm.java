@@ -23,7 +23,7 @@ public abstract class SearchAlgorithm implements IBackend {
      * @param field Node[][] that the algorithm is supposed to work with
      */
     public SearchAlgorithm(APIManager manager) {
-        findLocations();
+        this.manager = manager;
     }
 
     public Node[][] getField() {
@@ -31,7 +31,7 @@ public abstract class SearchAlgorithm implements IBackend {
     }
 
     /** Iterates over the field to find the start and end node */
-    private void findLocations() {
+    protected void findLocations() {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
                 if (start != null && end != null) {
@@ -51,4 +51,14 @@ public abstract class SearchAlgorithm implements IBackend {
 
     /** abstract method for starting an algorithm */
     public abstract void run();
+
+    /**
+     * receive a matrix from the API manager
+     *
+     * @param Node[][] matrix that represents the labyrinth
+     */
+    @Override
+    public void receive(Node[][] matrix) {
+        this.field = matrix;
+    }
 }

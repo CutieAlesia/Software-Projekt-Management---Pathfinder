@@ -28,9 +28,13 @@ public class BranchAndBound extends SearchAlgorithm {
         this.relevantNodes = new ArrayList<Node>();
     }
 
-    /** Starts the recursive algorithm and runs until a path is found or there is no valid path */
+    /**
+     * Starts the recursive algorithm and runs until a path is found or there is no
+     * valid path
+     */
     @Override
     public void run() {
+        findLocations();
         boolean found = updateNeighbours(this.start);
         if (found) {
             Node node = end;
@@ -51,8 +55,8 @@ public class BranchAndBound extends SearchAlgorithm {
     }
 
     /**
-     * Takes a node, updates all direct neighbours for that node and recursively calls itself if
-     * there are unvisited nodes in the relevants node list left
+     * Takes a node, updates all direct neighbours for that node and recursively
+     * calls itself if there are unvisited nodes in the relevants node list left
      *
      * @param node Node which neighbours are supposed to be updated
      * @return boolean that describes whether a valid path was found or not
@@ -61,7 +65,7 @@ public class BranchAndBound extends SearchAlgorithm {
         boolean found = false;
 
         // Coordinates of the neighbours that are supposed to be updated
-        int[][] coords = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
+        int[][] coords = { { -1, 0 }, { 0, -1 }, { 0, 1 }, { 1, 0 } };
 
         // Check if the given node is the start or end node
         if (node.getType() != NodeType.START && node.getType() != NodeType.END) {
@@ -92,14 +96,11 @@ public class BranchAndBound extends SearchAlgorithm {
             if (leftInBound && rightInBound && topInBound && bottomInBound) {
 
                 Node neighbour = field[node.getVertIndex() + i][node.getHorIndex() + j];
-                int costs =
-                        Util.getDistance(node, neighbour)
-                                + (node.getCosts() != -1 ? node.getCosts() : 0);
+                int costs = Util.getDistance(node, neighbour) + (node.getCosts() != -1 ? node.getCosts() : 0);
 
                 // skip the current neighbour if the node is blocked, already visited or the
                 // start node
-                if (neighbour.getType() == NodeType.START
-                        || neighbour.getType() == NodeType.BLOCKED
+                if (neighbour.getType() == NodeType.START || neighbour.getType() == NodeType.BLOCKED
                         || neighbour.getType() == NodeType.VISITED) {
                     continue;
                 }
@@ -113,6 +114,7 @@ public class BranchAndBound extends SearchAlgorithm {
                     // indicate that the end node was found
                     if (neighbour.getType() == NodeType.END) {
                         found = true;
+                        System.out.println("Ziel gefunden!");
                     }
                 }
 
@@ -146,23 +148,12 @@ public class BranchAndBound extends SearchAlgorithm {
 
     /** sort all relevant nodes by their costs */
     private void sortRelevantNodes() {
-        Collections.sort(
-                relevantNodes,
-                new Comparator<Node>() {
-                    @Override
-                    public int compare(Node node1, Node node2) {
-                        return ((Integer) node1.getCosts()).compareTo(node2.getCosts());
-                    }
-                });
+        Collections.sort(relevantNodes, new Comparator<Node>() {
+            @Override
+            public int compare(Node node1, Node node2) {
+                return ((Integer) node1.getCosts()).compareTo(node2.getCosts());
+            }
+        });
     }
 
-    /**
-     * receive a matrix from the.API manager
-     *
-     * @param Node[][] matrix that represents the labyrinth
-     */
-    @Override
-    public void receive(Node[][] matrix) {
-        this.field = matrix;
-    }
 }

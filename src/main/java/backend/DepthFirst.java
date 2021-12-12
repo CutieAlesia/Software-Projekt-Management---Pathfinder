@@ -21,9 +21,13 @@ public class DepthFirst extends SearchAlgorithm {
         super(manager);
     }
 
-    /** Starts the recursive algorithm and runs until a path is found or there is no valid path */
+    /**
+     * Starts the recursive algorithm and runs until a path is found or there is no
+     * valid path
+     */
     @Override
     public void run() {
+        findLocations();
         boolean found = advance(this.start);
         if (found) {
             Node node = end;
@@ -52,7 +56,7 @@ public class DepthFirst extends SearchAlgorithm {
      */
     private boolean advance(Node node) {
         // Coordinates of the neighbours that are supposed to be updated
-        int[][] coords = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int[][] coords = { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
 
         // Check if the given node is the start or end node
         if (node.getType() != NodeType.START && node.getType() != NodeType.END) {
@@ -80,8 +84,7 @@ public class DepthFirst extends SearchAlgorithm {
 
                 // skip the current neighbour if the node is blocked, already visited or the
                 // start node
-                if (neighbour.getType() == NodeType.START
-                        || neighbour.getType() == NodeType.BLOCKED
+                if (neighbour.getType() == NodeType.START || neighbour.getType() == NodeType.BLOCKED
                         || neighbour.getType() == NodeType.VISITED) {
                     continue;
                 }
@@ -92,6 +95,7 @@ public class DepthFirst extends SearchAlgorithm {
 
                 // end node was found
                 if (neighbour.getType() == NodeType.END) {
+                    System.out.println("Ziel gefunden!");
                     return true;
                 }
 
@@ -105,13 +109,4 @@ public class DepthFirst extends SearchAlgorithm {
         return false;
     }
 
-    /**
-     * receive a matrix from the API manager
-     *
-     * @param Node[][] matrix that represents the labyrinth
-     */
-    @Override
-    public void receive(Node[][] matrix) {
-        this.field = matrix;
-    }
 }
