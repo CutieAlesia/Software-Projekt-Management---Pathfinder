@@ -2,20 +2,20 @@ import API.APIManager;
 import API.Interfaces.IBackend;
 import API.Interfaces.IFrontend;
 import API.Models.Node;
+import GUI.Frontend;
 import backend.AStar;
-import frontend.Frontend;
 import util.Util;
 
 public class Main {
 
     public static void main(String[] args) {
-        //		Node[][] field = Util.generateField(10);
-        //		SearchAlgorithm alg = new DepthFirst(field);
-        //		alg.run();
-        //		Util.printField(alg.getField());
+        // Node[][] field = Util.generateField(10);
+        // SearchAlgorithm alg = new DepthFirst(field);
+        // alg.run();
+        // Util.printField(alg.getField());
 
         APIManager manager = new APIManager();
-        IFrontend frontend = new Frontend();
+        IFrontend frontend = new Frontend(manager);
         IBackend backend = new AStar(manager);
         Node[][] field = Util.generateField(10);
 

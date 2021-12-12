@@ -43,8 +43,8 @@ public class Frontend implements IFrontend {
     @Override
     public void update(Node node) {
 
-        int x = node.getX();
-        int y = node.getY();
+        int x = node.getHorIndex();
+        int y = node.getVertIndex();
 
         matrix[x][y] = node;
 
