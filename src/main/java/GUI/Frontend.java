@@ -53,27 +53,26 @@ public class Frontend implements IFrontend {
             for (int j = 0; j < matrix[0].length; j++) {
 
                 switch (matrix[j][i].getType()) {
-                case BLOCKED:
-                    System.out.print(ANSI_BLACK_BACKGROUND + "  " + ANSI_RESET);
-                    break;
-                case END:
-                    System.out.print(ANSI_RED_BACKGROUND + "  " + ANSI_RESET);
-                    break;
-                case NORMAL:
-                    System.out.print("  ");
-                    break;
-                case PATH:
-                    System.out.print(ANSI_GREEN_BACKGROUND + "  " + ANSI_RESET);
-                    break;
-                case START:
-                    System.out.print(ANSI_BLUE_BACKGROUND + "  " + ANSI_RESET);
-                    break;
-                case VISITED:
-                    System.out.print(ANSI_YELLOW_BACKGROUND + "  " + ANSI_RESET);
-                    break;
-                default:
-                    break;
-
+                    case BLOCKED:
+                        System.out.print(ANSI_BLACK_BACKGROUND + "  " + ANSI_RESET);
+                        break;
+                    case END:
+                        System.out.print(ANSI_RED_BACKGROUND + "  " + ANSI_RESET);
+                        break;
+                    case NORMAL:
+                        System.out.print("  ");
+                        break;
+                    case PATH:
+                        System.out.print(ANSI_GREEN_BACKGROUND + "  " + ANSI_RESET);
+                        break;
+                    case START:
+                        System.out.print(ANSI_BLUE_BACKGROUND + "  " + ANSI_RESET);
+                        break;
+                    case VISITED:
+                        System.out.print(ANSI_YELLOW_BACKGROUND + "  " + ANSI_RESET);
+                        break;
+                    default:
+                        break;
                 }
             }
             System.out.println();
@@ -83,5 +82,4 @@ public class Frontend implements IFrontend {
     public void generateLabyrinth(LabyrinthGenerator labyrinthGenerator, int x, int y) {
         matrix = labyrinthGenerator.generateLabyrinth(x, y);
     }
-
 }
