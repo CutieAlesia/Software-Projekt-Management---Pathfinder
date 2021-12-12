@@ -1,10 +1,11 @@
 package Models;
 
-import API.Models.Node;
-import API.Models.NodeType;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+
+import API.Models.Node;
+import API.Models.NodeType;
 
 public class NodeTest {
 
@@ -18,16 +19,17 @@ public class NodeTest {
     }
 
     @After
-    public void finish() {}
+    public void finish() {
+    }
 
     @org.junit.Test
     public void getXTest() {
-        Assert.assertEquals(node.getX(), 5);
+        Assert.assertEquals(node.getHorIndex(), 5);
     }
 
     @org.junit.Test
     public void getYTest() {
-        Assert.assertEquals(node.getY(), 5);
+        Assert.assertEquals(node.getVertIndex(), 5);
     }
 
     @org.junit.Test
