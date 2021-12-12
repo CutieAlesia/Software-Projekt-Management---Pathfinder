@@ -2,10 +2,9 @@ package GUI.Generator;
 
 /**
  * Generates a Labyrinth via DepthFirst-algorithm.
- * 
- * @author 
+ *
+ * @author
  */
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +19,7 @@ public class DepthFirst implements LabyrinthGenerator {
     int matrixY;
 
     Node[][] finalMatrix;
-//	ArrayList<Node> unblockedNodes = Array
+    //	ArrayList<Node> unblockedNodes = Array
 
     @Override
     public Node[][] generateLabyrinth(int x, int y) {
@@ -100,17 +99,16 @@ public class DepthFirst implements LabyrinthGenerator {
 
     private void startAlgorithm() {
         depthFirst(0, 0);
-
     }
 
     /**
      * Traverses unvisited nodes recursively and unblocks them.
-     * 
+     *
      * @param x
      * @param y
      */
     private void depthFirst(int x, int y) {
-        Integer[] array = { 1, 2, 3, 4 };
+        Integer[] array = {1, 2, 3, 4};
         List<Integer> list = Arrays.asList(array);
         Collections.shuffle(list);
         list.toArray(array);
@@ -121,37 +119,37 @@ public class DepthFirst implements LabyrinthGenerator {
 
         while (index < array.length) {
             switch (array[index]) {
-            case 1:
-                if (checkIfNodeIsVisitable(x, y - 2)) {
-                    matrix[x][y - 1].setBlocked(false);
-                    depthFirst(x, y - 2);
-                }
-                index++;
-                break;
-            case 2:
-                if (checkIfNodeIsVisitable(x, y + 2)) {
-                    matrix[x][y + 1].setBlocked(false);
-                    depthFirst(x, y + 2);
-                }
-                index++;
-                break;
-            case 3:
-                if (checkIfNodeIsVisitable(x - 2, y)) {
-                    matrix[x - 1][y].setBlocked(false);
-                    depthFirst(x - 2, y);
-                }
-                index++;
-                break;
-            case 4:
-                if (checkIfNodeIsVisitable(x + 2, y)) {
-                    matrix[x + 1][y].setBlocked(false);
-                    depthFirst(x + 2, y);
-                }
-                index++;
-                break;
-            default:
-                System.out.println("Fehler in funktion");
-                System.exit(1);
+                case 1:
+                    if (checkIfNodeIsVisitable(x, y - 2)) {
+                        matrix[x][y - 1].setBlocked(false);
+                        depthFirst(x, y - 2);
+                    }
+                    index++;
+                    break;
+                case 2:
+                    if (checkIfNodeIsVisitable(x, y + 2)) {
+                        matrix[x][y + 1].setBlocked(false);
+                        depthFirst(x, y + 2);
+                    }
+                    index++;
+                    break;
+                case 3:
+                    if (checkIfNodeIsVisitable(x - 2, y)) {
+                        matrix[x - 1][y].setBlocked(false);
+                        depthFirst(x - 2, y);
+                    }
+                    index++;
+                    break;
+                case 4:
+                    if (checkIfNodeIsVisitable(x + 2, y)) {
+                        matrix[x + 1][y].setBlocked(false);
+                        depthFirst(x + 2, y);
+                    }
+                    index++;
+                    break;
+                default:
+                    System.out.println("Fehler in funktion");
+                    System.exit(1);
             }
         }
     }
@@ -169,5 +167,4 @@ public class DepthFirst implements LabyrinthGenerator {
     public DFNode[][] getMatrix() {
         return matrix;
     }
-
 }

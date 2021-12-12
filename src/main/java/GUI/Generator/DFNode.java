@@ -1,11 +1,8 @@
 package GUI.Generator;
 
-import java.util.Arrays;
 
+public class DFNode {
 
-
-public class DFNode{
-	
     private int x;
     private int y;
     private int[] data;
@@ -48,27 +45,17 @@ public class DFNode{
     public void setData(int[] data) {
         this.data = data;
     }
-    
+
     public boolean isVisited() {
-    	return visited;
+        return visited;
     }
-    
+
     public void setVisited(boolean b) {
-    	visited=b;
+        visited = b;
     }
+
     @Override
     public String toString() {
-        return "Node{"
-                + "x="
-                + x
-                + ", y="
-                + y
-                + ", data="
-                + ", isBlocked="
-                + isBlocked
-                + '}';
+        return "Node{" + "x=" + x + ", y=" + y + ", data=" + ", isBlocked=" + isBlocked + '}';
     }
 }
-
-
-
