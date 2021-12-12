@@ -2,7 +2,7 @@ package util;
 
 /**
  * Wrapper Class for ascii color codes
- * 
+ *
  * @author Finn
  */
 public class Color {

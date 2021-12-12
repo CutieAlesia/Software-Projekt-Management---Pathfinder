@@ -10,5 +10,4 @@ public class Frontend implements IFrontend {
         // TODO Auto-generated method stub
 
     }
-
 }

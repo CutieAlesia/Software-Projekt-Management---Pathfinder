@@ -19,8 +19,7 @@ public class NodeTest {
     }
 
     @After
-    public void finish() {
-    }
+    public void finish() {}
 
     @org.junit.Test
     public void getXTest() {

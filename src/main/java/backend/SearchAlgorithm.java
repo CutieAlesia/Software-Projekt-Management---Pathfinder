@@ -19,7 +19,7 @@ public abstract class SearchAlgorithm implements IBackend {
 
     /**
      * Initializes the field and finds the start and end node
-     * 
+     *
      * @param field Node[][] that the algorithm is supposed to work with
      */
     public SearchAlgorithm(APIManager manager) {
@@ -30,9 +30,7 @@ public abstract class SearchAlgorithm implements IBackend {
         return this.field;
     }
 
-    /**
-     * Iterates over the field to find the start and end node
-     */
+    /** Iterates over the field to find the start and end node */
     private void findLocations() {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
@@ -51,8 +49,6 @@ public abstract class SearchAlgorithm implements IBackend {
         }
     }
 
-    /**
-     * abstract method for starting an algorithm
-     */
+    /** abstract method for starting an algorithm */
     public abstract void run();
 }

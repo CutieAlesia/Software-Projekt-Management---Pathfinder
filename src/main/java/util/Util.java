@@ -4,8 +4,7 @@ import API.Models.Node;
 import API.Models.NodeType;
 
 /**
- * Utility Class that contains methods for generating and handling Node[][]
- * (fields) and nodes
+ * Utility Class that contains methods for generating and handling Node[][] (fields) and nodes
  *
  * @author Finn
  */
@@ -28,10 +27,9 @@ public class Util {
     }
 
     /**
-     * Static method that creates a random Node[][] (field) based on a given width
-     * and height
+     * Static method that creates a random Node[][] (field) based on a given width and height
      *
-     * @param width  Amount of columns in the field
+     * @param width Amount of columns in the field
      * @param height Amount of rows in the field
      * @return Node[][] Randomly generated field
      */
@@ -56,8 +54,8 @@ public class Util {
     }
 
     /**
-     * Static method that creates a random Node[][] (field) based on a given
-     * dimension, which means that width = height
+     * Static method that creates a random Node[][] (field) based on a given dimension, which means
+     * that width = height
      *
      * @param dimension Amount of rows and columns in the field
      * @return Node[][] Randomly generated field
@@ -69,8 +67,7 @@ public class Util {
     /**
      * Static method for placing a start and an end node into a given field
      *
-     * @param field Node[][] in which the start and end Nodes are supposed to be
-     *              placed in
+     * @param field Node[][] in which the start and end Nodes are supposed to be placed in
      */
     public static void placeStartAndEndNode(Node[][] field) {
         field[0][0].setType(NodeType.START);

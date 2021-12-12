@@ -9,10 +9,10 @@ import util.Util;
 public class Main {
 
     public static void main(String[] args) {
-//		Node[][] field = Util.generateField(10);
-//		SearchAlgorithm alg = new DepthFirst(field);
-//		alg.run();
-//		Util.printField(alg.getField());
+        //		Node[][] field = Util.generateField(10);
+        //		SearchAlgorithm alg = new DepthFirst(field);
+        //		alg.run();
+        //		Util.printField(alg.getField());
 
         APIManager manager = new APIManager();
         IFrontend frontend = new Frontend();
@@ -26,5 +26,4 @@ public class Main {
         // daten im apimanager nur an ein backend bzw. frontend schicken
         // backend starten
     }
-
 }

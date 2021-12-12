@@ -4,7 +4,7 @@ import util.Color;
 
 /**
  * Basic Node Class that can be used for all search algorithms
- * 
+ *
  * @author Finn
  */
 public class Node {
@@ -72,9 +72,7 @@ public class Node {
         this.prev = node;
     }
 
-    /**
-     * Creates a colorful String that describes the node, based on the nodes type
-     */
+    /** Creates a colorful String that describes the node, based on the nodes type */
     @Override
     public String toString() {
         String prefix = Color.ANSI_WHITE_BACKGROUND;
@@ -87,23 +85,23 @@ public class Node {
         String value2 = estimatedCosts != 0 ? formEstCosts : "###";
 
         switch (type) {
-        case START:
-            textColor = Color.ANSI_GREEN;
-            break;
-        case END:
-            textColor = Color.ANSI_RED;
-            break;
-        case VISITED:
-            prefix = Color.ANSI_CYAN_BACKGROUND;
-            break;
-        case BLOCKED:
-            prefix = Color.ANSI_YELLOW_BACKGROUND;
-            break;
-        case PATH:
-            prefix = Color.ANSI_BLUE_BACKGROUND;
-            break;
-        default:
-            break;
+            case START:
+                textColor = Color.ANSI_GREEN;
+                break;
+            case END:
+                textColor = Color.ANSI_RED;
+                break;
+            case VISITED:
+                prefix = Color.ANSI_CYAN_BACKGROUND;
+                break;
+            case BLOCKED:
+                prefix = Color.ANSI_YELLOW_BACKGROUND;
+                break;
+            case PATH:
+                prefix = Color.ANSI_BLUE_BACKGROUND;
+                break;
+            default:
+                break;
         }
 
         return prefix + openingBracket + textColor + value1 + ", " + value2 + closingBracket;
