@@ -1,6 +1,5 @@
 package GUI.Generator;
 
-
 public class DFNode {
 
     private int x;
