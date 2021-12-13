@@ -43,10 +43,10 @@ public class Frontend implements IFrontend {
     @Override
     public void update(Node node) {
 
-        int y = node.getHorIndex();
-        int x = node.getVertIndex();
+        int x = node.getHorIndex();
+        int y = node.getVertIndex();
 
-        matrix[x][y] = node;
+        matrix[y][x] = node;
 
         System.out.println("[API - Frontend] Node update received");
         for (int j = 0; j < matrix.length; j++) {
