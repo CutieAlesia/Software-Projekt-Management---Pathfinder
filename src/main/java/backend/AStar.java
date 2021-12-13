@@ -28,10 +28,7 @@ public class AStar extends SearchAlgorithm {
         this.relevantNodes = new ArrayList<Node>();
     }
 
-    /**
-     * Starts the recursive algorithm and runs until a path is found or there is no
-     * valid path
-     */
+    /** Starts the recursive algorithm and runs until a path is found or there is no valid path */
     @Override
     public void run() {
         findLocations();
@@ -56,8 +53,8 @@ public class AStar extends SearchAlgorithm {
     }
 
     /**
-     * Takes a node, updates all direct neighbours for that node and recursively
-     * calls itself if there are unvisited nodes in the relevants node list left
+     * Takes a node, updates all direct neighbours for that node and recursively calls itself if
+     * there are unvisited nodes in the relevants node list left
      *
      * @param node Node which neighbours are supposed to be updated
      * @return boolean that describes whether a valid path was found or not
@@ -66,7 +63,7 @@ public class AStar extends SearchAlgorithm {
         boolean found = false;
 
         // Coordinates of the neighbours that are supposed to be updated
-        int[][] coords = { { -1, 0 }, { 0, -1 }, { 0, 1 }, { 1, 0 } };
+        int[][] coords = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
 
         // Check if the given node is the start or end node
         if (node.getType() != NodeType.START && node.getType() != NodeType.END) {
@@ -97,19 +94,23 @@ public class AStar extends SearchAlgorithm {
             if (leftInBound && rightInBound && topInBound && bottomInBound) {
 
                 Node neighbour = field[node.getVertIndex() + i][node.getHorIndex() + j];
-                int costs = Util.getDistance(node, neighbour) + (node.getCosts() != -1 ? node.getCosts() : 0);
+                int costs =
+                        Util.getDistance(node, neighbour)
+                                + (node.getCosts() != -1 ? node.getCosts() : 0);
                 int estimatedCosts = Util.getDistance(neighbour, end);
 
                 // skip the current neighbour if the node is blocked, already visited or the
                 // start node
-                if (neighbour.getType() == NodeType.START || neighbour.getType() == NodeType.BLOCKED
+                if (neighbour.getType() == NodeType.START
+                        || neighbour.getType() == NodeType.BLOCKED
                         || neighbour.getType() == NodeType.VISITED) {
                     continue;
                 }
 
                 // update the neighbours costs if the neighbour hasn't been calculated yet or
                 // the new costs are cheaper
-                if (costs + estimatedCosts < neighbour.getTotalCosts() || neighbour.getCosts() == -1) {
+                if (costs + estimatedCosts < neighbour.getTotalCosts()
+                        || neighbour.getCosts() == -1) {
                     neighbour.setCosts(costs);
                     neighbour.setEstimatedCosts(estimatedCosts);
                     neighbour.setPrev(node);
@@ -136,8 +137,7 @@ public class AStar extends SearchAlgorithm {
     }
 
     /**
-     * returns the cheapest relevant node, based on the real path costs aswell as
-     * the heuristics
+     * returns the cheapest relevant node, based on the real path costs aswell as the heuristics
      *
      * @return Node Currently cheapest relevant node
      */
@@ -150,15 +150,15 @@ public class AStar extends SearchAlgorithm {
         return this.relevantNodes.get(0);
     }
 
-    /**
-     * sort all relevant nodes by their total costs (real path costs + heuristics)
-     */
+    /** sort all relevant nodes by their total costs (real path costs + heuristics) */
     private void sortRelevantNodes() {
-        Collections.sort(relevantNodes, new Comparator<Node>() {
-            @Override
-            public int compare(Node node1, Node node2) {
-                return ((Integer) node1.getTotalCosts()).compareTo(node2.getTotalCosts());
-            }
-        });
+        Collections.sort(
+                relevantNodes,
+                new Comparator<Node>() {
+                    @Override
+                    public int compare(Node node1, Node node2) {
+                        return ((Integer) node1.getTotalCosts()).compareTo(node2.getTotalCosts());
+                    }
+                });
     }
 }

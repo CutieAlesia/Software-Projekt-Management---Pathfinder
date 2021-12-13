@@ -61,5 +61,4 @@ public abstract class SearchAlgorithm implements IBackend {
     public void receive(Node[][] matrix) {
         this.field = matrix;
     }
-
 }
