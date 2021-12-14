@@ -14,7 +14,7 @@ public class Main {
         manager.attachFrontend(frontend);
         manager.attachBackend(backend);
         int x = 5;
-        int y = 5;
+        int y = 6;
         DepthFirst a = new DepthFirst();
         Node[][] field = a.generateLabyrinth(x, y);
         frontend.setMatrix(field);
