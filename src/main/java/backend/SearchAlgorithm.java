@@ -33,7 +33,7 @@ public abstract class SearchAlgorithm implements IBackend {
     /** Iterates over the field to find the start and end node */
     protected void findLocations() {
         for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field.length; j++) {
+            for (int j = 0; j < field[0].length; j++) {
                 if (start != null && end != null) {
                     return;
                 }
