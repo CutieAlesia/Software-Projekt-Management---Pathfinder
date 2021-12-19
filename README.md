@@ -6,7 +6,7 @@ ___
 ### Module Info
 ![](https://img.shields.io/badge/Java%20JDK-11-orange?style=for-the-badge&logo=java)
 
-![](https://img.shields.io/badge/Build-Maven-purple?style=for-the-badge&logo=Apache%20Maven)
+![](https://img.shields.io/badge/Build-Gradle-purple?style=for-the-badge&logo=Gradle)
 ![](https://img.shields.io/badge/Deployment-Docker-blue?style=for-the-badge&logo=Docker)
 
 ![](https://img.shields.io/badge/Package-com.spmfhb.pathfinder-green?style=for-the-badge)
