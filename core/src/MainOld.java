@@ -13,13 +13,8 @@ public class MainOld {
         SearchAlgorithm backend = new AStar(manager);
         manager.attachFrontend(frontend);
         manager.attachBackend(backend);
-<<<<<<< HEAD:core/src/MainOld.java
         int x = 10;
         int y = 10;
-=======
-        int x = 5;
-        int y = 7;
->>>>>>> dev:src/main/java/Main.java
         DepthFirst a = new DepthFirst();
         Node[][] field = a.generateLabyrinth(x, y);
         frontend.setMatrix(field);
