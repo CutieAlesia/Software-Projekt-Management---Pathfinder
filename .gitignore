@@ -1,71 +1,3 @@
-# Compiled class file
-*.class
-
-### bin stuff ###
-bin/
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-### Ant, Gradle and Maven ###
-gradle-app.setting
-local.properties
-.gradle/
-assets/
-build/
-lib/
-libs/
-target/
-
-### Eclipse ###
-*.bak
-*.launch
-*.swp
-*.tmp
-.classpath
-.loadpath
-.project
-.externalToolBuilders/
-.metadata/
-.settings/
-
-### Intellij ###
-*.iml
-*.ipr
-*.iws
-.idea/
-out/
-
-### NetBeans ###
-dist/
-nbbuild/
-nbdist/
-nbproject/
-
-### VSCode ###
-.vscode
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-/target/
-
-### Frontend/LibGDX ###
-
 ## Java
 
 *.class
@@ -92,10 +24,8 @@ www-test/
 /android/libs/x86/
 /android/libs/x86_64/
 /android/gen/
-.idea/
 *.ipr
 *.iws
-*.iml
 /android/out/
 com_crashlytics_export_strings.xml
 
