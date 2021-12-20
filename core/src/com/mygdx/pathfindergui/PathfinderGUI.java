@@ -32,6 +32,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private TileMap map;
     private Table table;
 
+
     APIManager manager;
     SearchAlgorithm backend;
     Node[][] field;
@@ -57,17 +58,32 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         stage.addActor(table);
         table.add(map);
         Skin skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
-        final TextButton b = new TextButton("Start Algorithm", skin);
 
-        b.addListener(
+//      B U T T O N S
+        final TextButton bStartAlgorithm = new TextButton("Start Algorithm", skin);
+
+        bStartAlgorithm.addListener(
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
                         launchBackend();
-                        System.out.println("Clicked! Is checked: " + b.isChecked());
-                        b.setDisabled(true);
+                        System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
+                        bStartAlgorithm.setDisabled(true);
                     }
                 });
-        table.add(b);
+        table.add(bStartAlgorithm);
+
+        final TextButton bNextStep = new TextButton("Next Step", skin);
+
+        bNextStep.addListener(
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    map.visualiseNode();
+                    System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
+                }
+            });
+        table.add(bNextStep);
+
+//      A P I
 
         manager = new APIManager();
         backend = new AStar(manager);
@@ -106,7 +122,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
     @Override
     public void update(Node node) {
-        map.updateMap(node);
+        map.receiveNode(node);
+//        map.updateMap(node);
         render();
     }
 }

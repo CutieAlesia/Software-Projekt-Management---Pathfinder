@@ -1,7 +1,10 @@
 package com.mygdx.map;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
@@ -37,6 +40,9 @@ public class TileMap extends Actor {
     // map will be updated if true
     private boolean mapUpdatable;
 
+    //
+    private LinkedList<Node> processedNodes;
+
     /**
      * Constructor. Generates a new Node matrix and sets the bounds of the map depending on the size
      * of the labyrinth.
@@ -65,6 +71,8 @@ public class TileMap extends Actor {
         }
         tiles = new Tile[sizeX][sizeY];
 
+        processedNodes = new LinkedList();
+
         setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
 
         this.mapUpdatable = true;
@@ -91,6 +99,8 @@ public class TileMap extends Actor {
         nodes = matrix;
 
         tiles = new Tile[sizeX][sizeY];
+
+        processedNodes = new LinkedList();
 
         setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
 
@@ -121,6 +131,19 @@ public class TileMap extends Actor {
 
         this.mapUpdatable = true;
     }
+
+
+    public void receiveNode(Node node) {
+        processedNodes.addLast(node);
+    }
+
+    public void visualiseNode () {
+        if (!processedNodes.isEmpty()) {
+            Node poppedNode = (Node) processedNodes.removeFirst();
+            updateMap(poppedNode);
+        }
+    }
+
 
     /**
      * Changes the Node at the coordinates of given Node with given node. Updates the Tile based on
@@ -178,10 +201,19 @@ public class TileMap extends Actor {
             fillMap();
         }
 
+//      Check for Map related Inputs (use if else if we want to only process one input at a time)
+        checkInput();
+
         for (int col = sizeY - 1; col >= 0; col--) {
             for (int row = sizeX - 1; row >= 0; row--) {
                 tiles[row][col].draw(batch, parentAlpha);
             }
+        }
+    }
+
+    private void checkInput() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            visualiseNode();
         }
     }
 
