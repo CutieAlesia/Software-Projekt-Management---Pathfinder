@@ -119,6 +119,8 @@ public class TileMap extends Actor {
         normal = new Texture("tiles_smooth/yellow.png");
         blocked = new Texture("tiles_smooth/wall.png");
 
+        processedNodes.clear();
+
         this.sizeX = matrix.length;
         this.sizeY = matrix[0].length;
 

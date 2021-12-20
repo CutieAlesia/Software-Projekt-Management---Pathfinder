@@ -73,11 +73,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         setupNewAlgorithm(new AStar(manager));
 
-        setupNewLabyrinth(13, 13);
+        setupNewLabyrinth(16, 16);
 
     }
 
-    private void setupPermanentButtons(Table table, Skin skin) {
+    private void setupPermanentButtons(Table table, final Skin skin) {
         final TextButton bStartAlgorithm = new TextButton("Start AStar", skin);
 
         bStartAlgorithm.addListener(
@@ -85,7 +85,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 public void changed(ChangeEvent event, Actor actor) {
                     launchBackend();
                     System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
-//                    bStartAlgorithm.setDisabled(true);
+                    bStartAlgorithm.setDisabled(true);
                 }
             });
 
@@ -106,7 +106,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         bNewRandomLabyrinth.addListener(
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
-                    setupNewLabyrinth(13, 13);
+                    setupNewLabyrinth(16, 16);
+                    bStartAlgorithm.setDisabled(false);
                     System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
                 }
             });
