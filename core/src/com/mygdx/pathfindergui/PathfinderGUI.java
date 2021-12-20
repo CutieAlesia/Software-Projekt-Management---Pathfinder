@@ -60,17 +60,35 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Skin skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
 
 //      B U T T O N S
-        final TextButton bStartAlgorithm = new TextButton("Start Algorithm", skin);
+
+        setupPermanentButtons(table, skin);
+
+//      A P I
+
+        manager = new APIManager();
+        manager.attachFrontend(this);
+
+//        backend = new AStar(manager);
+//        manager.attachBackend(backend);
+
+        setupNewAlgorithm(new AStar(manager));
+
+        setupNewLabyrinth(13, 13);
+
+    }
+
+    private void setupPermanentButtons(Table table, Skin skin) {
+        final TextButton bStartAlgorithm = new TextButton("Start AStar", skin);
 
         bStartAlgorithm.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        launchBackend();
-                        System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
-                        bStartAlgorithm.setDisabled(true);
-                    }
-                });
-        table.add(bStartAlgorithm);
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    launchBackend();
+                    System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
+//                    bStartAlgorithm.setDisabled(true);
+                }
+            });
+
 
         final TextButton bNextStep = new TextButton("Next Step", skin);
 
@@ -81,19 +99,36 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
                 }
             });
+
+
+        final TextButton bNewRandomLabyrinth = new TextButton("Generate new Labyrinth", skin);
+
+        bNewRandomLabyrinth.addListener(
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    setupNewLabyrinth(13, 13);
+                    System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
+                }
+            });
+
+        table.add(bNewRandomLabyrinth);
+        table.add(bStartAlgorithm);
         table.add(bNextStep);
 
-//      A P I
 
-        manager = new APIManager();
-        backend = new AStar(manager);
-        manager.attachFrontend(this);
-        manager.attachBackend(backend);
-        int x = 13;
-        int y = 13;
+
+    }
+
+    private void setupNewAlgorithm(SearchAlgorithm searchAlgorithm) {
+        backend = searchAlgorithm;
+        manager.attachBackend(searchAlgorithm);
+    }
+
+    private void setupNewLabyrinth(int x, int y) {
         DepthFirst a = new DepthFirst();
         field = a.generateLabyrinth(x, y);
         map.changeProperties(field);
+        manager.initMatrix(field);
     }
 
     /**
@@ -115,8 +150,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @author frontend
      */
     public void launchBackend() {
-
+        setupNewAlgorithm(new AStar(manager));
         manager.initMatrix(field);
+        map.changeProperties(field);
         backend.run();
     }
 
