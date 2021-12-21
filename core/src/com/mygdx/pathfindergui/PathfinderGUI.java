@@ -30,12 +30,19 @@ import backend.SearchAlgorithm;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     Stage stage;
     private TileMap map;
+    private final int MAP_X= 21;
+    private final int MAP_Y= 21;
     private Table table;
 
 
     APIManager manager;
     SearchAlgorithm backend;
     Node[][] field;
+
+    PFTimer pfTimer;
+
+//  Toggles autoplay mode
+    boolean autoStepEnabled = false;
 
     /**
      * Sets up the stage. WIP!
@@ -71,14 +78,23 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 //        backend = new AStar(manager);
 //        manager.attachBackend(backend);
 
-        setupNewAlgorithm(new AStar(manager));
+        attachNewAlgorithm(new AStar(manager));
 
-        setupNewLabyrinth(16, 16);
+        setupNewLabyrinth(MAP_X, MAP_Y);
+
+        pfTimer = PFTimer.getInstance();
 
     }
 
+
+    /**
+     * Instantiates buttons that have a permanent place on the stage and adds them to passed table.
+     *
+     * @param table Table to add the buttons to.
+     * @param skin The skin used for the buttons.
+     */
     private void setupPermanentButtons(Table table, final Skin skin) {
-        final TextButton bStartAlgorithm = new TextButton("Start AStar", skin);
+        final TextButton bStartAlgorithm = new TextButton("Select AStar", skin);
 
         bStartAlgorithm.addListener(
             new ChangeListener() {
@@ -106,25 +122,49 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         bNewRandomLabyrinth.addListener(
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
-                    setupNewLabyrinth(16, 16);
+                    setupNewLabyrinth(MAP_X, MAP_Y);
                     bStartAlgorithm.setDisabled(false);
                     System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
+                }
+            });
+
+        final TextButton bAutoStepAlgorithm = new TextButton("Autoplay", skin);
+
+        bAutoStepAlgorithm.addListener(
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    autoStepEnabled = !autoStepEnabled;
+                    System.out.println("Clicked! Is checked: " + bAutoStepAlgorithm.isChecked());
                 }
             });
 
         table.add(bNewRandomLabyrinth);
         table.add(bStartAlgorithm);
         table.add(bNextStep);
+        table.add(bAutoStepAlgorithm);
 
 
 
     }
 
-    private void setupNewAlgorithm(SearchAlgorithm searchAlgorithm) {
+
+    /**
+     * Attaches passed algorithm to the currently loaded labyrinth.
+     *
+     * @param searchAlgorithm The algorithm to be set up.
+     */
+    private void attachNewAlgorithm(SearchAlgorithm searchAlgorithm) {
         backend = searchAlgorithm;
         manager.attachBackend(searchAlgorithm);
     }
 
+
+    /**
+     * Sets up a new randomly generated labyrinth with the passed dimensions.
+     *
+     * @param x
+     * @param y
+     */
     private void setupNewLabyrinth(int x, int y) {
         DepthFirst a = new DepthFirst();
         field = a.generateLabyrinth(x, y);
@@ -133,7 +173,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     }
 
     /**
-     * Renders a GUI frame.
+     * Renders a GUI frame and increments program runtime.
+     * Automatically visualises backend-processed nodes if autoStep mode is enabled.
      *
      * @author frontend
      */
@@ -143,6 +184,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Gdx.gl.glClearColor(0.1f, 0.2f, 0.3f, 1);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        pfTimer.increasePfRuntime();
+
+        if (autoStepEnabled) {
+            if (!map.autoVisualiseNode()) { autoStepEnabled = false; }
+        }
     }
 
     /**
@@ -151,7 +197,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @author frontend
      */
     public void launchBackend() {
-        setupNewAlgorithm(new AStar(manager));
+        attachNewAlgorithm(new AStar(manager));
         manager.initMatrix(field);
         map.changeProperties(field);
         backend.run();

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import API.Models.Node;
 import API.Models.NodeType;
+import com.mygdx.pathfindergui.PFTimer;
 
 /**
  * TileMap. Holds the data of the nodes and tiles that make up the labyrinth. Connects the nodes and
@@ -42,6 +43,8 @@ public class TileMap extends Actor {
 
     //
     private LinkedList<Node> processedNodes;
+
+    private PFTimer pfTimer;
 
     /**
      * Constructor. Generates a new Node matrix and sets the bounds of the map depending on the size
@@ -76,6 +79,8 @@ public class TileMap extends Actor {
         setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
 
         this.mapUpdatable = true;
+
+        this.pfTimer = PFTimer.getInstance();
     }
 
     /**
@@ -105,6 +110,8 @@ public class TileMap extends Actor {
         setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
 
         this.mapUpdatable = true;
+
+        this.pfTimer = PFTimer.getInstance();
     }
 
     /**
@@ -135,16 +142,38 @@ public class TileMap extends Actor {
     }
 
 
+    /**
+     * Receives a node from the backend and stores it for later backend-independent visualisation.
+     *
+     * @param node
+     */
     public void receiveNode(Node node) {
         processedNodes.addLast(node);
     }
 
+    /**
+     * Visualises the oldest stored node.
+     */
     public void visualiseNode () {
         if (!processedNodes.isEmpty()) {
             Node poppedNode = (Node) processedNodes.removeFirst();
             updateMap(poppedNode);
         }
     }
+
+
+    /**
+     * Visualises a node if there are non-visualised backend-processed nodes remaining.
+     *
+     * @return
+     */
+    public boolean autoVisualiseNode () {
+        if (processedNodes.isEmpty()) {
+            return false; }
+        else if (pfTimer.getPfRuntime() % 6 == 0) {
+                visualiseNode();
+            } return true;
+        }
 
 
     /**
