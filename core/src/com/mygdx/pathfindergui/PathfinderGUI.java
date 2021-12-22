@@ -35,8 +35,8 @@ import backend.SearchAlgorithm;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     Stage stage;
     private TileMap map;
-    private final int MAP_X= 43;
-    private final int MAP_Y= 43;
+    private final int MAP_X= 33;
+    private final int MAP_Y= 33;
     private Table table;
 
 
@@ -99,11 +99,34 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param skin The skin used for the buttons.
      */
     private void setupPermanentButtons(Table table, final Skin skin) {
+
+        final SelectBox<String> sbSearchAlgorithms= new SelectBox<>(skin);
+        String[] searchAlgorithms = {"AStar", "BestFirst", "BranchAndBound", "DepthFirst"};
+        sbSearchAlgorithms.setItems(searchAlgorithms);
+
+        sbSearchAlgorithms.setWidth(70f);
+
+
         final TextButton bStartAlgorithm = new TextButton("Start", skin);
 
         bStartAlgorithm.addListener(
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
+
+                    switch(sbSearchAlgorithms.getSelectedIndex()){
+                        case 0:
+                            attachNewAlgorithm(new AStar(manager));
+                            break;
+                        case 1:
+                            attachNewAlgorithm(new BestFirst(manager));
+                            break;
+                        case 2:
+                            attachNewAlgorithm(new BranchAndBound(manager));
+                            break;
+                        case 3:
+                            attachNewAlgorithm(new backend.DepthFirst(manager));
+                            break;
+                    }
                     launchBackend();
                     System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
                     bStartAlgorithm.setDisabled(true);
@@ -154,37 +177,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 }
             });
 
-
-        SelectBox<String> sbSearchAlgorithms= new SelectBox<>(skin);
-        String[] searchAlgorithms = {"AStar", "BestFirst", "BranchAndBound", "DepthFirst"};
-        sbSearchAlgorithms.setItems(searchAlgorithms);
-
-        sbSearchAlgorithms.addListener(new ChangeListener(){
-
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				switch(((SelectBox)actor).getSelectedIndex()){
-        	case 0:
-        		attachNewAlgorithm(new AStar(manager));
-        		break;
-        	case 1:
-        		attachNewAlgorithm(new BestFirst(manager));
-        		break;
-        	case 2:
-        		attachNewAlgorithm(new BranchAndBound(manager));
-        		break;
-        	case 3:
-        		attachNewAlgorithm(new backend.DepthFirst(manager));
-        		break;
-
-
-        }
-
-			}
-
-        }
-        );
-        sbSearchAlgorithms.setWidth(70f);
 
 
 
