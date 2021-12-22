@@ -1,5 +1,7 @@
 package com.mygdx.pathfindergui;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -7,10 +9,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.map.TileMap;
 
@@ -19,6 +22,8 @@ import API.Interfaces.IFrontend;
 import API.Models.Node;
 import GUI.Generator.DepthFirst;
 import backend.AStar;
+import backend.BestFirst;
+import backend.BranchAndBound;
 import backend.SearchAlgorithm;
 
 /**
@@ -30,14 +35,15 @@ import backend.SearchAlgorithm;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     Stage stage;
     private TileMap map;
-    private final int MAP_X= 23;
-    private final int MAP_Y= 23;
+    private final int MAP_X= 13;
+    private final int MAP_Y= 13;
     private Table table;
 
 
     APIManager manager;
     SearchAlgorithm backend;
     Node[][] field;
+    
 
     PFTimer pfTimer;
 
@@ -94,7 +100,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param skin The skin used for the buttons.
      */
     private void setupPermanentButtons(Table table, final Skin skin) {
-        final TextButton bStartAlgorithm = new TextButton("Select AStar", skin);
+        final TextButton bStartAlgorithm = new TextButton("Start", skin);
 
         bStartAlgorithm.addListener(
             new ChangeListener() {
@@ -137,11 +143,58 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     System.out.println("Clicked! Is checked: " + bAutoStepAlgorithm.isChecked());
                 }
             });
+        
+        final TextButton bClearLabyrinth = new TextButton("Reset Labyrinth", skin);
+
+        bClearLabyrinth.addListener(
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    map.clearLabyrinth();
+                    bStartAlgorithm.setDisabled(false);
+                    System.out.println("Clicked! Is checked: " + bClearLabyrinth.isChecked());
+                }
+            });
+        
+        
+        SelectBox<String> sbSearchAlgorithms= new SelectBox<>(skin);
+        String[] searchAlgorithms = {"AStar", "BestFirst", "BranchAndBound", "DepthFirst"};
+        sbSearchAlgorithms.setItems(searchAlgorithms);
+        
+        sbSearchAlgorithms.addListener(new ChangeListener(){
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				switch(((SelectBox)actor).getSelectedIndex()){
+        	case 0:
+        		attachNewAlgorithm(new AStar(manager));
+        		break;
+        	case 1:
+        		attachNewAlgorithm(new BestFirst(manager));
+        		break;
+        	case 2:
+        		attachNewAlgorithm(new BranchAndBound(manager));
+        		break;
+        	case 3:
+        		attachNewAlgorithm(new backend.DepthFirst(manager));
+        		break;
+        		
+        		
+        }
+				
+			}
+        	
+        }
+        );
+        sbSearchAlgorithms.setWidth(70f);
+        
+        
 
         table.add(bNewRandomLabyrinth);
+        table.add(sbSearchAlgorithms);
         table.add(bStartAlgorithm);
         table.add(bNextStep);
         table.add(bAutoStepAlgorithm);
+        table.add(bClearLabyrinth);
 
 
 
@@ -169,7 +222,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         DepthFirst a = new DepthFirst();
         field = a.generateLabyrinth(x, y);
         map.changeProperties(field);
-        manager.initMatrix(field);
     }
 
     /**
@@ -197,7 +249,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @author frontend
      */
     public void launchBackend() {
-        attachNewAlgorithm(new backend.DepthFirst(manager));
         manager.initMatrix(field);
         map.changeProperties(field);
         backend.run();

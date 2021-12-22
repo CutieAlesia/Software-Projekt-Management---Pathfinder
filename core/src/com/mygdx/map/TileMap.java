@@ -140,6 +140,36 @@ public class TileMap extends Actor {
 
         this.mapFillable = true;
     }
+    
+    /**
+     * Clears the processedNodes and reverts the changes of the Labyrinths.
+     */
+    
+    public void clearLabyrinth() {
+    	
+        for (int col = sizeY - 1; col >= 0; col--) {
+            for (int row = sizeX - 1; row >= 0; row--) {
+            	Node tempNode = nodes[row][col];
+            	nodes[row][col] = new Node(row, col);
+            	switch(tempNode.getType()) {
+				case BLOCKED:
+					nodes[row][col].setType(NodeType.BLOCKED);
+					break;
+				case END:
+					nodes[row][col].setType(NodeType.END);
+					break;
+				case START:
+					nodes[row][col].setType(NodeType.START);
+					break;
+				default:
+					break;
+            	
+            	}
+            }
+        }
+        processedNodes.clear();
+        setMapFillable(true);
+    }
 
 
     /**
