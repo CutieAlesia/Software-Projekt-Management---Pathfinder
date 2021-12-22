@@ -30,8 +30,8 @@ import backend.SearchAlgorithm;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     Stage stage;
     private TileMap map;
-    private final int MAP_X= 21;
-    private final int MAP_Y= 21;
+    private final int MAP_X= 23;
+    private final int MAP_Y= 23;
     private Table table;
 
 
@@ -197,7 +197,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @author frontend
      */
     public void launchBackend() {
-        attachNewAlgorithm(new AStar(manager));
+        attachNewAlgorithm(new backend.DepthFirst(manager));
         manager.initMatrix(field);
         map.changeProperties(field);
         backend.run();

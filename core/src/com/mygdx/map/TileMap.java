@@ -76,7 +76,7 @@ public class TileMap extends Actor {
         }
         tiles = new Tile[sizeX][sizeY];
 
-        processedNodes = new LinkedList();
+        processedNodes = new LinkedList<>();
 
         setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
 
@@ -107,7 +107,7 @@ public class TileMap extends Actor {
 
         tiles = new Tile[sizeX][sizeY];
 
-        processedNodes = new LinkedList();
+        processedNodes = new LinkedList<>();
 
         setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
 
@@ -148,7 +148,10 @@ public class TileMap extends Actor {
      * @param node
      */
     public void receiveNode(Node node) {
-        processedNodes.addLast(node);
+        Node bufferedNode = new Node(node.getVertIndex(),node.getHorIndex());
+        bufferedNode.setType(node.getType());
+        processedNodes.addLast(bufferedNode);
+
     }
 
     /**
@@ -156,7 +159,7 @@ public class TileMap extends Actor {
      */
     public void visualiseNode () {
         if (!processedNodes.isEmpty()) {
-            Node poppedNode = (Node) processedNodes.removeFirst();
+            Node poppedNode = processedNodes.removeFirst();
             updateNode(poppedNode);
         }
     }
