@@ -30,8 +30,8 @@ import backend.SearchAlgorithm;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     Stage stage;
     private TileMap map;
-    private final int MAP_X= 23;
-    private final int MAP_Y= 23;
+    private final int MAP_X= 43;
+    private final int MAP_Y= 43;
     private Table table;
 
 

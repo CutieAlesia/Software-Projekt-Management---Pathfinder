@@ -32,8 +32,12 @@ public class TileMap extends Actor {
     private int sizeX;
     private int sizeY;
 
+    // margin around the Actor TileMap when placed into the stage
     private float margin = 50f;
     private float marginBottom = 10f;
+
+    // dimensions of the tile .png (.png must be square)
+    private int tileDimensions = 32;
 
     //
     private Node[][] nodes;
@@ -44,7 +48,7 @@ public class TileMap extends Actor {
     private boolean mapFillable;
 
 
-    private int autoPlaySpeed = 4;
+    private int autoPlaySpeed = 2;
 
     //
     private LinkedList<Node> processedNodes;
@@ -60,12 +64,12 @@ public class TileMap extends Actor {
      */
     public TileMap(int sizeX, int sizeY) {
 
-        path = new Texture("tiles_smooth/green.png");
-        start = new Texture("tiles_smooth/ice.png");
-        end = new Texture("tiles_smooth/ice.png");
-        visited = new Texture("tiles_smooth/pink.png");
-        normal = new Texture("tiles_smooth/yellow.png");
-        blocked = new Texture("tiles_smooth/wall.png");
+        path = new Texture("tiles_smooth_32x32/green.png");
+        start = new Texture("tiles_smooth_32x32/ice.png");
+        end = new Texture("tiles_smooth_32x32/ice.png");
+        visited = new Texture("tiles_smooth_32x32/pink.png");
+        normal = new Texture("tiles_smooth_32x32/yellow.png");
+        blocked = new Texture("tiles_smooth_32x32/wall.png");
 
         this.sizeX = sizeX;
         this.sizeY = sizeY;
@@ -81,7 +85,7 @@ public class TileMap extends Actor {
 
         processedNodes = new LinkedList<>();
 
-        setBounds(getX(), getY(), 64 * sizeY + margin, 32 * sizeX + margin + marginBottom);
+        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
 
         this.mapFillable = true;
 
@@ -96,12 +100,12 @@ public class TileMap extends Actor {
      */
     public TileMap(Node[][] matrix) {
 
-        path = new Texture("tiles_smooth/green.png");
-        start = new Texture("tiles_smooth/ice.png");
-        end = new Texture("tiles_smooth/ice.png");
-        visited = new Texture("tiles_smooth/pink.png");
-        normal = new Texture("tiles_smooth/yellow.png");
-        blocked = new Texture("tiles_smooth/wall.png");
+        path = new Texture("tiles_smooth_32x32/green.png");
+        start = new Texture("tiles_smooth_32x32/ice.png");
+        end = new Texture("tiles_smooth_32x32/ice.png");
+        visited = new Texture("tiles_smooth_32x32/pink.png");
+        normal = new Texture("tiles_smooth_32x32/yellow.png");
+        blocked = new Texture("tiles_smooth_32x32/wall.png");
 
         this.sizeX = matrix.length;
         this.sizeY = matrix[0].length;
@@ -112,7 +116,7 @@ public class TileMap extends Actor {
 
         processedNodes = new LinkedList<>();
 
-        setBounds(getX(), getY(), 64 * sizeY + margin, 32 * sizeX + margin + marginBottom);
+        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
 
         this.mapFillable = true;
 
@@ -125,11 +129,12 @@ public class TileMap extends Actor {
      * @param matrix
      */
     public void changeProperties(Node[][] matrix) {
-        path = new Texture("tiles_smooth/green.png");
-        start = new Texture("tiles_smooth/ice.png");
-        visited = new Texture("tiles_smooth/pink.png");
-        normal = new Texture("tiles_smooth/yellow.png");
-        blocked = new Texture("tiles_smooth/wall.png");
+        path = new Texture("tiles_smooth_32x32/green.png");
+        start = new Texture("tiles_smooth_32x32/ice.png");
+        end = new Texture("tiles_smooth_32x32/ice.png");
+        visited = new Texture("tiles_smooth_32x32/pink.png");
+        normal = new Texture("tiles_smooth_32x32/yellow.png");
+        blocked = new Texture("tiles_smooth_32x32/wall.png");
 
         processedNodes.clear();
 
@@ -139,7 +144,7 @@ public class TileMap extends Actor {
         nodes = matrix;
         tiles = new Tile[sizeX][sizeY];
 
-        setBounds(getX(), getY(), 64 * sizeY + margin, 32 * sizeX + margin + marginBottom);
+        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
 
         this.mapFillable = true;
     }
@@ -271,8 +276,8 @@ public class TileMap extends Actor {
             for (int row = sizeX - 1; row >= 0; row--) {
 
                 // sizeX-1, so that the left bound of the TileMap is equal to the leftmost Tile.
-                float x = getX() + margin/2 + (sizeX - 1 + col - row) * 64 / 2.0001f;
-                float y = getY() + - marginBottom + margin/2 + (row + col) * 64 / 4f;
+                float x = getX() + margin/2 + (sizeX - 1 + col - row) * tileDimensions / 2.0001f;
+                float y = getY() + - marginBottom + margin/2 + (row + col) * tileDimensions / 4f;
 
                 if (nodes[row][col].getType() == NodeType.NORMAL) {
                     tiles[row][col] = new Tile(normal, new Vector2(row, col), new Vector2(x, y));
