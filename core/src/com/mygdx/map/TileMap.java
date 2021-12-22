@@ -32,6 +32,9 @@ public class TileMap extends Actor {
     private int sizeX;
     private int sizeY;
 
+    private float margin = 50f;
+    private float marginBottom = 10f;
+
     //
     private Node[][] nodes;
     //
@@ -78,7 +81,7 @@ public class TileMap extends Actor {
 
         processedNodes = new LinkedList<>();
 
-        setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
+        setBounds(getX(), getY(), 64 * sizeY + margin, 32 * sizeX + margin + marginBottom);
 
         this.mapFillable = true;
 
@@ -109,7 +112,7 @@ public class TileMap extends Actor {
 
         processedNodes = new LinkedList<>();
 
-        setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
+        setBounds(getX(), getY(), 64 * sizeY + margin, 32 * sizeX + margin + marginBottom);
 
         this.mapFillable = true;
 
@@ -136,7 +139,7 @@ public class TileMap extends Actor {
         nodes = matrix;
         tiles = new Tile[sizeX][sizeY];
 
-        setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
+        setBounds(getX(), getY(), 64 * sizeY + margin, 32 * sizeX + margin + marginBottom);
 
         this.mapFillable = true;
     }
@@ -148,6 +151,7 @@ public class TileMap extends Actor {
      * @param node
      */
     public void receiveNode(Node node) {
+//      Creating new node because backend may change their type later without frontend knowing
         Node bufferedNode = new Node(node.getVertIndex(),node.getHorIndex());
         bufferedNode.setType(node.getType());
         processedNodes.addLast(bufferedNode);
@@ -241,6 +245,10 @@ public class TileMap extends Actor {
         }
     }
 
+
+    /**
+     * Lets tilemap react to gdx inputs.
+     */
     private void checkInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             visualiseNode();
@@ -263,8 +271,8 @@ public class TileMap extends Actor {
             for (int row = sizeX - 1; row >= 0; row--) {
 
                 // sizeX-1, so that the left bound of the TileMap is equal to the leftmost Tile.
-                float x = getX() + (sizeX - 1 + col - row) * 64 / 2.0001f;
-                float y = getY() + (row + col) * 64 / 4f;
+                float x = getX() + margin/2 + (sizeX - 1 + col - row) * 64 / 2.0001f;
+                float y = getY() + - marginBottom + margin/2 + (row + col) * 64 / 4f;
 
                 if (nodes[row][col].getType() == NodeType.NORMAL) {
                     tiles[row][col] = new Tile(normal, new Vector2(row, col), new Vector2(x, y));
