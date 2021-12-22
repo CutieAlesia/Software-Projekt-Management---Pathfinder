@@ -72,5 +72,6 @@ public class APIManager {
     public void attachBackend(IBackend backend) {
         backends.add(backend);
         System.out.println("[API] Backend added");
+        System.out.println(backends);
     }
 }
