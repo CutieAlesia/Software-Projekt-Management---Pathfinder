@@ -1,6 +1,5 @@
 package com.mygdx.map;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
@@ -38,8 +37,11 @@ public class TileMap extends Actor {
     //
     private Tile[][] tiles;
 
-    // map will be updated if true
-    private boolean mapUpdatable;
+    // map will be filled with new tiles if true
+    private boolean mapFillable;
+
+
+    private int autoPlaySpeed = 4;
 
     //
     private LinkedList<Node> processedNodes;
@@ -78,7 +80,7 @@ public class TileMap extends Actor {
 
         setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
 
-        this.mapUpdatable = true;
+        this.mapFillable = true;
 
         this.pfTimer = PFTimer.getInstance();
     }
@@ -109,7 +111,7 @@ public class TileMap extends Actor {
 
         setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
 
-        this.mapUpdatable = true;
+        this.mapFillable = true;
 
         this.pfTimer = PFTimer.getInstance();
     }
@@ -134,11 +136,9 @@ public class TileMap extends Actor {
         nodes = matrix;
         tiles = new Tile[sizeX][sizeY];
 
-        fillMap();
-
         setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
 
-        this.mapUpdatable = true;
+        this.mapFillable = true;
     }
 
 
@@ -157,7 +157,7 @@ public class TileMap extends Actor {
     public void visualiseNode () {
         if (!processedNodes.isEmpty()) {
             Node poppedNode = (Node) processedNodes.removeFirst();
-            updateMap(poppedNode);
+            updateNode(poppedNode);
         }
     }
 
@@ -170,7 +170,7 @@ public class TileMap extends Actor {
     public boolean autoVisualiseNode () {
         if (processedNodes.isEmpty()) {
             return false; }
-        else if (pfTimer.getPfRuntime() % 6 == 0) {
+        else if (pfTimer.getPfRuntime() % this.autoPlaySpeed == 0) {
                 visualiseNode();
             } return true;
         }
@@ -182,11 +182,11 @@ public class TileMap extends Actor {
      *
      * @param node
      */
-    public void updateMap(Node node) {
+    public void updateNode(Node node) {
         nodes[node.getVertIndex()][node.getHorIndex()] = node;
         Vector2 tilePosition = tiles[node.getVertIndex()][node.getHorIndex()].getWorldPos();
         tiles[node.getVertIndex()][node.getHorIndex()] =
-                buildTileBasedOnNodeType(node, tilePosition);
+                buildTile(node, tilePosition);
     }
 
     /**
@@ -196,7 +196,7 @@ public class TileMap extends Actor {
      * @param tilePosition
      * @return
      */
-    private Tile buildTileBasedOnNodeType(Node node, Vector2 tilePosition) {
+    private Tile buildTile(Node node, Vector2 tilePosition) {
         if (node.getType() == NodeType.NORMAL) {
             return new Tile(
                     normal, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
@@ -220,14 +220,10 @@ public class TileMap extends Actor {
         }
     }
 
-    /** Sets mapUpdatable to true so that the TileMap will be updated. */
-    public void setMapUpdatableTrue() {
-        this.mapUpdatable = true;
-    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (mapUpdatable) {
+        if (mapFillable) {
 
             fillMap();
         }
@@ -257,7 +253,6 @@ public class TileMap extends Actor {
     /**
      * Builds TileMap based on the state of the Node matrix
      *
-     * @throws IOException
      */
     public void fillMap() {
         //	  spawn tiles
@@ -284,6 +279,21 @@ public class TileMap extends Actor {
             }
         }
 
-        this.mapUpdatable = false;
+        this.mapFillable = false;
     }
+
+    /** Sets mapUpdatable to true so that the TileMap will be updated. */
+    public void setMapFillable(boolean bool) {
+        this.mapFillable = bool;
+    }
+
+
+    public int getAutoPlaySpeed() {
+        return autoPlaySpeed;
+    }
+
+    public void setAutoPlaySpeed(int autoPlaySpeed) {
+        this.autoPlaySpeed = autoPlaySpeed;
+    }
+
 }

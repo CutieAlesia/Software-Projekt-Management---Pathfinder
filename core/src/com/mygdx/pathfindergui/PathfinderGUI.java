@@ -57,7 +57,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         DepthFirst df = new DepthFirst();
         Node[][] labyrinth = df.generateLabyrinth(10, 10);
         map = new TileMap(labyrinth);
-        map.setMapUpdatableTrue();
+        map.setMapFillable(true);
         table = new Table();
         table.setFillParent(true);
         table.center();
