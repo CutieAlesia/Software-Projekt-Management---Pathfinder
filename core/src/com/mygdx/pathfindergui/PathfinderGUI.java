@@ -1,7 +1,5 @@
 package com.mygdx.pathfindergui;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.map.TileMap;
 
@@ -37,7 +34,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private TileMap map;
     private final int MAP_X= 33;
     private final int MAP_Y= 33;
-    private Table table;
+    private Table mapTable;
+    private Table buttonTable;
 
 
     APIManager manager;
@@ -46,7 +44,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
     PFTimer pfTimer;
 
-//  Toggles autoplay mode
+    //  Toggles autoplay mode
     boolean autoStepEnabled = false;
 
     /**
@@ -63,19 +61,27 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Node[][] labyrinth = df.generateLabyrinth(10, 10);
         map = new TileMap(labyrinth);
         map.setMapFillable(true);
-        table = new Table();
-        table.setFillParent(true);
-        table.center();
+        mapTable = new Table();
+        mapTable.setFillParent(true);
+        mapTable.center();
 
-        stage.addActor(table);
-        table.add(map);
+        buttonTable = new Table();
+        buttonTable.setFillParent(true);
+        buttonTable.setBounds(20, -20, 20, 20);
+        buttonTable.align(10);
+
+        //  Buttons
         Skin skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
+        setupPermanentButtons(buttonTable, skin);
 
-//      B U T T O N S
+        // Table order
+        // Add table containing the buttons before table containing the field to avoid dropdown transparency issue
 
-        setupPermanentButtons(table, skin);
+        stage.addActor(buttonTable);
+        stage.addActor(mapTable);
+        mapTable.add(map);
 
-//      A P I
+        // A P I
 
         manager = new APIManager();
         manager.attachFrontend(this);
