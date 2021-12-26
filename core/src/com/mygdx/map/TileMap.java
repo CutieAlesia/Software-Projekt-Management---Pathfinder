@@ -1,7 +1,9 @@
 package com.mygdx.map;
 
-import java.io.IOException;
+import java.util.LinkedList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
@@ -10,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import API.Models.Node;
 import API.Models.NodeType;
+import com.mygdx.pathfindergui.PFTimer;
 
 /**
  * TileMap. Holds the data of the nodes and tiles that make up the labyrinth. Connects the nodes and
@@ -29,13 +32,28 @@ public class TileMap extends Actor {
     private int sizeX;
     private int sizeY;
 
+    // margin around the Actor TileMap when placed into the stage
+    private float margin = 50f;
+    private float marginBottom = 10f;
+
+    // dimensions of the tile .png (.png must be square)
+    private int tileDimensions = 32;
+
     //
     private Node[][] nodes;
     //
     private Tile[][] tiles;
 
-    // map will be updated if true
-    private boolean mapUpdatable;
+    // map will be filled with new tiles if true
+    private boolean mapFillable;
+
+
+    private int autoPlaySpeed = 2;
+
+    //
+    private LinkedList<Node> processedNodes;
+
+    private PFTimer pfTimer;
 
     /**
      * Constructor. Generates a new Node matrix and sets the bounds of the map depending on the size
@@ -46,12 +64,12 @@ public class TileMap extends Actor {
      */
     public TileMap(int sizeX, int sizeY) {
 
-        path = new Texture("tiles_smooth/green.png");
-        start = new Texture("tiles_smooth/ice.png");
-        end = new Texture("tiles_smooth/ice.png");
-        visited = new Texture("tiles_smooth/pink.png");
-        normal = new Texture("tiles_smooth/yellow.png");
-        blocked = new Texture("tiles_smooth/wall.png");
+        path = new Texture("tiles_smooth_32x32/green.png");
+        start = new Texture("tiles_smooth_32x32/ice.png");
+        end = new Texture("tiles_smooth_32x32/ice.png");
+        visited = new Texture("tiles_smooth_32x32/pink.png");
+        normal = new Texture("tiles_smooth_32x32/yellow.png");
+        blocked = new Texture("tiles_smooth_32x32/wall.png");
 
         this.sizeX = sizeX;
         this.sizeY = sizeY;
@@ -65,9 +83,13 @@ public class TileMap extends Actor {
         }
         tiles = new Tile[sizeX][sizeY];
 
-        setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
+        processedNodes = new LinkedList<>();
 
-        this.mapUpdatable = true;
+        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
+
+        this.mapFillable = true;
+
+        this.pfTimer = PFTimer.getInstance();
     }
 
     /**
@@ -78,12 +100,12 @@ public class TileMap extends Actor {
      */
     public TileMap(Node[][] matrix) {
 
-        path = new Texture("tiles_smooth/green.png");
-        start = new Texture("tiles_smooth/ice.png");
-        end = new Texture("tiles_smooth/ice.png");
-        visited = new Texture("tiles_smooth/pink.png");
-        normal = new Texture("tiles_smooth/yellow.png");
-        blocked = new Texture("tiles_smooth/wall.png");
+        path = new Texture("tiles_smooth_32x32/green.png");
+        start = new Texture("tiles_smooth_32x32/ice.png");
+        end = new Texture("tiles_smooth_32x32/ice.png");
+        visited = new Texture("tiles_smooth_32x32/pink.png");
+        normal = new Texture("tiles_smooth_32x32/yellow.png");
+        blocked = new Texture("tiles_smooth_32x32/wall.png");
 
         this.sizeX = matrix.length;
         this.sizeY = matrix[0].length;
@@ -92,9 +114,13 @@ public class TileMap extends Actor {
 
         tiles = new Tile[sizeX][sizeY];
 
-        setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
+        processedNodes = new LinkedList<>();
 
-        this.mapUpdatable = true;
+        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
+
+        this.mapFillable = true;
+
+        this.pfTimer = PFTimer.getInstance();
     }
 
     /**
@@ -103,11 +129,14 @@ public class TileMap extends Actor {
      * @param matrix
      */
     public void changeProperties(Node[][] matrix) {
-        path = new Texture("tiles_smooth/green.png");
-        start = new Texture("tiles_smooth/ice.png");
-        visited = new Texture("tiles_smooth/pink.png");
-        normal = new Texture("tiles_smooth/yellow.png");
-        blocked = new Texture("tiles_smooth/wall.png");
+        path = new Texture("tiles_smooth_32x32/green.png");
+        start = new Texture("tiles_smooth_32x32/ice.png");
+        end = new Texture("tiles_smooth_32x32/ice.png");
+        visited = new Texture("tiles_smooth_32x32/pink.png");
+        normal = new Texture("tiles_smooth_32x32/yellow.png");
+        blocked = new Texture("tiles_smooth_32x32/wall.png");
+
+        processedNodes.clear();
 
         this.sizeX = matrix.length;
         this.sizeY = matrix[0].length;
@@ -115,12 +144,79 @@ public class TileMap extends Actor {
         nodes = matrix;
         tiles = new Tile[sizeX][sizeY];
 
-        fillMap();
+        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
 
-        setBounds(getX(), getY(), 64 * sizeY, 32 * sizeX);
-
-        this.mapUpdatable = true;
+        this.mapFillable = true;
     }
+    
+    /**
+     * Clears the processedNodes and reverts the changes of the Labyrinths.
+     */
+    
+    public void clearLabyrinth() {
+    	
+        for (int col = sizeY - 1; col >= 0; col--) {
+            for (int row = sizeX - 1; row >= 0; row--) {
+            	Node tempNode = nodes[row][col];
+            	nodes[row][col] = new Node(row, col);
+            	switch(tempNode.getType()) {
+				case BLOCKED:
+					nodes[row][col].setType(NodeType.BLOCKED);
+					break;
+				case END:
+					nodes[row][col].setType(NodeType.END);
+					break;
+				case START:
+					nodes[row][col].setType(NodeType.START);
+					break;
+				default:
+					break;
+            	
+            	}
+            }
+        }
+        processedNodes.clear();
+        setMapFillable(true);
+    }
+
+
+    /**
+     * Receives a node from the backend and stores it for later backend-independent visualisation.
+     *
+     * @param node
+     */
+    public void receiveNode(Node node) {
+//      Creating new node because backend may change their type later without frontend knowing
+        Node bufferedNode = new Node(node.getVertIndex(),node.getHorIndex());
+        bufferedNode.setType(node.getType());
+        processedNodes.addLast(bufferedNode);
+
+    }
+
+    /**
+     * Visualises the oldest stored node.
+     */
+    public void visualiseNode () {
+        if (!processedNodes.isEmpty()) {
+            Node poppedNode = processedNodes.removeFirst();
+            updateNode(poppedNode);
+        }
+    }
+
+
+    /**
+     * Visualises a node if there are non-visualised backend-processed nodes remaining.
+     *
+     * @return
+     */
+    public boolean autoVisualiseNode () {
+        if (processedNodes.isEmpty()) {
+            return false; }
+        else if (pfTimer.getPfRuntime() % this.autoPlaySpeed == 0) {
+                visualiseNode();
+            } return true;
+        }
+
 
     /**
      * Changes the Node at the coordinates of given Node with given node. Updates the Tile based on
@@ -128,11 +224,11 @@ public class TileMap extends Actor {
      *
      * @param node
      */
-    public void updateMap(Node node) {
+    public void updateNode(Node node) {
         nodes[node.getVertIndex()][node.getHorIndex()] = node;
         Vector2 tilePosition = tiles[node.getVertIndex()][node.getHorIndex()].getWorldPos();
         tiles[node.getVertIndex()][node.getHorIndex()] =
-                buildTileBasedOnNodeType(node, tilePosition);
+                buildTile(node, tilePosition);
     }
 
     /**
@@ -142,7 +238,7 @@ public class TileMap extends Actor {
      * @param tilePosition
      * @return
      */
-    private Tile buildTileBasedOnNodeType(Node node, Vector2 tilePosition) {
+    private Tile buildTile(Node node, Vector2 tilePosition) {
         if (node.getType() == NodeType.NORMAL) {
             return new Tile(
                     normal, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
@@ -166,22 +262,31 @@ public class TileMap extends Actor {
         }
     }
 
-    /** Sets mapUpdatable to true so that the TileMap will be updated. */
-    public void setMapUpdatableTrue() {
-        this.mapUpdatable = true;
-    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (mapUpdatable) {
+        if (mapFillable) {
 
             fillMap();
         }
+
+//      Check for Map related Inputs (use if else if we want to only process one input at a time)
+        checkInput();
 
         for (int col = sizeY - 1; col >= 0; col--) {
             for (int row = sizeX - 1; row >= 0; row--) {
                 tiles[row][col].draw(batch, parentAlpha);
             }
+        }
+    }
+
+
+    /**
+     * Lets tilemap react to gdx inputs.
+     */
+    private void checkInput() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            visualiseNode();
         }
     }
 
@@ -194,7 +299,6 @@ public class TileMap extends Actor {
     /**
      * Builds TileMap based on the state of the Node matrix
      *
-     * @throws IOException
      */
     public void fillMap() {
         //	  spawn tiles
@@ -202,8 +306,8 @@ public class TileMap extends Actor {
             for (int row = sizeX - 1; row >= 0; row--) {
 
                 // sizeX-1, so that the left bound of the TileMap is equal to the leftmost Tile.
-                float x = getX() + (sizeX - 1 + col - row) * 64 / 2.0001f;
-                float y = getY() + (row + col) * 64 / 4f;
+                float x = getX() + margin/2 + (sizeX - 1 + col - row) * tileDimensions / 2.0001f;
+                float y = getY() + - marginBottom + margin/2 + (row + col) * tileDimensions / 4f;
 
                 if (nodes[row][col].getType() == NodeType.NORMAL) {
                     tiles[row][col] = new Tile(normal, new Vector2(row, col), new Vector2(x, y));
@@ -221,6 +325,21 @@ public class TileMap extends Actor {
             }
         }
 
-        this.mapUpdatable = false;
+        this.mapFillable = false;
     }
+
+    /** Sets mapUpdatable to true so that the TileMap will be updated. */
+    public void setMapFillable(boolean bool) {
+        this.mapFillable = bool;
+    }
+
+
+    public int getAutoPlaySpeed() {
+        return autoPlaySpeed;
+    }
+
+    public void setAutoPlaySpeed(int autoPlaySpeed) {
+        this.autoPlaySpeed = autoPlaySpeed;
+    }
+
 }
