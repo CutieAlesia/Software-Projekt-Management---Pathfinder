@@ -32,11 +32,10 @@ import backend.SearchAlgorithm;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     Stage stage;
     private TileMap map;
-    private final int MAP_X= 33;
-    private final int MAP_Y= 33;
+    private final int MAP_X = 33;
+    private final int MAP_Y = 33;
     private Table mapTable;
     private Table buttonTable;
-
 
     APIManager manager;
     SearchAlgorithm backend;
@@ -75,7 +74,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         setupPermanentButtons(buttonTable, skin);
 
         // Table order
-        // Add table containing the buttons before table containing the field to avoid dropdown transparency issue
+        // Add table containing the buttons before table containing the field to avoid dropdown
+        // transparency issue
 
         stage.addActor(buttonTable);
         stage.addActor(mapTable);
@@ -86,17 +86,15 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         manager = new APIManager();
         manager.attachFrontend(this);
 
-//        backend = new AStar(manager);
-//        manager.attachBackend(backend);
+        //        backend = new AStar(manager);
+        //        manager.attachBackend(backend);
 
         attachNewAlgorithm(new AStar(manager));
 
         setupNewLabyrinth(MAP_X, MAP_Y);
 
         pfTimer = PFTimer.getInstance();
-
     }
-
 
     /**
      * Instantiates buttons that have a permanent place on the stage and adds them to passed table.
@@ -106,85 +104,80 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      */
     private void setupPermanentButtons(Table table, final Skin skin) {
 
-        final SelectBox<String> sbSearchAlgorithms= new SelectBox<>(skin);
+        final SelectBox<String> sbSearchAlgorithms = new SelectBox<>(skin);
         String[] searchAlgorithms = {"AStar", "BestFirst", "BranchAndBound", "DepthFirst"};
         sbSearchAlgorithms.setItems(searchAlgorithms);
 
         sbSearchAlgorithms.setWidth(70f);
 
-
         final TextButton bStartAlgorithm = new TextButton("Start", skin);
 
         bStartAlgorithm.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
 
-                    switch(sbSearchAlgorithms.getSelectedIndex()){
-                        case 0:
-                            attachNewAlgorithm(new AStar(manager));
-                            break;
-                        case 1:
-                            attachNewAlgorithm(new BestFirst(manager));
-                            break;
-                        case 2:
-                            attachNewAlgorithm(new BranchAndBound(manager));
-                            break;
-                        case 3:
-                            attachNewAlgorithm(new backend.DepthFirst(manager));
-                            break;
+                        switch (sbSearchAlgorithms.getSelectedIndex()) {
+                            case 0:
+                                attachNewAlgorithm(new AStar(manager));
+                                break;
+                            case 1:
+                                attachNewAlgorithm(new BestFirst(manager));
+                                break;
+                            case 2:
+                                attachNewAlgorithm(new BranchAndBound(manager));
+                                break;
+                            case 3:
+                                attachNewAlgorithm(new backend.DepthFirst(manager));
+                                break;
+                        }
+                        launchBackend();
+                        System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
+                        bStartAlgorithm.setDisabled(true);
                     }
-                    launchBackend();
-                    System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
-                    bStartAlgorithm.setDisabled(true);
-                }
-            });
-
+                });
 
         final TextButton bNextStep = new TextButton("Next Step", skin);
 
         bNextStep.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    map.visualiseNode();
-                    System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
-                }
-            });
-
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        map.visualiseNode();
+                        System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
+                    }
+                });
 
         final TextButton bNewRandomLabyrinth = new TextButton("Generate new Labyrinth", skin);
 
         bNewRandomLabyrinth.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    setupNewLabyrinth(MAP_X, MAP_Y);
-                    bStartAlgorithm.setDisabled(false);
-                    System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
-                }
-            });
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        setupNewLabyrinth(MAP_X, MAP_Y);
+                        bStartAlgorithm.setDisabled(false);
+                        System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
+                    }
+                });
 
         final TextButton bAutoStepAlgorithm = new TextButton("Autoplay", skin);
 
         bAutoStepAlgorithm.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    autoStepEnabled = !autoStepEnabled;
-                    System.out.println("Clicked! Is checked: " + bAutoStepAlgorithm.isChecked());
-                }
-            });
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        autoStepEnabled = !autoStepEnabled;
+                        System.out.println(
+                                "Clicked! Is checked: " + bAutoStepAlgorithm.isChecked());
+                    }
+                });
 
         final TextButton bClearLabyrinth = new TextButton("Reset Labyrinth", skin);
 
         bClearLabyrinth.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    map.clearLabyrinth();
-                    bStartAlgorithm.setDisabled(false);
-                    System.out.println("Clicked! Is checked: " + bClearLabyrinth.isChecked());
-                }
-            });
-
-
-
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        map.clearLabyrinth();
+                        bStartAlgorithm.setDisabled(false);
+                        System.out.println("Clicked! Is checked: " + bClearLabyrinth.isChecked());
+                    }
+                });
 
         table.add(bNewRandomLabyrinth);
         table.add(sbSearchAlgorithms);
@@ -192,11 +185,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bNextStep);
         table.add(bAutoStepAlgorithm);
         table.add(bClearLabyrinth);
-
-
-
     }
-
 
     /**
      * Attaches passed algorithm to the currently loaded labyrinth.
@@ -207,7 +196,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         backend = searchAlgorithm;
         manager.attachBackend(searchAlgorithm);
     }
-
 
     /**
      * Sets up a new randomly generated labyrinth with the passed dimensions.
@@ -222,8 +210,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     }
 
     /**
-     * Renders a GUI frame and increments program runtime.
-     * Automatically visualises backend-processed nodes if autoStep mode is enabled.
+     * Renders a GUI frame and increments program runtime. Automatically visualises
+     * backend-processed nodes if autoStep mode is enabled.
      *
      * @author frontend
      */
@@ -236,7 +224,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         pfTimer.increasePfRuntime();
 
         if (autoStepEnabled) {
-            if (!map.autoVisualiseNode()) { autoStepEnabled = false; }
+            if (!map.autoVisualiseNode()) {
+                autoStepEnabled = false;
+            }
         }
     }
 
@@ -254,7 +244,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     @Override
     public void update(Node node) {
         map.receiveNode(node);
-//        map.updateMap(node);
+        //        map.updateMap(node);
         render();
     }
 }

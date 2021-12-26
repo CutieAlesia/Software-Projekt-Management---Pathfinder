@@ -16,7 +16,7 @@ public class Util {
      * @param field Node[][] that is supposed to be printed
      */
     public static void printField(Node[][] field) {
-/*        for (int i = 0; i < field.length; i++) {
+        /*        for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field[0].length; j++) {
                 Node node = field[i][j];
                 System.out.print(node);

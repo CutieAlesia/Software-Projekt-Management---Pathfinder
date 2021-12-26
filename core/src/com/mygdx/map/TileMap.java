@@ -47,7 +47,6 @@ public class TileMap extends Actor {
     // map will be filled with new tiles if true
     private boolean mapFillable;
 
-
     private int autoPlaySpeed = 2;
 
     //
@@ -85,7 +84,11 @@ public class TileMap extends Actor {
 
         processedNodes = new LinkedList<>();
 
-        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
+        setBounds(
+                getX(),
+                getY(),
+                tileDimensions * sizeY + margin,
+                tileDimensions / 2 * sizeX + margin + marginBottom);
 
         this.mapFillable = true;
 
@@ -116,7 +119,11 @@ public class TileMap extends Actor {
 
         processedNodes = new LinkedList<>();
 
-        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
+        setBounds(
+                getX(),
+                getY(),
+                tileDimensions * sizeY + margin,
+                tileDimensions / 2 * sizeX + margin + marginBottom);
 
         this.mapFillable = true;
 
@@ -144,41 +151,40 @@ public class TileMap extends Actor {
         nodes = matrix;
         tiles = new Tile[sizeX][sizeY];
 
-        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
+        setBounds(
+                getX(),
+                getY(),
+                tileDimensions * sizeY + margin,
+                tileDimensions / 2 * sizeX + margin + marginBottom);
 
         this.mapFillable = true;
     }
-    
-    /**
-     * Clears the processedNodes and reverts the changes of the Labyrinths.
-     */
-    
+
+    /** Clears the processedNodes and reverts the changes of the Labyrinths. */
     public void clearLabyrinth() {
-    	
+
         for (int col = sizeY - 1; col >= 0; col--) {
             for (int row = sizeX - 1; row >= 0; row--) {
-            	Node tempNode = nodes[row][col];
-            	nodes[row][col] = new Node(row, col);
-            	switch(tempNode.getType()) {
-				case BLOCKED:
-					nodes[row][col].setType(NodeType.BLOCKED);
-					break;
-				case END:
-					nodes[row][col].setType(NodeType.END);
-					break;
-				case START:
-					nodes[row][col].setType(NodeType.START);
-					break;
-				default:
-					break;
-            	
-            	}
+                Node tempNode = nodes[row][col];
+                nodes[row][col] = new Node(row, col);
+                switch (tempNode.getType()) {
+                    case BLOCKED:
+                        nodes[row][col].setType(NodeType.BLOCKED);
+                        break;
+                    case END:
+                        nodes[row][col].setType(NodeType.END);
+                        break;
+                    case START:
+                        nodes[row][col].setType(NodeType.START);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         processedNodes.clear();
         setMapFillable(true);
     }
-
 
     /**
      * Receives a node from the backend and stores it for later backend-independent visualisation.
@@ -186,37 +192,34 @@ public class TileMap extends Actor {
      * @param node
      */
     public void receiveNode(Node node) {
-//      Creating new node because backend may change their type later without frontend knowing
-        Node bufferedNode = new Node(node.getVertIndex(),node.getHorIndex());
+        //      Creating new node because backend may change their type later without frontend
+        // knowing
+        Node bufferedNode = new Node(node.getVertIndex(), node.getHorIndex());
         bufferedNode.setType(node.getType());
         processedNodes.addLast(bufferedNode);
-
     }
 
-    /**
-     * Visualises the oldest stored node.
-     */
-    public void visualiseNode () {
+    /** Visualises the oldest stored node. */
+    public void visualiseNode() {
         if (!processedNodes.isEmpty()) {
             Node poppedNode = processedNodes.removeFirst();
             updateNode(poppedNode);
         }
     }
 
-
     /**
      * Visualises a node if there are non-visualised backend-processed nodes remaining.
      *
      * @return
      */
-    public boolean autoVisualiseNode () {
+    public boolean autoVisualiseNode() {
         if (processedNodes.isEmpty()) {
-            return false; }
-        else if (pfTimer.getPfRuntime() % this.autoPlaySpeed == 0) {
-                visualiseNode();
-            } return true;
+            return false;
+        } else if (pfTimer.getPfRuntime() % this.autoPlaySpeed == 0) {
+            visualiseNode();
         }
-
+        return true;
+    }
 
     /**
      * Changes the Node at the coordinates of given Node with given node. Updates the Tile based on
@@ -227,8 +230,7 @@ public class TileMap extends Actor {
     public void updateNode(Node node) {
         nodes[node.getVertIndex()][node.getHorIndex()] = node;
         Vector2 tilePosition = tiles[node.getVertIndex()][node.getHorIndex()].getWorldPos();
-        tiles[node.getVertIndex()][node.getHorIndex()] =
-                buildTile(node, tilePosition);
+        tiles[node.getVertIndex()][node.getHorIndex()] = buildTile(node, tilePosition);
     }
 
     /**
@@ -262,7 +264,6 @@ public class TileMap extends Actor {
         }
     }
 
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (mapFillable) {
@@ -270,7 +271,8 @@ public class TileMap extends Actor {
             fillMap();
         }
 
-//      Check for Map related Inputs (use if else if we want to only process one input at a time)
+        //      Check for Map related Inputs (use if else if we want to only process one input at a
+        // time)
         checkInput();
 
         for (int col = sizeY - 1; col >= 0; col--) {
@@ -280,10 +282,7 @@ public class TileMap extends Actor {
         }
     }
 
-
-    /**
-     * Lets tilemap react to gdx inputs.
-     */
+    /** Lets tilemap react to gdx inputs. */
     private void checkInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             visualiseNode();
@@ -296,18 +295,15 @@ public class TileMap extends Actor {
         super.positionChanged();
     }
 
-    /**
-     * Builds TileMap based on the state of the Node matrix
-     *
-     */
+    /** Builds TileMap based on the state of the Node matrix */
     public void fillMap() {
         //	  spawn tiles
         for (int col = sizeY - 1; col >= 0; col--) {
             for (int row = sizeX - 1; row >= 0; row--) {
 
                 // sizeX-1, so that the left bound of the TileMap is equal to the leftmost Tile.
-                float x = getX() + margin/2 + (sizeX - 1 + col - row) * tileDimensions / 2.0001f;
-                float y = getY() + - marginBottom + margin/2 + (row + col) * tileDimensions / 4f;
+                float x = getX() + margin / 2 + (sizeX - 1 + col - row) * tileDimensions / 2.0001f;
+                float y = getY() + -marginBottom + margin / 2 + (row + col) * tileDimensions / 4f;
 
                 if (nodes[row][col].getType() == NodeType.NORMAL) {
                     tiles[row][col] = new Tile(normal, new Vector2(row, col), new Vector2(x, y));
@@ -333,7 +329,6 @@ public class TileMap extends Actor {
         this.mapFillable = bool;
     }
 
-
     public int getAutoPlaySpeed() {
         return autoPlaySpeed;
     }
@@ -341,5 +336,4 @@ public class TileMap extends Actor {
     public void setAutoPlaySpeed(int autoPlaySpeed) {
         this.autoPlaySpeed = autoPlaySpeed;
     }
-
 }
