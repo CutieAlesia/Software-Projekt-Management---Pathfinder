@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.map.TileMap;
 
@@ -32,8 +33,8 @@ import backend.SearchAlgorithm;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     Stage stage;
     private TileMap map;
-    private final int MAP_X = 33;
-    private final int MAP_Y = 33;
+    private final int MAP_X = 49;
+    private final int MAP_Y = 49;
     private Table mapTable;
     private Table buttonTable;
 
@@ -62,12 +63,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         map.setMapFillable(true);
         mapTable = new Table();
         mapTable.setFillParent(true);
-        mapTable.center();
+        // mapTable.center();
+        mapTable.align(Align.bottomRight);
 
         buttonTable = new Table();
         buttonTable.setFillParent(true);
         buttonTable.setBounds(20, -20, 20, 20);
-        buttonTable.align(10);
+        buttonTable.align(Align.topLeft);
 
         //  Buttons
         Skin skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));

@@ -104,8 +104,8 @@ public class TileMap extends Actor {
     public TileMap(Node[][] matrix) {
 
         path = new Texture("tiles_smooth_32x32/green.png");
-        start = new Texture("tiles_smooth_32x32/ice.png");
-        end = new Texture("tiles_smooth_32x32/ice.png");
+        start = new Texture("tiles_smooth_32x32/ice_h.png");
+        end = new Texture("tiles_smooth_32x32/rose_h.png");
         visited = new Texture("tiles_smooth_32x32/pink.png");
         normal = new Texture("tiles_smooth_32x32/yellow.png");
         blocked = new Texture("tiles_smooth_32x32/wall.png");
@@ -137,8 +137,8 @@ public class TileMap extends Actor {
      */
     public void changeProperties(Node[][] matrix) {
         path = new Texture("tiles_smooth_32x32/green.png");
-        start = new Texture("tiles_smooth_32x32/ice.png");
-        end = new Texture("tiles_smooth_32x32/ice.png");
+        start = new Texture("tiles_smooth_32x32/ice_h.png");
+        end = new Texture("tiles_smooth_32x32/rose_h.png");
         visited = new Texture("tiles_smooth_32x32/pink.png");
         normal = new Texture("tiles_smooth_32x32/yellow.png");
         blocked = new Texture("tiles_smooth_32x32/wall.png");
