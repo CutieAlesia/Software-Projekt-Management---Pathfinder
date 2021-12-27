@@ -32,7 +32,7 @@ public class Dijkstra extends SearchAlgorithm {
     @Override
     public void run() {
         findLocations();
-        initNodes();
+        this.start.setCosts(0);
         boolean found = updateNeighbours(this.start);
         if (found) {
             Node node = end;
@@ -99,16 +99,20 @@ public class Dijkstra extends SearchAlgorithm {
                 Node neighbour = field[node.getVertIndex() + i][node.getHorIndex() + j];
                 int costs = node.getCosts() + 10;
 
-                // skip the current neighbour if it isn't relevant
-                if (!relevantNodes.contains(neighbour)) {
+                // skip the current neighbour if the node is blocked, already visited or the start node
+                if(neighbour.getType() == NodeType.START || neighbour.getType() == NodeType.BLOCKED || neighbour.getType() == NodeType.VISITED)
                     continue;
-                }
 
                 // update the neighbours costs if the neighbour hasn't been calculated yet or
                 // the new costs are cheaper
-                if (costs < neighbour.getCosts()) {
+                if (costs < neighbour.getCosts() || neighbour.getCosts() == -1) {
                     neighbour.setCosts(costs);
                     neighbour.setPrev(node);
+                }
+
+                // if not already done, add neighbour to the relevant nodes list
+                if(!relevantNodes.contains(neighbour)) {
+                    relevantNodes.add(neighbour);
                 }
             }
         }
@@ -146,18 +150,5 @@ public class Dijkstra extends SearchAlgorithm {
                 }
             }
         );
-    }
-
-    /**  Prepares the nodes for the algorithm */
-    private void initNodes() {
-        this.start.setCosts(0);
-        for(Node[] row : field) {
-            for(Node node : row) {
-                if(node.getType() == NodeType.NORMAL || node.getType() == NodeType.END) {
-                    node.setCosts(Integer.MAX_VALUE);
-                    relevantNodes.add(node);
-                }
-            }
-        }
     }
 }
