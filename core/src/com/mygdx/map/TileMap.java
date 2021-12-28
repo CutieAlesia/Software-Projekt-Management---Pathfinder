@@ -237,13 +237,16 @@ public class TileMap extends Actor {
 		tiles[node.getVertIndex()][node.getHorIndex()] = buildTile(node, tilePosition);
 	}
 	
-	public void changeNode(NodeType type, Vector2 coordinates) {
-		nodes[(int)coordinates.x][(int)coordinates.y] = new Node((int)coordinates.x, (int)coordinates.y);
-		nodes[(int)coordinates.x][(int)coordinates.y].setType(type);
-		System.out.println(nodes[(int)coordinates.x][(int)coordinates.y].getType());
-		Vector2 tileWorldPosition = tiles[nodes[(int)coordinates.x][(int)coordinates.y].getVertIndex()][nodes[(int)coordinates.x][(int)coordinates.y].getHorIndex()].getWorldPos();
-		System.out.println(tileWorldPosition.x+"  " + tileWorldPosition.y);
-		tiles[(int)coordinates.x][(int)coordinates.y] = buildTile(nodes[(int)coordinates.x][(int)coordinates.y], tileWorldPosition);
+	/**
+	 * Changes the Tile and Node at the matrixPosition to the given NodeType.
+	 * @param type
+	 * @param matrixPosition
+	 */
+	public void changeNode(NodeType type, Vector2 matrixPosition) {
+		nodes[(int)matrixPosition.x][(int)matrixPosition.y] = new Node((int)matrixPosition.x, (int)matrixPosition.y);
+		nodes[(int)matrixPosition.x][(int)matrixPosition.y].setType(type);
+		Vector2 tileWorldPosition = tiles[nodes[(int)matrixPosition.x][(int)matrixPosition.y].getVertIndex()][nodes[(int)matrixPosition.x][(int)matrixPosition.y].getHorIndex()].getWorldPos();
+		tiles[(int)matrixPosition.x][(int)matrixPosition.y] = buildTile(nodes[(int)matrixPosition.x][(int)matrixPosition.y], tileWorldPosition);
 	}
 
 	/**
