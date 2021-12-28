@@ -158,7 +158,7 @@ public class TileMapInputProcessor implements InputProcessor{
 		return null;
 	}
 	
-	  public static double dotProduct(Vector2 a, Vector2 b) {
+	  private double dotProduct(Vector2 a, Vector2 b) {
 
 		    return a.x * b.x + a.y * b.y;
 		  }
