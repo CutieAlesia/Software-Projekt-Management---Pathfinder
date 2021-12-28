@@ -20,7 +20,10 @@ public class TileMapInputProcessor implements InputProcessor{
 	private TileMap map;
 	private Stage stage;
 	
-	private float yAxisCorrection ;
+	private float yAxisCorrection;
+	
+	private Vector2 lastChangedTileWhileDragging;
+	private NodeType typeOfFirstDraggedNode;
 	
 	public TileMapInputProcessor(TileMap map, Stage stage) {
 		this.map = map;
@@ -53,7 +56,7 @@ public class TileMapInputProcessor implements InputProcessor{
 	}
 
 	/**
-	 * Clicking a Tile switches its state between BLOCKED and NORMAL.
+	 * Releasing the left mouse button switches the state of the Tile between BLOCKED and NORMAL. Resets the Components needed for touchDragged.
 	 */
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -69,13 +72,49 @@ public class TileMapInputProcessor implements InputProcessor{
 					
 			}
 		}
+		lastChangedTileWhileDragging = null;
+		typeOfFirstDraggedNode = null;
 		return false;
 	}
 
+	/**
+	 * Dragging the cursor over the screen changes the NodeTypes. 
+	 * Depending on which NodeType the process started, only Blocked Tiles are changed to normal Tiles and vice versa.
+	 */
+	
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
+		Vector2 stageCoordinates = stage.screenToStageCoordinates(new Vector2((float)screenX, (float)screenY));
+		Vector2 foundTilesPosition = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
+		if(foundTilesPosition != null) {
+			setupTypeOfFirstDraggedNode(foundTilesPosition);
+			if(typeOfFirstDraggedNode != null) {
+				if(!foundTilesPosition.equals(lastChangedTileWhileDragging)) {
+					if(map.getNodes()[(int)foundTilesPosition.x][(int)foundTilesPosition.y].getType() == NodeType.BLOCKED && typeOfFirstDraggedNode == NodeType.BLOCKED) {
+						map.changeNode(NodeType.NORMAL, foundTilesPosition);
+					}else if(map.getNodes()[(int)foundTilesPosition.x][(int)foundTilesPosition.y].getType() == NodeType.NORMAL && typeOfFirstDraggedNode == NodeType.NORMAL) {
+						map.changeNode(NodeType.BLOCKED, foundTilesPosition);
+					}
+					
+					lastChangedTileWhileDragging = foundTilesPosition;
+				}
+			}
+		}
 		return false;
+	}
+	
+	
+	/**
+	 * Sets typeOfFirstDraggedNode after starting to drag the mouse if the Tile was Normal or Blocked.
+	 */
+	private void setupTypeOfFirstDraggedNode(Vector2 foundTilesPosition) {
+		if(typeOfFirstDraggedNode == null) {
+			NodeType foundTilesNodeType = map.getNodes()[(int)foundTilesPosition.x][(int)foundTilesPosition.y].getType();
+			if(foundTilesNodeType == NodeType.BLOCKED || foundTilesNodeType == NodeType.NORMAL) {
+				typeOfFirstDraggedNode = foundTilesNodeType;
+				
+			}
+		}
 	}
 
 	@Override
