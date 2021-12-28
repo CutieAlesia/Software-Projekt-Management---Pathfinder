@@ -51,7 +51,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
     PFTimer pfTimer;
 
-
     private ArrayList<Integer> algoTimes = new ArrayList<>();
     private ArrayList<Integer> algoSteps = new ArrayList<>();
     private ArrayList<Label> labels = new ArrayList<>();
@@ -84,9 +83,15 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         buttonTable.setBounds(20, -20, 20, 20);
         buttonTable.align(Align.topLeft);
 
+        // Table for labels
         counterTable = new Table();
         counterTable.setFillParent(true);
         counterTable.align(Align.topRight);
+        Label counterHeader = new Label("benötigte Zeit und Schritte des Algorithmus\n", generateLabelStyle(22, Color.valueOf("#FFDCA4")));
+        counterTable.add(counterHeader);
+        counterTable.row();
+
+
         //  Buttons
         skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
         setupPermanentButtons(buttonTable, skin);
@@ -250,16 +255,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0.1f, 0.2f, 0.3f, 1);
 
-
-       // counterLabel.setText("Zeit: " + algoTime +"ms" +" Schritte: " + receivedNodes.size());
-
-
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         pfTimer.increasePfRuntime();
-
-
-
 
         if (autoStepEnabled) {
             if (!map.autoVisualiseNode()) {
@@ -281,7 +279,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         long endTime = System.currentTimeMillis();
         long algoTime = (endTime - startTime);
         algoTimes.add((int)algoTime);
-        System.out.println("AlgoTimes: "+ algoTimes);
+
     }
 
     @Override
@@ -304,20 +302,24 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      */
     private void createLabel(String algorithmName){
 
+        Label.LabelStyle labelStyle= generateLabelStyle(20, Color.valueOf("#FFDCA4"));
+        Label label = new Label(algorithmName + "\nZeit: " + algoTimes.get(algoTimes.size()-1) + "ms" + " Schritte: " + algoSteps.get(algoSteps.size()-1) + "\n", labelStyle);
+        counterTable.add(label);
+        counterTable.row();
+        labels.add(label);
+    }
+    private Label.LabelStyle generateLabelStyle(int size, Color color){
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("metalui/RobotoMono-VariableFont_wght.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 20;
+        parameter.size = size;
         parameter.borderWidth = 0;
         parameter.padTop = 20;
-        parameter.color = Color.valueOf("#FFDCA4");
+        parameter.color = color;
         parameter.padRight = 80;
         BitmapFont font24 = generator.generateFont(parameter); // font size 24 pixels
         generator.dispose();
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = font24;
-        Label label = new Label(algorithmName + "\nZeit: " + algoTimes.get(algoTimes.size()-1) + "ms" + " Schritte: " + algoSteps.get(algoSteps.size()-1) + "\n", labelStyle);
-        counterTable.add(label);
-        counterTable.row();
-        labels.add(label);
+        return labelStyle;
     }
 }
