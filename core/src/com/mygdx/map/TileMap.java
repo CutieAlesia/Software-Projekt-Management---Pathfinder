@@ -15,151 +15,158 @@ import API.Models.NodeType;
 import com.mygdx.pathfindergui.PFTimer;
 
 /**
- * TileMap. Holds the data of the nodes and tiles that make up the labyrinth. Connects the nodes and
- * tiles logically. Responsible for drawing the Tiles.
+ * TileMap. Holds the data of the nodes and tiles that make up the labyrinth.
+ * Connects the nodes and tiles logically. Responsible for drawing the Tiles.
  *
  * @author frontend
  */
 public class TileMap extends Actor {
 
-    // Textures for the tiles
-    private Texture normal;
-    private Texture start;
-    private Texture end;
-    private Texture path;
-    private Texture visited;
-    private Texture blocked;
-    private int sizeX;
-    private int sizeY;
+	// Textures for the tiles
+	private Texture normal;
+	private Texture start;
+	private Texture end;
+	private Texture path;
+	private Texture visited;
+	private Texture blocked;
+	private int sizeX;
+	private int sizeY;
 
-    // margin around the Actor TileMap when placed into the stage
-    private float margin = 50f;
-    private float marginBottom = 10f;
+	// margin around the Actor TileMap when placed into the stage
+	private float margin = 50f;
 
-    // dimensions of the tile .png (.png must be square)
-    private int tileDimensions = 32;
+	private float marginBottom = 10f;
 
-    //
-    private Node[][] nodes;
-    //
-    private Tile[][] tiles;
-
-    // map will be filled with new tiles if true
-    private boolean mapFillable;
+	// dimensions of the tile .png (.png must be square)
+	private int tileDimensionsSurfaceX = 32;
+	private int tileDimensionsSurfaceY = 15;
 
 
-    private int autoPlaySpeed = 2;
 
-    //
-    private LinkedList<Node> processedNodes;
+	//
+	private Node[][] nodes;
 
-    private PFTimer pfTimer;
 
-    /**
-     * Constructor. Generates a new Node matrix and sets the bounds of the map depending on the size
-     * of the labyrinth.
-     *
-     * @param sizeX
-     * @param sizeY
-     */
-    public TileMap(int sizeX, int sizeY) {
 
-        path = new Texture("tiles_smooth_32x32/green.png");
-        start = new Texture("tiles_smooth_32x32/ice.png");
-        end = new Texture("tiles_smooth_32x32/ice.png");
-        visited = new Texture("tiles_smooth_32x32/pink.png");
-        normal = new Texture("tiles_smooth_32x32/yellow.png");
-        blocked = new Texture("tiles_smooth_32x32/wall.png");
+	//
+	private Tile[][] tiles;
 
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
 
-        nodes = new Node[sizeX][sizeY];
-        for (int col = sizeY - 1; col >= 0; col--) {
-            for (int row = sizeX - 1; row >= 0; row--) {
+	// map will be filled with new tiles if true
+	private boolean mapFillable;
 
-                nodes[row][col] = new Node(row, col);
-            }
-        }
-        tiles = new Tile[sizeX][sizeY];
+	private int autoPlaySpeed = 2;
 
-        processedNodes = new LinkedList<>();
+	//
+	private LinkedList<Node> processedNodes;
 
-        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
+	private PFTimer pfTimer;
 
-        this.mapFillable = true;
+	/**
+	 * Constructor. Generates a new Node matrix and sets the bounds of the map
+	 * depending on the size of the labyrinth.
+	 *
+	 * @param sizeX
+	 * @param sizeY
+	 */
+	public TileMap(int sizeX, int sizeY) {
 
-        this.pfTimer = PFTimer.getInstance();
-    }
+		path = new Texture("tiles_smooth_32x32/green.png");
+		start = new Texture("tiles_smooth_32x32/ice.png");
+		end = new Texture("tiles_smooth_32x32/ice.png");
+		visited = new Texture("tiles_smooth_32x32/pink.png");
+		normal = new Texture("tiles_smooth_32x32/yellow.png");
+		blocked = new Texture("tiles_smooth_32x32/wall.png");
 
-    /**
-     * Constructor. Builds TileMap with given matrix and sets bounds depending on the size of the
-     * labyrinth.
-     *
-     * @param matrix
-     */
-    public TileMap(Node[][] matrix) {
+		this.sizeX = sizeX;
+		this.sizeY = sizeY;
 
-        path = new Texture("tiles_smooth_32x32/green.png");
-        start = new Texture("tiles_smooth_32x32/ice.png");
-        end = new Texture("tiles_smooth_32x32/ice.png");
-        visited = new Texture("tiles_smooth_32x32/pink.png");
-        normal = new Texture("tiles_smooth_32x32/yellow.png");
-        blocked = new Texture("tiles_smooth_32x32/wall.png");
+		nodes = new Node[sizeX][sizeY];
+		for (int col = sizeY - 1; col >= 0; col--) {
+			for (int row = sizeX - 1; row >= 0; row--) {
 
-        this.sizeX = matrix.length;
-        this.sizeY = matrix[0].length;
+				nodes[row][col] = new Node(row, col);
+			}
+		}
+		tiles = new Tile[sizeX][sizeY];
 
-        nodes = matrix;
+		processedNodes = new LinkedList<>();
 
-        tiles = new Tile[sizeX][sizeY];
+		setBounds(getX(), getY(), tileDimensionsSurfaceX * sizeY + margin, tileDimensionsSurfaceX / 2 * sizeX + margin + marginBottom);
 
-        processedNodes = new LinkedList<>();
+		this.mapFillable = true;
 
-        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
+		this.pfTimer = PFTimer.getInstance();
+	}
 
-        this.mapFillable = true;
+	/**
+	 * Constructor. Builds TileMap with given matrix and sets bounds depending on
+	 * the size of the labyrinth.
+	 *
+	 * @param matrix
+	 */
+	public TileMap(Node[][] matrix) {
 
-        this.pfTimer = PFTimer.getInstance();
-    }
+		path = new Texture("tiles_smooth_32x32/green.png");
+		start = new Texture("tiles_smooth_32x32/ice.png");
+		end = new Texture("tiles_smooth_32x32/ice.png");
+		visited = new Texture("tiles_smooth_32x32/pink.png");
+		normal = new Texture("tiles_smooth_32x32/yellow.png");
+		blocked = new Texture("tiles_smooth_32x32/wall.png");
 
-    /**
-     * Changes the properties of the TileMap so that it matches the given matrix.
-     *
-     * @param matrix
-     */
-    public void changeProperties(Node[][] matrix) {
-        path = new Texture("tiles_smooth_32x32/green.png");
-        start = new Texture("tiles_smooth_32x32/ice.png");
-        end = new Texture("tiles_smooth_32x32/ice.png");
-        visited = new Texture("tiles_smooth_32x32/pink.png");
-        normal = new Texture("tiles_smooth_32x32/yellow.png");
-        blocked = new Texture("tiles_smooth_32x32/wall.png");
+		this.sizeX = matrix.length;
+		this.sizeY = matrix[0].length;
 
-        processedNodes.clear();
+		nodes = matrix;
 
-        this.sizeX = matrix.length;
-        this.sizeY = matrix[0].length;
+		tiles = new Tile[sizeX][sizeY];
 
-        nodes = matrix;
-        tiles = new Tile[sizeX][sizeY];
+		processedNodes = new LinkedList<>();
 
-        setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions/2 * sizeX + margin + marginBottom);
+		setBounds(getX(), getY(), tileDimensionsSurfaceX * sizeY + margin, tileDimensionsSurfaceX / 2 * sizeX + margin + marginBottom);
 
-        this.mapFillable = true;
-    }
-    
-    /**
-     * Clears the processedNodes and reverts the changes of the Labyrinths.
-     */
-    
-    public void clearLabyrinth() {
-    	
-        for (int col = sizeY - 1; col >= 0; col--) {
-            for (int row = sizeX - 1; row >= 0; row--) {
-            	Node tempNode = nodes[row][col];
-            	nodes[row][col] = new Node(row, col);
-            	switch(tempNode.getType()) {
+		this.mapFillable = true;
+
+		this.pfTimer = PFTimer.getInstance();
+	}
+
+	/**
+	 * Changes the properties of the TileMap so that it matches the given matrix.
+	 *
+	 * @param matrix
+	 */
+	public void changeProperties(Node[][] matrix) {
+		path = new Texture("tiles_smooth_32x32/green.png");
+		start = new Texture("tiles_smooth_32x32/ice.png");
+		end = new Texture("tiles_smooth_32x32/ice.png");
+		visited = new Texture("tiles_smooth_32x32/pink.png");
+		normal = new Texture("tiles_smooth_32x32/yellow.png");
+		blocked = new Texture("tiles_smooth_32x32/wall.png");
+
+		processedNodes.clear();
+
+		this.sizeX = matrix.length;
+		this.sizeY = matrix[0].length;
+
+		nodes = matrix;
+		tiles = new Tile[sizeX][sizeY];
+
+		setBounds(getX(), getY(), tileDimensionsSurfaceX * sizeY + margin, tileDimensionsSurfaceX / 2 * sizeX + margin + marginBottom);
+
+		this.mapFillable = true;
+	}
+
+	/**
+	 * Clears the processedNodes and reverts the changes of the Labyrinths.
+	 */
+
+	public void clearLabyrinth() {
+
+		for (int col = sizeY - 1; col >= 0; col--) {
+			for (int row = sizeX - 1; row >= 0; row--) {
+				Node tempNode = nodes[row][col];
+				nodes[row][col] = new Node(row, col);
+				switch (tempNode.getType()) {
 				case BLOCKED:
 					nodes[row][col].setType(NodeType.BLOCKED);
 					break;
@@ -171,175 +178,197 @@ public class TileMap extends Actor {
 					break;
 				default:
 					break;
-            	
-            	}
-            }
-        }
-        processedNodes.clear();
-        setMapFillable(true);
-    }
 
+				}
+			}
+		}
+		processedNodes.clear();
+		setMapFillable(true);
+	}
 
-    /**
-     * Receives a node from the backend and stores it for later backend-independent visualisation.
-     *
-     * @param node
-     */
-    public void receiveNode(Node node) {
+	/**
+	 * Receives a node from the backend and stores it for later backend-independent
+	 * visualisation.
+	 *
+	 * @param node
+	 */
+	public void receiveNode(Node node) {
 //      Creating new node because backend may change their type later without frontend knowing
-        Node bufferedNode = new Node(node.getVertIndex(),node.getHorIndex());
-        bufferedNode.setType(node.getType());
-        processedNodes.addLast(bufferedNode);
+		Node bufferedNode = new Node(node.getVertIndex(), node.getHorIndex());
+		bufferedNode.setType(node.getType());
+		processedNodes.addLast(bufferedNode);
 
-    }
+	}
 
-    /**
-     * Visualises the oldest stored node.
-     */
-    public void visualiseNode () {
-        if (!processedNodes.isEmpty()) {
-            Node poppedNode = processedNodes.removeFirst();
-            updateNode(poppedNode);
-        }
-    }
+	/**
+	 * Visualises the oldest stored node.
+	 */
+	public void visualiseNode() {
+		if (!processedNodes.isEmpty()) {
+			Node poppedNode = processedNodes.removeFirst();
+			updateNode(poppedNode);
+		}
+	}
 
+	/**
+	 * Visualises a node if there are non-visualised backend-processed nodes
+	 * remaining.
+	 *
+	 * @return
+	 */
+	public boolean autoVisualiseNode() {
+		if (processedNodes.isEmpty()) {
+			return false;
+		} else if (pfTimer.getPfRuntime() % this.autoPlaySpeed == 0) {
+			visualiseNode();
+		}
+		return true;
+	}
 
-    /**
-     * Visualises a node if there are non-visualised backend-processed nodes remaining.
-     *
-     * @return
-     */
-    public boolean autoVisualiseNode () {
-        if (processedNodes.isEmpty()) {
-            return false; }
-        else if (pfTimer.getPfRuntime() % this.autoPlaySpeed == 0) {
-                visualiseNode();
-            } return true;
-        }
+	/**
+	 * Changes the Node at the coordinates of given Node with given node. Updates
+	 * the Tile based on new Node.
+	 *
+	 * @param node
+	 */
+	public void updateNode(Node node) {
+		nodes[node.getVertIndex()][node.getHorIndex()] = node;
+		Vector2 tilePosition = tiles[node.getVertIndex()][node.getHorIndex()].getWorldPos();
+		tiles[node.getVertIndex()][node.getHorIndex()] = buildTile(node, tilePosition);
+	}
+	
+	public void changeNode(NodeType type, Vector2 coordinates) {
+		nodes[(int)coordinates.x][(int)coordinates.y] = new Node((int)coordinates.x, (int)coordinates.y);
+		nodes[(int)coordinates.x][(int)coordinates.y].setType(type);
+		System.out.println(nodes[(int)coordinates.x][(int)coordinates.y].getType());
+		Vector2 tileWorldPosition = tiles[nodes[(int)coordinates.x][(int)coordinates.y].getVertIndex()][nodes[(int)coordinates.x][(int)coordinates.y].getHorIndex()].getWorldPos();
+		System.out.println(tileWorldPosition.x+"  " + tileWorldPosition.y);
+		tiles[(int)coordinates.x][(int)coordinates.y] = buildTile(nodes[(int)coordinates.x][(int)coordinates.y], tileWorldPosition);
+	}
 
+	/**
+	 * Helper method. Builds Tile based on given parameters.
+	 *
+	 * @param node
+	 * @param tilePosition
+	 * @return
+	 */
+	private Tile buildTile(Node node, Vector2 tilePosition) {
+		if (node.getType() == NodeType.NORMAL) {
+			return new Tile(normal, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
+		} else if (node.getType() == NodeType.VISITED) {
+			return new Tile(visited, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
+		} else if (node.getType() == NodeType.BLOCKED) {
+			return new Tile(blocked, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
+		} else if (node.getType() == NodeType.PATH) {
+			return new Tile(path, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
+		} else if (node.getType() == NodeType.START) {
+			return new Tile(start, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
+		} else if (node.getType() == NodeType.END) {
+			return new Tile(end, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
+		} else {
+			return null;
+		}
+	}
 
-    /**
-     * Changes the Node at the coordinates of given Node with given node. Updates the Tile based on
-     * new Node.
-     *
-     * @param node
-     */
-    public void updateNode(Node node) {
-        nodes[node.getVertIndex()][node.getHorIndex()] = node;
-        Vector2 tilePosition = tiles[node.getVertIndex()][node.getHorIndex()].getWorldPos();
-        tiles[node.getVertIndex()][node.getHorIndex()] =
-                buildTile(node, tilePosition);
-    }
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		if (mapFillable) {
 
-    /**
-     * Helper method. Builds Tile based on given parameters.
-     *
-     * @param node
-     * @param tilePosition
-     * @return
-     */
-    private Tile buildTile(Node node, Vector2 tilePosition) {
-        if (node.getType() == NodeType.NORMAL) {
-            return new Tile(
-                    normal, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
-        } else if (node.getType() == NodeType.VISITED) {
-            return new Tile(
-                    visited, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
-        } else if (node.getType() == NodeType.BLOCKED) {
-            return new Tile(
-                    blocked, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
-        } else if (node.getType() == NodeType.PATH) {
-            return new Tile(
-                    path, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
-        } else if (node.getType() == NodeType.START) {
-            return new Tile(
-                    start, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
-        } else if (node.getType() == NodeType.END) {
-            return new Tile(
-                    end, new Vector2(node.getVertIndex(), node.getHorIndex()), tilePosition);
-        } else {
-            return null;
-        }
-    }
-
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        if (mapFillable) {
-
-            fillMap();
-        }
+			fillMap();
+		}
 
 //      Check for Map related Inputs (use if else if we want to only process one input at a time)
-        checkInput();
+		checkInput();
 
-        for (int col = sizeY - 1; col >= 0; col--) {
-            for (int row = sizeX - 1; row >= 0; row--) {
-                tiles[row][col].draw(batch, parentAlpha);
-            }
-        }
-    }
+		for (int col = sizeY - 1; col >= 0; col--) {
+			for (int row = sizeX - 1; row >= 0; row--) {
+				tiles[row][col].draw(batch, parentAlpha);
+			}
+		}
+	}
 
+	/**
+	 * Lets tilemap react to gdx inputs.
+	 */
+	private void checkInput() {
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			visualiseNode();
+		}
+	}
 
-    /**
-     * Lets tilemap react to gdx inputs.
-     */
-    private void checkInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            visualiseNode();
-        }
-    }
+	@Override
+	protected void positionChanged() {
+		this.setPosition(getX(), getY());
+		super.positionChanged();
+	}
 
-    @Override
-    protected void positionChanged() {
-        this.setPosition(getX(), getY());
-        super.positionChanged();
-    }
+	/**
+	 * Builds TileMap based on the state of the Node matrix
+	 *
+	 */
+	public void fillMap() {
+		// spawn tiles
+		for (int col = sizeY - 1; col >= 0; col--) {
+			for (int row = sizeX - 1; row >= 0; row--) {
 
-    /**
-     * Builds TileMap based on the state of the Node matrix
-     *
-     */
-    public void fillMap() {
-        //	  spawn tiles
-        for (int col = sizeY - 1; col >= 0; col--) {
-            for (int row = sizeX - 1; row >= 0; row--) {
+				// sizeX-1, so that the left bound of the TileMap is equal to the leftmost Tile.
+				float x = getX() + margin / 2 + (sizeX - 1 + col - row) * tileDimensionsSurfaceX / 2.0001f;
+				float y = getY() + -marginBottom + margin / 2 + (row + col) * tileDimensionsSurfaceX / 4f;
 
-                // sizeX-1, so that the left bound of the TileMap is equal to the leftmost Tile.
-                float x = getX() + margin/2 + (sizeX - 1 + col - row) * tileDimensions / 2.0001f;
-                float y = getY() + - marginBottom + margin/2 + (row + col) * tileDimensions / 4f;
+				if (nodes[row][col].getType() == NodeType.NORMAL) {
+					tiles[row][col] = new Tile(normal, new Vector2(row, col), new Vector2(x, y));
+				} else if (nodes[row][col].getType() == NodeType.VISITED) {
+					tiles[row][col] = new Tile(visited, new Vector2(row, col), new Vector2(x, y));
+				} else if (nodes[row][col].getType() == NodeType.BLOCKED) {
+					tiles[row][col] = new Tile(blocked, new Vector2(row, col), new Vector2(x, y));
+				} else if (nodes[row][col].getType() == NodeType.PATH) {
+					tiles[row][col] = new Tile(path, new Vector2(row, col), new Vector2(x, y));
+				} else if (nodes[row][col].getType() == NodeType.START) {
+					tiles[row][col] = new Tile(start, new Vector2(row, col), new Vector2(x, y));
+				} else if (nodes[row][col].getType() == NodeType.END) {
+					tiles[row][col] = new Tile(end, new Vector2(row, col), new Vector2(x, y));
+				}
+			}
+		}
 
-                if (nodes[row][col].getType() == NodeType.NORMAL) {
-                    tiles[row][col] = new Tile(normal, new Vector2(row, col), new Vector2(x, y));
-                } else if (nodes[row][col].getType() == NodeType.VISITED) {
-                    tiles[row][col] = new Tile(visited, new Vector2(row, col), new Vector2(x, y));
-                } else if (nodes[row][col].getType() == NodeType.BLOCKED) {
-                    tiles[row][col] = new Tile(blocked, new Vector2(row, col), new Vector2(x, y));
-                } else if (nodes[row][col].getType() == NodeType.PATH) {
-                    tiles[row][col] = new Tile(path, new Vector2(row, col), new Vector2(x, y));
-                } else if (nodes[row][col].getType() == NodeType.START) {
-                    tiles[row][col] = new Tile(start, new Vector2(row, col), new Vector2(x, y));
-                } else if (nodes[row][col].getType() == NodeType.END) {
-                    tiles[row][col] = new Tile(end, new Vector2(row, col), new Vector2(x, y));
-                }
-            }
-        }
+		this.mapFillable = false;
+	}
 
-        this.mapFillable = false;
-    }
+	/** Sets mapUpdatable to true so that the TileMap will be updated. */
+	public void setMapFillable(boolean bool) {
+		this.mapFillable = bool;
+	}
 
-    /** Sets mapUpdatable to true so that the TileMap will be updated. */
-    public void setMapFillable(boolean bool) {
-        this.mapFillable = bool;
-    }
+	public int getAutoPlaySpeed() {
+		return autoPlaySpeed;
+	}
 
+	public void setAutoPlaySpeed(int autoPlaySpeed) {
+		this.autoPlaySpeed = autoPlaySpeed;
+	}
 
-    public int getAutoPlaySpeed() {
-        return autoPlaySpeed;
-    }
+	public float getMargin() {
+		return margin;
+	}
 
-    public void setAutoPlaySpeed(int autoPlaySpeed) {
-        this.autoPlaySpeed = autoPlaySpeed;
-    }
+	public float getMarginBottom() {
+		return marginBottom;
+	}
 
+	public int getTileDimensionsSurfaceX() {
+		return tileDimensionsSurfaceX;
+	}
+	
+	public int getTileDimensionsSurfaceY() {
+		return tileDimensionsSurfaceY;
+	}
+	
+	public Node[][] getNodes() {
+		return nodes;
+	}
+	
+	public Tile[][] getTiles() {
+		return tiles;
+	}
 }

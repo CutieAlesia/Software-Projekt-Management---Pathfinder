@@ -2,6 +2,7 @@ package com.mygdx.pathfindergui;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.map.TileMap;
+import com.mygdx.map.TileMapInputProcessor;
 
 import API.APIManager;
 import API.Interfaces.IFrontend;
@@ -30,12 +32,13 @@ import backend.SearchAlgorithm;
  * @author frontend
  */
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
-    Stage stage;
+    private Stage stage;
     private TileMap map;
     private final int MAP_X= 33;
     private final int MAP_Y= 33;
     private Table mapTable;
     private Table buttonTable;
+    InputMultiplexer inputMultiplexer;
 
 
     APIManager manager;
@@ -56,7 +59,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     public void create() {
         ScreenViewport viewport = new ScreenViewport();
         stage = new Stage(viewport);
-        Gdx.input.setInputProcessor(stage);
         DepthFirst df = new DepthFirst();
         Node[][] labyrinth = df.generateLabyrinth(10, 10);
         map = new TileMap(labyrinth);
@@ -94,7 +96,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         setupNewLabyrinth(MAP_X, MAP_Y);
 
         pfTimer = PFTimer.getInstance();
+        
+        inputMultiplexer = new InputMultiplexer();
 
+        inputMultiplexer.addProcessor(stage);
+        inputMultiplexer.addProcessor(new TileMapInputProcessor(map, stage));
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
 
