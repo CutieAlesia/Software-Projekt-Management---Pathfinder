@@ -1,5 +1,6 @@
 package com.mygdx.pathfindergui;
 
+import GUI.Generator.RecursiveDivision;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -207,7 +208,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param y
      */
     private void setupNewLabyrinth(int x, int y) {
-        DepthFirst a = new DepthFirst();
+        //DepthFirst a = new DepthFirst();
+        RecursiveDivision a = new RecursiveDivision();
         field = a.generateLabyrinth(x, y);
         map.changeProperties(field);
     }
