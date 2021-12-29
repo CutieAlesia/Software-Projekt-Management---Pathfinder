@@ -38,7 +38,7 @@ public class RecursiveDivision implements LabyrinthGenerator{
     }
 
     private void generateWalls(int x, int y) {
-        int startY = randomNumber(1, y - 2);
+        int startY = randomIdx(1, y - 2, -1);
         drawWallToRight(-1, startY);
         System.out.println("=================");
     }
@@ -58,7 +58,7 @@ public class RecursiveDivision implements LabyrinthGenerator{
 
         System.out.println("Top Spaces: " + spaces);
 
-        if(spaces >= 3) {
+        if(spaces >= 2) {
             int idx = y - spaces;
 
             if(spaces == 2)
@@ -100,7 +100,7 @@ public class RecursiveDivision implements LabyrinthGenerator{
 
         System.out.println("Bottom Spaces: " + spaces);
 
-        if(spaces >= 3) {
+        if(spaces >= 2) {
             int idx = y + spaces;
 
             if(spaces == 2)
@@ -140,7 +140,7 @@ public class RecursiveDivision implements LabyrinthGenerator{
 
         System.out.println("Left Spaces: " + spaces);
 
-        if(spaces >= 3) {
+        if(spaces >= 2) {
             int idx = x - spaces;
 
             if(spaces == 2)
@@ -180,7 +180,7 @@ public class RecursiveDivision implements LabyrinthGenerator{
 
         System.out.println("Right Spaces: " + spaces);
 
-        if(spaces >= 3) {
+        if(spaces >= 2) {
             int idx = x + spaces;
 
             if(spaces == 2)
@@ -208,7 +208,9 @@ public class RecursiveDivision implements LabyrinthGenerator{
     private int randomIdx(int min, int max, int forbidden) {
         int idx = randomNumber(min, max);
 
-        while(idx == forbidden) {
+        boolean prettyMaze = matrix.length % 2 != 0 && matrix[0].length % 2 != 0;
+
+        while(idx == forbidden || (prettyMaze && idx % 2 != 0)) {
             idx = randomNumber(min, max);
         }
 
