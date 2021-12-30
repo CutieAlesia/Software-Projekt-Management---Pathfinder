@@ -34,13 +34,18 @@ public class TileMap extends Actor {
 
     // margin around the Actor TileMap when placed into the stage
     private float margin = 50f;
+
     private float marginBottom = 10f;
 
     // dimensions of the tile .png (.png must be square)
     private int tileDimensions = 32;
 
+    private int tileDimensionsSurfaceX = 32;
+    private int tileDimensionsSurfaceY = 15;
+
     //
     private Node[][] nodes;
+
     //
     private Tile[][] tiles;
 
@@ -54,6 +59,9 @@ public class TileMap extends Actor {
 
     private PFTimer pfTimer;
 
+    // true if the map has been edited. Necessary for resetting the counterLabels
+    private boolean mapEdited;
+
     /**
      * Constructor. Generates a new Node matrix and sets the bounds of the map depending on the size
      * of the labyrinth.
@@ -64,8 +72,8 @@ public class TileMap extends Actor {
     public TileMap(int sizeX, int sizeY) {
 
         path = new Texture("tiles_smooth_32x32/green.png");
-        start = new Texture("tiles_smooth_32x32/ice.png");
-        end = new Texture("tiles_smooth_32x32/ice.png");
+        start = new Texture("tiles_smooth_32x32/ice_h.png");
+        end = new Texture("tiles_smooth_32x32/rose_h.png");
         visited = new Texture("tiles_smooth_32x32/pink.png");
         normal = new Texture("tiles_smooth_32x32/yellow.png");
         blocked = new Texture("tiles_smooth_32x32/wall.png");
@@ -104,8 +112,8 @@ public class TileMap extends Actor {
     public TileMap(Node[][] matrix) {
 
         path = new Texture("tiles_smooth_32x32/green.png");
-        start = new Texture("tiles_smooth_32x32/ice.png");
-        end = new Texture("tiles_smooth_32x32/ice.png");
+        start = new Texture("tiles_smooth_32x32/ice_h.png");
+        end = new Texture("tiles_smooth_32x32/rose_h.png");
         visited = new Texture("tiles_smooth_32x32/pink.png");
         normal = new Texture("tiles_smooth_32x32/yellow.png");
         blocked = new Texture("tiles_smooth_32x32/wall.png");
@@ -137,8 +145,8 @@ public class TileMap extends Actor {
      */
     public void changeProperties(Node[][] matrix) {
         path = new Texture("tiles_smooth_32x32/green.png");
-        start = new Texture("tiles_smooth_32x32/ice.png");
-        end = new Texture("tiles_smooth_32x32/ice.png");
+        start = new Texture("tiles_smooth_32x32/ice_h.png");
+        end = new Texture("tiles_smooth_32x32/rose_h.png");
         visited = new Texture("tiles_smooth_32x32/pink.png");
         normal = new Texture("tiles_smooth_32x32/yellow.png");
         blocked = new Texture("tiles_smooth_32x32/wall.png");
@@ -161,7 +169,7 @@ public class TileMap extends Actor {
     }
 
     /** Clears the processedNodes and reverts the changes of the Labyrinths. */
-    public void clearLabyrinth() {
+    public void resetLabyrinth() {
 
         for (int col = sizeY - 1; col >= 0; col--) {
             for (int row = sizeX - 1; row >= 0; row--) {
@@ -184,6 +192,23 @@ public class TileMap extends Actor {
         }
         processedNodes.clear();
         setMapFillable(true);
+    }
+
+    public void clearField() {
+
+        processedNodes.clear();
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                Node n = new Node(i, j);
+                updateNode(n);
+            }
+        }
+        Node n = new Node(0, 0);
+        n.setType(NodeType.START);
+        updateNode(n);
+        n = new Node(sizeX - 1, sizeY - 1);
+        n.setType(NodeType.END);
+        updateNode(n);
     }
 
     /**
@@ -231,6 +256,25 @@ public class TileMap extends Actor {
         nodes[node.getVertIndex()][node.getHorIndex()] = node;
         Vector2 tilePosition = tiles[node.getVertIndex()][node.getHorIndex()].getWorldPos();
         tiles[node.getVertIndex()][node.getHorIndex()] = buildTile(node, tilePosition);
+    }
+
+    /**
+     * Changes the Tile and Node at the matrixPosition to the given NodeType.
+     *
+     * @param type
+     * @param matrixPosition
+     */
+    public void changeNode(NodeType type, Vector2 matrixPosition) {
+        nodes[(int) matrixPosition.x][(int) matrixPosition.y] =
+                new Node((int) matrixPosition.x, (int) matrixPosition.y);
+        nodes[(int) matrixPosition.x][(int) matrixPosition.y].setType(type);
+        Vector2 tileWorldPosition =
+                tiles[nodes[(int) matrixPosition.x][(int) matrixPosition.y].getVertIndex()][
+                        nodes[(int) matrixPosition.x][(int) matrixPosition.y].getHorIndex()]
+                        .getWorldPos();
+        tiles[(int) matrixPosition.x][(int) matrixPosition.y] =
+                buildTile(nodes[(int) matrixPosition.x][(int) matrixPosition.y], tileWorldPosition);
+        setMapEdited(true);
     }
 
     /**
@@ -297,7 +341,7 @@ public class TileMap extends Actor {
 
     /** Builds TileMap based on the state of the Node matrix */
     public void fillMap() {
-        //	  spawn tiles
+        // spawn tiles
         for (int col = sizeY - 1; col >= 0; col--) {
             for (int row = sizeX - 1; row >= 0; row--) {
 
@@ -335,5 +379,41 @@ public class TileMap extends Actor {
 
     public void setAutoPlaySpeed(int autoPlaySpeed) {
         this.autoPlaySpeed = autoPlaySpeed;
+    }
+
+    public LinkedList<Node> getProcessedNodes() {
+        return processedNodes;
+    }
+
+    public float getMargin() {
+        return margin;
+    }
+
+    public float getMarginBottom() {
+        return marginBottom;
+    }
+
+    public int getTileDimensionsSurfaceX() {
+        return tileDimensionsSurfaceX;
+    }
+
+    public int getTileDimensionsSurfaceY() {
+        return tileDimensionsSurfaceY;
+    }
+
+    public Node[][] getNodes() {
+        return nodes;
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    public boolean isMapEdited() {
+        return mapEdited;
+    }
+
+    public void setMapEdited(boolean mapEdited) {
+        this.mapEdited = mapEdited;
     }
 }
