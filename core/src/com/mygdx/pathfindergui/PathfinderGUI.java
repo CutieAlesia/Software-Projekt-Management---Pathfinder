@@ -37,8 +37,8 @@ import java.util.ArrayList;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private Stage stage;
     private TileMap map;
-    private final int MAP_X = 39;
-    private final int MAP_Y = 39;
+    private final int MAP_X = 49;
+    private final int MAP_Y = 49;
     private Table mapTable;
     private Table buttonTable;
     private Table counterTable;
@@ -291,7 +291,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 autoStepEnabled = false;
             }
         }
-        
+
         if(map.isMapEdited()) {
         	clearCounterLabels();
         	map.setMapEdited(false);
