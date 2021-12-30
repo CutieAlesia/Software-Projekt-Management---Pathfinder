@@ -2,7 +2,6 @@ import API.APIManager;
 import API.Models.Node;
 import GUI.Frontend;
 import GUI.Generator.DepthFirst;
-import backend.AStar;
 import backend.Dijkstra;
 import backend.SearchAlgorithm;
 

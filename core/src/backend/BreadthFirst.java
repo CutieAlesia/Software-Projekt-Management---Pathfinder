@@ -5,7 +5,6 @@ import API.Models.Node;
 import API.Models.NodeType;
 import util.Util;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 /**
@@ -88,8 +87,8 @@ public class BreadthFirst extends SearchAlgorithm {
                 // skip the current neighbour if the node is blocked, already visited or the
                 // start node
                 if (neighbour.getType() == NodeType.START
-                    || neighbour.getType() == NodeType.BLOCKED
-                    || neighbour.getType() == NodeType.VISITED) {
+                        || neighbour.getType() == NodeType.BLOCKED
+                        || neighbour.getType() == NodeType.VISITED) {
                     continue;
                 }
 

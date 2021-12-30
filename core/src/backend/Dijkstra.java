@@ -62,8 +62,7 @@ public class Dijkstra extends SearchAlgorithm {
      */
     private boolean updateNeighbours(Node node) {
         // return true if the current node if the end node
-        if(node.getType() == NodeType.END)
-            return true;
+        if (node.getType() == NodeType.END) return true;
 
         // Coordinates of the neighbours that are supposed to be updated
         int[][] coords = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
@@ -99,9 +98,11 @@ public class Dijkstra extends SearchAlgorithm {
                 Node neighbour = field[node.getVertIndex() + i][node.getHorIndex() + j];
                 int costs = node.getCosts() + 10;
 
-                // skip the current neighbour if the node is blocked, already visited or the start node
-                if(neighbour.getType() == NodeType.START || neighbour.getType() == NodeType.BLOCKED || neighbour.getType() == NodeType.VISITED)
-                    continue;
+                // skip the current neighbour if the node is blocked, already visited or the start
+                // node
+                if (neighbour.getType() == NodeType.START
+                        || neighbour.getType() == NodeType.BLOCKED
+                        || neighbour.getType() == NodeType.VISITED) continue;
 
                 // update the neighbours costs if the neighbour hasn't been calculated yet or
                 // the new costs are cheaper
@@ -111,7 +112,7 @@ public class Dijkstra extends SearchAlgorithm {
                 }
 
                 // if not already done, add neighbour to the relevant nodes list
-                if(!relevantNodes.contains(neighbour)) {
+                if (!relevantNodes.contains(neighbour)) {
                     relevantNodes.add(neighbour);
                 }
             }
@@ -142,13 +143,12 @@ public class Dijkstra extends SearchAlgorithm {
     /** sort all relevant nodes by their costs (real path costs) */
     private void sortRelevantNodes() {
         Collections.sort(
-            relevantNodes,
-            new Comparator<Node>() {
-                @Override
-                public int compare(Node node1, Node node2) {
-                    return ((Integer) node1.getCosts()).compareTo(node2.getCosts());
-                }
-            }
-        );
+                relevantNodes,
+                new Comparator<Node>() {
+                    @Override
+                    public int compare(Node node1, Node node2) {
+                        return ((Integer) node1.getCosts()).compareTo(node2.getCosts());
+                    }
+                });
     }
 }

@@ -146,7 +146,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void setupPermanentButtons(Table table, final Skin skin) {
 
         final SelectBox<String> sbSearchAlgorithms = new SelectBox<>(skin);
-        final String[] searchAlgorithms = {"AStar", "BestFirst", "BranchAndBound", "BreadthFirst", "DepthFirst", "Dijkstra"};
+        final String[] searchAlgorithms = {
+            "AStar", "BestFirst", "BranchAndBound", "BreadthFirst", "DepthFirst", "Dijkstra"
+        };
         sbSearchAlgorithms.setItems(searchAlgorithms);
 
         sbSearchAlgorithms.setWidth(70f);
@@ -271,7 +273,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param y
      */
     private void setupNewLabyrinth(int x, int y) {
-        //DepthFirst a = new DepthFirst();
+        // DepthFirst a = new DepthFirst();
         RecursiveDivision a = new RecursiveDivision();
         field = a.generateLabyrinth(x, y);
         map.changeProperties(field);
