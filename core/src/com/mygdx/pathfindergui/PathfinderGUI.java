@@ -35,8 +35,8 @@ import java.util.ArrayList;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     Stage stage;
     private TileMap map;
-    private final int MAP_X = 5;
-    private final int MAP_Y = 5;
+    private final int MAP_X = 39;
+    private final int MAP_Y = 39;
     private Table mapTable;
     private Table buttonTable;
     private Table counterTable;
@@ -73,8 +73,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         map.setMapFillable(true);
         mapTable = new Table();
         mapTable.setFillParent(true);
-        mapTable.center();
-        //mapTable.align(Align.bottomRight);
+        mapTable.align(Align.bottomRight);
 
         buttonTable = new Table();
         buttonTable.setFillParent(true);
