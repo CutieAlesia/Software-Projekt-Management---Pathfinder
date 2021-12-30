@@ -39,6 +39,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private Table mapTable;
     private Table buttonTable;
     InputMultiplexer inputMultiplexer;
+    
+    TileMapInputProcessor tileMapInputProcessor;
 
 
     APIManager manager;
@@ -97,10 +99,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         pfTimer = PFTimer.getInstance();
         
+        tileMapInputProcessor = new TileMapInputProcessor(map, stage);
         inputMultiplexer = new InputMultiplexer();
 
         inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(new TileMapInputProcessor(map, stage));
+        inputMultiplexer.addProcessor(tileMapInputProcessor);
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
@@ -125,7 +128,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         bStartAlgorithm.addListener(
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
-
+                	tileMapInputProcessor.setInputAllowed(false);
+                	
                     switch(sbSearchAlgorithms.getSelectedIndex()){
                         case 0:
                             attachNewAlgorithm(new AStar(manager));
@@ -166,6 +170,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     setupNewLabyrinth(MAP_X, MAP_Y);
                     bStartAlgorithm.setDisabled(false);
                     System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
+                    tileMapInputProcessor.setInputAllowed(true);
                 }
             });
 
@@ -187,6 +192,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     map.clearLabyrinth();
                     bStartAlgorithm.setDisabled(false);
                     System.out.println("Clicked! Is checked: " + bClearLabyrinth.isChecked());
+                    tileMapInputProcessor.setInputAllowed(true);
                 }
             });
 

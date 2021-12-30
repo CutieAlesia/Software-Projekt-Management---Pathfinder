@@ -38,6 +38,10 @@ public class TileMap extends Actor {
 	private float marginBottom = 10f;
 
 	// dimensions of the tile .png (.png must be square)
+	private int tileDimensions = 32;
+	
+	
+	
 	private int tileDimensionsSurfaceX = 32;
 	private int tileDimensionsSurfaceY = 15;
 
@@ -92,7 +96,7 @@ public class TileMap extends Actor {
 
 		processedNodes = new LinkedList<>();
 
-		setBounds(getX(), getY(), tileDimensionsSurfaceX * sizeY + margin, tileDimensionsSurfaceX / 2 * sizeX + margin + marginBottom);
+		setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions / 2 * sizeX + margin + marginBottom);
 
 		this.mapFillable = true;
 
@@ -123,7 +127,7 @@ public class TileMap extends Actor {
 
 		processedNodes = new LinkedList<>();
 
-		setBounds(getX(), getY(), tileDimensionsSurfaceX * sizeY + margin, tileDimensionsSurfaceX / 2 * sizeX + margin + marginBottom);
+		setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions / 2 * sizeX + margin + marginBottom);
 
 		this.mapFillable = true;
 
@@ -151,7 +155,7 @@ public class TileMap extends Actor {
 		nodes = matrix;
 		tiles = new Tile[sizeX][sizeY];
 
-		setBounds(getX(), getY(), tileDimensionsSurfaceX * sizeY + margin, tileDimensionsSurfaceX / 2 * sizeX + margin + marginBottom);
+		setBounds(getX(), getY(), tileDimensions * sizeY + margin, tileDimensions / 2 * sizeX + margin + marginBottom);
 
 		this.mapFillable = true;
 	}
@@ -316,8 +320,8 @@ public class TileMap extends Actor {
 			for (int row = sizeX - 1; row >= 0; row--) {
 
 				// sizeX-1, so that the left bound of the TileMap is equal to the leftmost Tile.
-				float x = getX() + margin / 2 + (sizeX - 1 + col - row) * tileDimensionsSurfaceX / 2.0001f;
-				float y = getY() + -marginBottom + margin / 2 + (row + col) * tileDimensionsSurfaceX / 4f;
+				float x = getX() + margin / 2 + (sizeX - 1 + col - row) * tileDimensions / 2.0001f;
+				float y = getY() + -marginBottom + margin / 2 + (row + col) * tileDimensions / 4f;
 
 				if (nodes[row][col].getType() == NodeType.NORMAL) {
 					tiles[row][col] = new Tile(normal, new Vector2(row, col), new Vector2(x, y));

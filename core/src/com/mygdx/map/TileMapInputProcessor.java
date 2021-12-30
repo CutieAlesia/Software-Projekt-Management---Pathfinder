@@ -1,5 +1,6 @@
 package com.mygdx.map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
@@ -22,13 +23,18 @@ public class TileMapInputProcessor implements InputProcessor{
 	
 	private float yAxisCorrection;
 	
-	private Vector2 lastChangedTileWhileDragging;
-	private NodeType typeOfFirstDraggedNode;
+	private boolean inputAllowed;
 	
+	
+	
+
+
+
 	public TileMapInputProcessor(TileMap map, Stage stage) {
 		this.map = map;
 		this.stage = stage;
 		this.yAxisCorrection =  map.getTileDimensionsSurfaceY() + 2;
+		this.inputAllowed = true;
 	}
 	
 
@@ -52,6 +58,28 @@ public class TileMapInputProcessor implements InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		if(inputAllowed) {
+			Vector2 stageCoordinates = stage.screenToStageCoordinates(new Vector2((float)screenX, (float)screenY));
+			Vector2 foundTilesCoordinates;
+			if(button == Buttons.LEFT) {
+				foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
+				if(foundTilesCoordinates != null) {
+					if(map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.NORMAL) {
+						map.changeNode(NodeType.BLOCKED, foundTilesCoordinates);
+					}
+				}
+			}
+			
+			if(button == Buttons.RIGHT) {
+				foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
+				if(foundTilesCoordinates != null) {
+	
+					if(map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.BLOCKED) {
+						map.changeNode(NodeType.NORMAL, foundTilesCoordinates);
+					}
+				}
+			}
+		}
 		return false;
 	}
 
@@ -60,20 +88,6 @@ public class TileMapInputProcessor implements InputProcessor{
 	 */
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		Vector2 stageCoordinates = stage.screenToStageCoordinates(new Vector2((float)screenX, (float)screenY));
-		if(button == Buttons.LEFT) {
-			Vector2 foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
-			if(foundTilesCoordinates != null) {
-				if(map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.BLOCKED) {
-					map.changeNode(NodeType.NORMAL, foundTilesCoordinates);
-				}else if(map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.NORMAL) {
-					map.changeNode(NodeType.BLOCKED, foundTilesCoordinates);
-				}
-					
-			}
-		}
-		lastChangedTileWhileDragging = null;
-		typeOfFirstDraggedNode = null;
 		return false;
 	}
 
@@ -84,19 +98,27 @@ public class TileMapInputProcessor implements InputProcessor{
 	
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		Vector2 stageCoordinates = stage.screenToStageCoordinates(new Vector2((float)screenX, (float)screenY));
-		Vector2 foundTilesPosition = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
-		if(foundTilesPosition != null) {
-			setupTypeOfFirstDraggedNode(foundTilesPosition);
-			if(typeOfFirstDraggedNode != null) {
-				if(!foundTilesPosition.equals(lastChangedTileWhileDragging)) {
-					if(map.getNodes()[(int)foundTilesPosition.x][(int)foundTilesPosition.y].getType() == NodeType.BLOCKED && typeOfFirstDraggedNode == NodeType.BLOCKED) {
-						map.changeNode(NodeType.NORMAL, foundTilesPosition);
-					}else if(map.getNodes()[(int)foundTilesPosition.x][(int)foundTilesPosition.y].getType() == NodeType.NORMAL && typeOfFirstDraggedNode == NodeType.NORMAL) {
-						map.changeNode(NodeType.BLOCKED, foundTilesPosition);
+		if(inputAllowed) {
+			Vector2 stageCoordinates = stage.screenToStageCoordinates(new Vector2((float)screenX, (float)screenY));
+			Vector2 foundTilesCoordinates;
+			
+			
+			if(Gdx.input.isButtonPressed(Buttons.LEFT)) {
+				foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
+				if(foundTilesCoordinates != null) {
+					if(map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.NORMAL) {
+						map.changeNode(NodeType.BLOCKED, foundTilesCoordinates);
 					}
-					
-					lastChangedTileWhileDragging = foundTilesPosition;
+						
+				}
+			}
+			
+			else if(Gdx.input.isButtonPressed(Buttons.RIGHT)) {
+				foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
+				if(foundTilesCoordinates != null) {
+					if(map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.BLOCKED) {
+						map.changeNode(NodeType.NORMAL, foundTilesCoordinates);
+					}
 				}
 			}
 		}
@@ -104,18 +126,6 @@ public class TileMapInputProcessor implements InputProcessor{
 	}
 	
 	
-	/**
-	 * Sets typeOfFirstDraggedNode after starting to drag the mouse if the Tile was Normal or Blocked.
-	 */
-	private void setupTypeOfFirstDraggedNode(Vector2 foundTilesPosition) {
-		if(typeOfFirstDraggedNode == null) {
-			NodeType foundTilesNodeType = map.getNodes()[(int)foundTilesPosition.x][(int)foundTilesPosition.y].getType();
-			if(foundTilesNodeType == NodeType.BLOCKED || foundTilesNodeType == NodeType.NORMAL) {
-				typeOfFirstDraggedNode = foundTilesNodeType;
-				
-			}
-		}
-	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
@@ -202,4 +212,13 @@ public class TileMapInputProcessor implements InputProcessor{
 		    return a.x * b.x + a.y * b.y;
 		  }
 
+	  
+		public boolean isInputAllowed() {
+			return inputAllowed;
+		}
+
+
+		public void setInputAllowed(boolean inputAllowed) {
+			this.inputAllowed = inputAllowed;
+		}
 }
