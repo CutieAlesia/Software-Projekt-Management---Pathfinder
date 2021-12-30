@@ -49,6 +49,8 @@ public class TileMap extends Actor {
 
     private int autoPlaySpeed = 2;
 
+
+
     //
     private LinkedList<Node> processedNodes;
 
@@ -335,5 +337,8 @@ public class TileMap extends Actor {
 
     public void setAutoPlaySpeed(int autoPlaySpeed) {
         this.autoPlaySpeed = autoPlaySpeed;
+    }
+    public LinkedList<Node> getProcessedNodes() {
+        return processedNodes;
     }
 }

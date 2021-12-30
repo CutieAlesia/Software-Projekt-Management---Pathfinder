@@ -6,8 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -37,8 +35,8 @@ import java.util.ArrayList;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     Stage stage;
     private TileMap map;
-    private final int MAP_X = 31;
-    private final int MAP_Y = 31;
+    private final int MAP_X = 5;
+    private final int MAP_Y = 5;
     private Table mapTable;
     private Table buttonTable;
     private Table counterTable;
@@ -80,19 +78,24 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         buttonTable = new Table();
         buttonTable.setFillParent(true);
-        buttonTable.setBounds(20, -20, 20, 20);
+       // buttonTable.setBounds(20, -20, 20, 20);
         buttonTable.align(Align.topLeft);
+        buttonTable.pad(30, 30, 30, 0);
 
         // Table for labels
         counterTable = new Table();
         counterTable.setFillParent(true);
-        counterTable.align(Align.topRight);
-        Label counterHeader = new Label("benötigte Zeit und Schritte des Algorithmus\n", generateLabelStyle(22, Color.valueOf("#FFDCA4")));
+        counterTable.align(Align.topLeft);
+        LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
+        Label counterHeader = new Label("benötigte Zeit und Schritte des Algorithmus\n", labelStyleGenerator.generateLabelStyle( "font/RobotoMono-VariableFont_wght.ttf",Color.valueOf("#FFDCA4"),22));
         counterTable.add(counterHeader);
         counterTable.row();
+        counterTable.pad(80, 30, 30, 0);
+
 
 
         //  Buttons
+
         skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
         setupPermanentButtons(buttonTable, skin);
 
@@ -101,6 +104,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         // Table order
         // Add table containing the buttons before table containing the field to avoid dropdown
         // transparency issue
+
 
         stage.addActor(counterTable);
         stage.addActor(buttonTable);
@@ -255,6 +259,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0.1f, 0.2f, 0.3f, 1);
 
+        manageLabelStatus();
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         pfTimer.increasePfRuntime();
@@ -263,6 +269,17 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             if (!map.autoVisualiseNode()) {
                 autoStepEnabled = false;
             }
+        }
+    }
+    private void manageLabelStatus(){
+        if(labels.size() >= 2) {
+            for (int i = 0; i < labels.size() - 1; i++) {
+                labels.get(i).setVisible(true);
+            }
+            labels.get(labels.size()-1).setVisible(map.getProcessedNodes().isEmpty());
+        }
+        if (labels.size() == 1){
+            labels.get(0).setVisible(map.getProcessedNodes().isEmpty());
         }
     }
 
@@ -302,24 +319,17 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      */
     private void createLabel(String algorithmName){
 
-        Label.LabelStyle labelStyle= generateLabelStyle(20, Color.valueOf("#FFDCA4"));
+        LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
+        Label.LabelStyle labelStyle= labelStyleGenerator.generateLabelStyle("font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 20);
         Label label = new Label(algorithmName + "\nZeit: " + algoTimes.get(algoTimes.size()-1) + "ms" + " Schritte: " + algoSteps.get(algoSteps.size()-1) + "\n", labelStyle);
+        if(labels.size() >= 5) {
+            counterTable.removeActor(labels.remove(0));
+        }
         counterTable.add(label);
         counterTable.row();
         labels.add(label);
+
+        label.setVisible(false);
     }
-    private Label.LabelStyle generateLabelStyle(int size, Color color){
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("metalui/RobotoMono-VariableFont_wght.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = size;
-        parameter.borderWidth = 0;
-        parameter.padTop = 20;
-        parameter.color = color;
-        parameter.padRight = 80;
-        BitmapFont font24 = generator.generateFont(parameter); // font size 24 pixels
-        generator.dispose();
-        Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = font24;
-        return labelStyle;
-    }
+
 }
