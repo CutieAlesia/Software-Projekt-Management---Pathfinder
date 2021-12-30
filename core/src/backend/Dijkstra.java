@@ -10,7 +10,7 @@ import API.Models.NodeType;
 import util.Util;
 
 /**
- * A* Algorithm class
+ * Dijkstra Algorithm class
  *
  * @author backend
  */
