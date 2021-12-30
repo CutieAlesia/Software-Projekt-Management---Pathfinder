@@ -199,11 +199,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         setupNewLabyrinth(MAP_X, MAP_Y);
                         bStartAlgorithm.setDisabled(false);
                         System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
-                        algoSteps.clear();
-                        algoTimes.clear();
-                        for (int i = 0; i < labels.size(); i++){
-                            labels.get(i).remove();
-                        }
+                        clearCounterLabels();
                         tileMapInputProcessor.setInputAllowed(true);
                     }
                 });
@@ -218,23 +214,36 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     }
                 });
 
-        final TextButton bClearLabyrinth = new TextButton("Reset Labyrinth", skin);
+        final TextButton bResetLabyrinth = new TextButton("Reset Labyrinth", skin);
 
-        bClearLabyrinth.addListener(
+        bResetLabyrinth.addListener(
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
-                        map.clearLabyrinth();
+                        map.resetLabyrinth();
                         bStartAlgorithm.setDisabled(false);
-                        System.out.println("Clicked! Is checked: " + bClearLabyrinth.isChecked());
+                        System.out.println("Clicked! Is checked: " + bResetLabyrinth.isChecked());
                     tileMapInputProcessor.setInputAllowed(true);}
                 });
+
+        final TextButton bClearField = new TextButton("Clear", skin);
+
+        bClearField.addListener(
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    map.clearField();
+                    clearCounterLabels();
+                    tileMapInputProcessor.setInputAllowed(true);
+                }
+            });
+
 
         table.add(bNewRandomLabyrinth);
         table.add(sbSearchAlgorithms);
         table.add(bStartAlgorithm);
         table.add(bNextStep);
         table.add(bAutoStepAlgorithm);
-        table.add(bClearLabyrinth);
+        table.add(bResetLabyrinth);
+        table.add(bClearField);
     }
 
     /**
@@ -291,6 +300,14 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         }
         if (labels.size() == 1){
             labels.get(0).setVisible(map.getProcessedNodes().isEmpty());
+        }
+    }
+
+    private void clearCounterLabels() {
+        algoSteps.clear();
+        algoTimes.clear();
+        for (int i = 0; i < labels.size(); i++){
+            labels.get(i).remove();
         }
     }
 

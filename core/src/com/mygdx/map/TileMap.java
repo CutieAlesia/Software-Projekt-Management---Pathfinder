@@ -175,7 +175,7 @@ public class TileMap extends Actor {
 	 * Clears the processedNodes and reverts the changes of the Labyrinths.
 	 */
 
-	public void clearLabyrinth() {
+	public void resetLabyrinth() {
 
 		for (int col = sizeY - 1; col >= 0; col--) {
 			for (int row = sizeX - 1; row >= 0; row--) {
@@ -200,6 +200,23 @@ public class TileMap extends Actor {
 		processedNodes.clear();
 		setMapFillable(true);
 	}
+
+    public void clearField() {
+
+        processedNodes.clear();
+        for (int i = 0; i < sizeX; i++) {
+            for (int j = 0; j < sizeY; j++) {
+                Node n = new Node(i, j);
+                updateNode(n);
+            }
+        }
+        Node n = new Node(0,0);
+        n.setType(NodeType.START);
+        updateNode(n);
+        n = new Node(sizeX-1,sizeY-1);
+        n.setType(NodeType.END);
+        updateNode(n);
+    }
 
 	/**
 	 * Receives a node from the backend and stores it for later backend-independent
