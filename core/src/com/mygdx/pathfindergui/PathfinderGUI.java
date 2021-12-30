@@ -90,11 +90,10 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         counterTable.setFillParent(true);
         counterTable.align(Align.topLeft);
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
-        Label counterHeader = new Label("benötigte Zeit und Schritte des Algorithmus\n", labelStyleGenerator.generateLabelStyle( "font/RobotoMono-VariableFont_wght.ttf",Color.valueOf("#FFDCA4"),22));
+        Label counterHeader = new Label("benötigte Zeit und Schritte des Algorithmus\n", labelStyleGenerator.generateLabelStyle( "font/RobotoMono-VariableFont_wght.ttf",Color.valueOf("#FFDCA4"),18));
         counterTable.add(counterHeader);
         counterTable.row();
-        counterTable.pad(80, 30, 30, 0);
-
+        counterTable.pad(60, 30, 30, 0);
 
 
         //  Buttons
@@ -354,7 +353,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void createLabel(String algorithmName){
 
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
-        Label.LabelStyle labelStyle= labelStyleGenerator.generateLabelStyle("font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 20);
+        Label.LabelStyle labelStyle= labelStyleGenerator.generateLabelStyle("font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 16);
         Label label = new Label(algorithmName + "\nZeit: " + algoTimes.get(algoTimes.size()-1) + "ms" + " Schritte: " + algoSteps.get(algoSteps.size()-1) + "\n", labelStyle);
         if(labels.size() >= 5) {
             counterTable.removeActor(labels.remove(0));
