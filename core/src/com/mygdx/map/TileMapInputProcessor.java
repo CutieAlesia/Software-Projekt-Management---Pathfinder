@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import API.Models.Node;
 import API.Models.NodeType;
 
-/**TileMapInputProcessor. Contains the logic for making tiles clickable. Very dependent on "TileMap" and especially the "fillMap()"-method in TileMap. 
+/**TileMapInputProcessor. Contains the logic for making tiles clickable.
  * 
  * 
  * @author frontend
@@ -26,7 +26,7 @@ public class TileMapInputProcessor implements InputProcessor{
 	
 	private boolean inputAllowed;
 	
-	private Vector2 nodeStashPosition;
+	private Vector2 nodePositionStash;
 	private NodeType nodeTypeStash;
 	
 	
@@ -60,27 +60,31 @@ public class TileMapInputProcessor implements InputProcessor{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
+	
+/**Left click builds blocked and right click builds normal tiles. When the start or end tile is left clicked, it is stashed and can be repositioned with the next left click.
+ * 
+ */
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if(inputAllowed) {
 			Vector2 stageCoordinates = stage.screenToStageCoordinates(new Vector2((float)screenX, (float)screenY));
 			Vector2 foundTilesCoordinates;
 			
-			
-			if(nodeTypeStash != null && nodeStashPosition != null) {
+			//if a tile was stashed
+			if(nodeTypeStash != null && nodePositionStash != null) {
 				if(button == Buttons.LEFT) {
 					foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
 					if(foundTilesCoordinates != null) {
-						map.changeNode(NodeType.NORMAL, nodeStashPosition);
+						map.changeNode(NodeType.NORMAL, nodePositionStash);
 						map.changeNode(nodeTypeStash, foundTilesCoordinates);
-						nodeStashPosition = null;
+						nodePositionStash = null;
 						nodeTypeStash = null;
 					}
 				}
 			}
 			
-			
+			//left click if no tile was stashed
 			else if(button == Buttons.LEFT) {
 				foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
 				if(foundTilesCoordinates != null) {
@@ -91,11 +95,11 @@ public class TileMapInputProcessor implements InputProcessor{
 					else if(map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.START ||
 							map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.END) {
 						nodeTypeStash = map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType();
-						nodeStashPosition = new Vector2(foundTilesCoordinates.x, foundTilesCoordinates.y);
+						nodePositionStash = new Vector2(foundTilesCoordinates.x, foundTilesCoordinates.y);
 					}
 				}
 			}
-			
+			//right click if no tile was stashed
 			else if(button == Buttons.RIGHT) {
 				foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
 				if(foundTilesCoordinates != null) {
@@ -110,9 +114,7 @@ public class TileMapInputProcessor implements InputProcessor{
 		return false;
 	}
 
-	/**
-	 * Releasing the left mouse button switches the state of the Tile between BLOCKED and NORMAL. Resets the Components needed for touchDragged.
-	 */
+
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		return false;
@@ -120,7 +122,7 @@ public class TileMapInputProcessor implements InputProcessor{
 
 	/**
 	 * Dragging the cursor over the screen changes the NodeTypes. 
-	 * Depending on which NodeType the process started, only Blocked Tiles are changed to normal Tiles and vice versa.
+	 * Left click builds blockled and  right click builds normal tiles.
 	 */
 	
 	@Override
