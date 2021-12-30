@@ -90,7 +90,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         counterTable.setFillParent(true);
         counterTable.align(Align.topLeft);
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
-        Label counterHeader = new Label("benötigte Zeit und Schritte des Algorithmus\n", labelStyleGenerator.generateLabelStyle( "font/RobotoMono-VariableFont_wght.ttf",Color.valueOf("#FFDCA4"),18));
+        Label counterHeader = new Label("Zeit und Schritte des Algorithmus\n", labelStyleGenerator.generateLabelStyle( "font/RobotoMono-VariableFont_wght.ttf",Color.valueOf("#FFDCA4"),18));
         counterTable.add(counterHeader);
         counterTable.row();
         counterTable.pad(60, 30, 30, 0);
