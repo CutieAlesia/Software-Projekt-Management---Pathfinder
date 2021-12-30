@@ -12,7 +12,7 @@ import util.Util;
 /**
  * Best First Algorithm class
  *
- * @author Finn
+ * @author backend
  */
 public class BestFirst extends SearchAlgorithm {
 

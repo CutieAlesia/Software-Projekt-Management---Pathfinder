@@ -8,7 +8,7 @@ import util.Util;
 /**
  * Depth First Algorithm Class
  *
- * @author Finn
+ * @author backend
  */
 public class DepthFirst extends SearchAlgorithm {
 

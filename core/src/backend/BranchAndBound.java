@@ -12,7 +12,7 @@ import util.Util;
 /**
  * Branch and Bound Algorithm class
  *
- * @author Finn
+ * @author backend
  */
 public class BranchAndBound extends SearchAlgorithm {
 

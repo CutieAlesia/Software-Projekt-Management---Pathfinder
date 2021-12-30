@@ -8,7 +8,7 @@ import API.Models.NodeType;
 /**
  * Base Class for all search algorithms
  *
- * @author Finn
+ * @author backend
  */
 public abstract class SearchAlgorithm implements IBackend {
 

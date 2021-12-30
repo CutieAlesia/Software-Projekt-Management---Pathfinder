@@ -12,7 +12,7 @@ import util.Util;
 /**
  * A* Algorithm class
  *
- * @author Finn
+ * @author backend
  */
 public class Dijkstra extends SearchAlgorithm {
 
