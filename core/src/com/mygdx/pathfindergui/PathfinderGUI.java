@@ -20,7 +20,6 @@ import com.mygdx.map.TileMapInputProcessor;
 import API.APIManager;
 import API.Interfaces.IFrontend;
 import API.Models.Node;
-import GUI.Generator.DepthFirst;
 import backend.AStar;
 import backend.BestFirst;
 import backend.BranchAndBound;
@@ -89,7 +88,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label counterHeader =
                 new Label(
-                        "Benötigte Zeit und Schritte des Algorithmus\n",
+                        "Benï¿½tigte Zeit und Schritte des Algorithmus\n",
                         labelStyleGenerator.generateLabelStyle(
                                 "font/RobotoMono-VariableFont_wght.ttf",
                                 Color.valueOf("#FFDCA4"),
@@ -122,7 +121,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         //        manager.attachBackend(backend);
 
         // attachNewAlgorithm(new AStar(manager));
- 
 
         pfTimer = PFTimer.getInstance();
 
@@ -276,7 +274,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         map.changeProperties(field);
     }
 
-    
     /**
      * Sets up a new empty field with the passed dimensions.
      *
@@ -284,11 +281,10 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param y
      */
     private void setupEmptyField(int x, int y) {
-    	map = new TileMap(x, y);
+        map = new TileMap(x, y);
         field = map.getNodes();
     }
-    
-    
+
     /**
      * Renders a GUI frame and increments program runtime. Automatically visualises
      * backend-processed nodes if autoStep mode is enabled.

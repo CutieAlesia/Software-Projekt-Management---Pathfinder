@@ -89,10 +89,9 @@ public class TileMap extends Actor {
             }
         }
         tiles = new Tile[sizeX][sizeY];
-        
 
         nodes[0][0].setType(NodeType.START);
-        nodes[nodes[0].length-1][nodes.length-1].setType(NodeType.END);
+        nodes[nodes[0].length - 1][nodes.length - 1].setType(NodeType.END);
 
         processedNodes = new LinkedList<>();
 

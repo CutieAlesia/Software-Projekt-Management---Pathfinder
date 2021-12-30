@@ -105,10 +105,9 @@ public class BreadthFirst extends SearchAlgorithm {
                 this.relevantNodes.add(neighbour);
             }
         }
-        if(relevantNodes.size() != 0) {
+        if (relevantNodes.size() != 0) {
             return advance(relevantNodes.remove(0));
         }
         return false;
-
     }
 }
