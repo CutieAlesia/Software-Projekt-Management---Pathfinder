@@ -60,6 +60,10 @@ public class BreadthFirst extends SearchAlgorithm {
         // Coordinates of the neighbours that are supposed to be updated
         int[][] coords = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
+        if(relevantNodes.contains(node)) {
+            relevantNodes.remove(node);
+        }
+
         // Check if the given node is the start or end node
         if (node.getType() != NodeType.START && node.getType() != NodeType.END) {
             // mark the given node as visited
@@ -102,12 +106,15 @@ public class BreadthFirst extends SearchAlgorithm {
                     return true;
                 }
 
-                this.relevantNodes.add(neighbour);
+                if(!relevantNodes.contains(neighbour))
+                    this.relevantNodes.add(neighbour);
             }
         }
+
         if (relevantNodes.size() != 0) {
-            return advance(relevantNodes.remove(0));
+            return advance(relevantNodes.get(0));
         }
+
         return false;
     }
 }
