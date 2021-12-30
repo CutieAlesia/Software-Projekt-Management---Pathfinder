@@ -43,15 +43,15 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private Table buttonTable;
     private Table counterTable;
     private Skin skin;
-    InputMultiplexer inputMultiplexer;
+    private InputMultiplexer inputMultiplexer;
 
-    TileMapInputProcessor tileMapInputProcessor;
+    private TileMapInputProcessor tileMapInputProcessor;
 
-    APIManager manager;
-    SearchAlgorithm backend;
-    Node[][] field;
+    private APIManager manager;
+    private SearchAlgorithm backend;
+    private Node[][] field;
 
-    PFTimer pfTimer;
+    private PFTimer pfTimer;
 
     private ArrayList<Integer> algoTimes = new ArrayList<>();
     private ArrayList<Integer> algoSteps = new ArrayList<>();
@@ -59,7 +59,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private ArrayList<Node> receivedNodes = new ArrayList<>();
 
     //  Toggles autoplay mode
-    boolean autoStepEnabled = false;
+    private boolean autoStepEnabled = false;
 
     /**
      * Sets up the stage. WIP!
@@ -70,9 +70,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     public void create() {
         ScreenViewport viewport = new ScreenViewport();
         stage = new Stage(viewport);
-        DepthFirst df = new DepthFirst();
-        Node[][] labyrinth = df.generateLabyrinth(10, 10);
-        map = new TileMap(labyrinth);
+        setupEmptyField(MAP_X, MAP_Y);
         map.setMapFillable(true);
         mapTable = new Table();
         mapTable.setFillParent(true);
@@ -91,7 +89,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label counterHeader =
                 new Label(
-                        "BenÃ¶tigte Zeit und Schritte des Algorithmus\n",
+                        "Benötigte Zeit und Schritte des Algorithmus\n",
                         labelStyleGenerator.generateLabelStyle(
                                 "font/RobotoMono-VariableFont_wght.ttf",
                                 Color.valueOf("#FFDCA4"),
@@ -124,8 +122,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         //        manager.attachBackend(backend);
 
         // attachNewAlgorithm(new AStar(manager));
-
-        setupNewLabyrinth(MAP_X, MAP_Y);
+ 
 
         pfTimer = PFTimer.getInstance();
 
@@ -279,6 +276,19 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         map.changeProperties(field);
     }
 
+    
+    /**
+     * Sets up a new empty field with the passed dimensions.
+     *
+     * @param x
+     * @param y
+     */
+    private void setupEmptyField(int x, int y) {
+    	map = new TileMap(x, y);
+        field = map.getNodes();
+    }
+    
+    
     /**
      * Renders a GUI frame and increments program runtime. Automatically visualises
      * backend-processed nodes if autoStep mode is enabled.
