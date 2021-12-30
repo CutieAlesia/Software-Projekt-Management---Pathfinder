@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
+import API.Models.Node;
 import API.Models.NodeType;
 
 /**TileMapInputProcessor. Contains the logic for making tiles clickable. Very dependent on "TileMap" and especially the "fillMap()"-method in TileMap. 
@@ -24,6 +25,10 @@ public class TileMapInputProcessor implements InputProcessor{
 	private float yAxisCorrection;
 	
 	private boolean inputAllowed;
+	
+	private Vector2 nodeStashPosition;
+	private NodeType nodeTypeStash;
+	
 	
 	
 	
@@ -61,16 +66,37 @@ public class TileMapInputProcessor implements InputProcessor{
 		if(inputAllowed) {
 			Vector2 stageCoordinates = stage.screenToStageCoordinates(new Vector2((float)screenX, (float)screenY));
 			Vector2 foundTilesCoordinates;
-			if(button == Buttons.LEFT) {
+			
+			
+			if(nodeTypeStash != null && nodeStashPosition != null) {
+				if(button == Buttons.LEFT) {
+					foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
+					if(foundTilesCoordinates != null) {
+						map.changeNode(NodeType.NORMAL, nodeStashPosition);
+						map.changeNode(nodeTypeStash, foundTilesCoordinates);
+						nodeStashPosition = null;
+						nodeTypeStash = null;
+					}
+				}
+			}
+			
+			
+			else if(button == Buttons.LEFT) {
 				foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
 				if(foundTilesCoordinates != null) {
 					if(map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.NORMAL) {
 						map.changeNode(NodeType.BLOCKED, foundTilesCoordinates);
 					}
+					
+					else if(map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.START ||
+							map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType() == NodeType.END) {
+						nodeTypeStash = map.getNodes()[(int)foundTilesCoordinates.x][(int)foundTilesCoordinates.y].getType();
+						nodeStashPosition = new Vector2(foundTilesCoordinates.x, foundTilesCoordinates.y);
+					}
 				}
 			}
 			
-			if(button == Buttons.RIGHT) {
+			else if(button == Buttons.RIGHT) {
 				foundTilesCoordinates = determinePressedTile((int)stageCoordinates.x, (int)stageCoordinates.y);
 				if(foundTilesCoordinates != null) {
 	
@@ -79,6 +105,7 @@ public class TileMapInputProcessor implements InputProcessor{
 					}
 				}
 			}
+			
 		}
 		return false;
 	}
