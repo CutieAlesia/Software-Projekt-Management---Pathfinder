@@ -10,11 +10,11 @@ import API.Models.NodeType;
 import util.Util;
 
 /**
- * Branch and Bound Algorithm class
+ * Dijkstra Algorithm class
  *
  * @author backend
  */
-public class BranchAndBound extends SearchAlgorithm {
+public class Dijkstra extends SearchAlgorithm {
 
     private ArrayList<Node> relevantNodes;
 
@@ -23,7 +23,7 @@ public class BranchAndBound extends SearchAlgorithm {
      *
      * @param manager APIManager that handles the communication between frontend and backend
      */
-    public BranchAndBound(APIManager manager) {
+    public Dijkstra(APIManager manager) {
         super(manager);
         this.relevantNodes = new ArrayList<Node>();
     }
@@ -32,10 +32,12 @@ public class BranchAndBound extends SearchAlgorithm {
     @Override
     public void run() {
         findLocations();
+        this.start.setCosts(0);
         boolean found = updateNeighbours(this.start);
         if (found) {
             Node node = end;
 
+            // update the state for all nodes that are part of the found path
             while (node != null) {
                 if (node.getType() != NodeType.END && node.getType() != NodeType.START) {
                     node.setType(NodeType.PATH);
@@ -59,7 +61,9 @@ public class BranchAndBound extends SearchAlgorithm {
      * @return boolean that describes whether a valid path was found or not
      */
     private boolean updateNeighbours(Node node) {
-        boolean found = false;
+        // return true if the current node if the end node
+        if(node.getType() == NodeType.END)
+            return true;
 
         // Coordinates of the neighbours that are supposed to be updated
         int[][] coords = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
@@ -93,47 +97,36 @@ public class BranchAndBound extends SearchAlgorithm {
             if (leftInBound && rightInBound && topInBound && bottomInBound) {
 
                 Node neighbour = field[node.getVertIndex() + i][node.getHorIndex() + j];
-                int costs =
-                        Util.getDistance(node, neighbour)
-                                + (node.getCosts() != -1 ? node.getCosts() : 0);
+                int costs = node.getCosts() + 10;
 
-                // skip the current neighbour if the node is blocked, already visited or the
-                // start node
-                if (neighbour.getType() == NodeType.START
-                        || neighbour.getType() == NodeType.BLOCKED
-                        || neighbour.getType() == NodeType.VISITED) {
+                // skip the current neighbour if the node is blocked, already visited or the start node
+                if(neighbour.getType() == NodeType.START || neighbour.getType() == NodeType.BLOCKED || neighbour.getType() == NodeType.VISITED)
                     continue;
-                }
 
                 // update the neighbours costs if the neighbour hasn't been calculated yet or
                 // the new costs are cheaper
                 if (costs < neighbour.getCosts() || neighbour.getCosts() == -1) {
                     neighbour.setCosts(costs);
                     neighbour.setPrev(node);
-
-                    // indicate that the end node was found
-                    if (neighbour.getType() == NodeType.END) {
-                        found = true;
-                        System.out.println("Ziel gefunden!");
-                    }
                 }
 
                 // if not already done, add neighbour to the relevant nodes list
-                if (!relevantNodes.contains(neighbour)) {
+                if(!relevantNodes.contains(neighbour)) {
                     relevantNodes.add(neighbour);
                 }
             }
         }
 
         Util.printField(field);
+
         Node nextToUpdate = getNextNode();
         // returns true if the end node was found, false if there is no valid path or
         // recursively calls itself if there are still nodes to check
-        return found ? true : nextToUpdate == null ? false : updateNeighbours(nextToUpdate);
+        return nextToUpdate == null ? false : updateNeighbours(nextToUpdate);
     }
 
     /**
-     * returns the cheapest relevant node, based on the costs
+     * returns the cheapest relevant node, based on the real path costs aswell as the heuristics
      *
      * @return Node Currently cheapest relevant node
      */
@@ -146,15 +139,16 @@ public class BranchAndBound extends SearchAlgorithm {
         return this.relevantNodes.get(0);
     }
 
-    /** sort all relevant nodes by their costs */
+    /** sort all relevant nodes by their costs (real path costs) */
     private void sortRelevantNodes() {
         Collections.sort(
-                relevantNodes,
-                new Comparator<Node>() {
-                    @Override
-                    public int compare(Node node1, Node node2) {
-                        return ((Integer) node1.getCosts()).compareTo(node2.getCosts());
-                    }
-                });
+            relevantNodes,
+            new Comparator<Node>() {
+                @Override
+                public int compare(Node node1, Node node2) {
+                    return ((Integer) node1.getCosts()).compareTo(node2.getCosts());
+                }
+            }
+        );
     }
 }

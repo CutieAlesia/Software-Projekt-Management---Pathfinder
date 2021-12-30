@@ -1,5 +1,6 @@
 package com.mygdx.pathfindergui;
 
+import GUI.Generator.RecursiveDivision;
 import API.Models.NodeType;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -145,7 +146,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void setupPermanentButtons(Table table, final Skin skin) {
 
         final SelectBox<String> sbSearchAlgorithms = new SelectBox<>(skin);
-        final String[] searchAlgorithms = {"AStar", "BestFirst", "BranchAndBound", "DepthFirst"};
+        final String[] searchAlgorithms = {"AStar", "BestFirst", "BranchAndBound", "BreadthFirst", "DepthFirst", "Dijkstra"};
         sbSearchAlgorithms.setItems(searchAlgorithms);
 
         sbSearchAlgorithms.setWidth(70f);
@@ -168,7 +169,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                                 attachNewAlgorithm(new BranchAndBound(manager));
                                 break;
                             case 3:
+                                attachNewAlgorithm(new backend.BreadthFirst(manager));
+                                break;
+                            case 4:
                                 attachNewAlgorithm(new backend.DepthFirst(manager));
+                                break;
+                            case 5:
+                                attachNewAlgorithm(new backend.Dijkstra(manager));
                                 break;
                         }
                         receivedNodes.clear();
@@ -264,7 +271,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param y
      */
     private void setupNewLabyrinth(int x, int y) {
-        DepthFirst a = new DepthFirst();
+        //DepthFirst a = new DepthFirst();
+        RecursiveDivision a = new RecursiveDivision();
         field = a.generateLabyrinth(x, y);
         map.changeProperties(field);
     }
