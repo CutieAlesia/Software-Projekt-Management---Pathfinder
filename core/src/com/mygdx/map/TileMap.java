@@ -64,6 +64,14 @@ public class TileMap extends Actor {
 	private LinkedList<Node> processedNodes;
 
 	private PFTimer pfTimer;
+	
+	
+	//true if the map has been edited. Necessary for resetting the counterLabels
+	private boolean mapEdited;
+
+
+
+
 
 	/**
 	 * Constructor. Generates a new Node matrix and sets the bounds of the map
@@ -279,6 +287,7 @@ public class TileMap extends Actor {
 		nodes[(int)matrixPosition.x][(int)matrixPosition.y].setType(type);
 		Vector2 tileWorldPosition = tiles[nodes[(int)matrixPosition.x][(int)matrixPosition.y].getVertIndex()][nodes[(int)matrixPosition.x][(int)matrixPosition.y].getHorIndex()].getWorldPos();
 		tiles[(int)matrixPosition.x][(int)matrixPosition.y] = buildTile(nodes[(int)matrixPosition.x][(int)matrixPosition.y], tileWorldPosition);
+		setMapEdited(true);
 	}
 
 	/**
@@ -409,5 +418,13 @@ public class TileMap extends Actor {
 
 	public Tile[][] getTiles() {
 		return tiles;
+	}
+	
+	public boolean isMapEdited() {
+		return mapEdited;
+	}
+	
+	public void setMapEdited(boolean mapEdited) {
+		this.mapEdited = mapEdited;
 	}
 }

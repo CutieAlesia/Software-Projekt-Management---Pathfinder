@@ -291,6 +291,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 autoStepEnabled = false;
             }
         }
+        
+        if(map.isMapEdited()) {
+        	clearCounterLabels();
+        	map.setMapEdited(false);
+        }
     }
     private void manageLabelStatus(){
         if(labels.size() >= 2) {
