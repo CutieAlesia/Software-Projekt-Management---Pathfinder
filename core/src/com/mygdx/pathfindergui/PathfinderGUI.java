@@ -106,7 +106,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void setupPermanentButtons(Table table, final Skin skin) {
 
         final SelectBox<String> sbSearchAlgorithms = new SelectBox<>(skin);
-        String[] searchAlgorithms = {"AStar", "BestFirst", "BranchAndBound", "DepthFirst", "Dijkstra"};
+        String[] searchAlgorithms = {"AStar", "BestFirst", "BranchAndBound", "DepthFirst", "Dijkstra", "BreadthFirst"};
         sbSearchAlgorithms.setItems(searchAlgorithms);
 
         sbSearchAlgorithms.setWidth(70f);
@@ -132,6 +132,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                                 break;
                             case 4:
                                 attachNewAlgorithm(new backend.Dijkstra(manager));
+                                break;
+                            case 5:
+                                attachNewAlgorithm(new backend.BreadthFirst(manager));
                                 break;
                         }
                         launchBackend();

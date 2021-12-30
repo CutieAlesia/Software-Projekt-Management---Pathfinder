@@ -21,7 +21,7 @@ public class BestFirst extends SearchAlgorithm {
     /**
      * Initializes all fields
      *
-     * @param field
+     * @param manager APIManager that handles the communication between frontend and backend
      */
     public BestFirst(APIManager manager) {
         super(manager);
