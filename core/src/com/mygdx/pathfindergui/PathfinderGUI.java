@@ -231,6 +231,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     map.clearField();
+                    bStartAlgorithm.setDisabled(false);
                     clearCounterLabels();
                     tileMapInputProcessor.setInputAllowed(true);
                 }
