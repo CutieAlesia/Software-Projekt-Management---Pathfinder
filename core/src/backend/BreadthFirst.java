@@ -60,7 +60,7 @@ public class BreadthFirst extends SearchAlgorithm {
         // Coordinates of the neighbours that are supposed to be updated
         int[][] coords = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
-        if(relevantNodes.contains(node)) {
+        if (relevantNodes.contains(node)) {
             relevantNodes.remove(node);
         }
 
@@ -106,8 +106,7 @@ public class BreadthFirst extends SearchAlgorithm {
                     return true;
                 }
 
-                if(!relevantNodes.contains(neighbour))
-                    this.relevantNodes.add(neighbour);
+                if (!relevantNodes.contains(neighbour)) this.relevantNodes.add(neighbour);
             }
         }
 
