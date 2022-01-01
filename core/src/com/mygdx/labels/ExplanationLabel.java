@@ -35,10 +35,10 @@ public class ExplanationLabel extends Label {
         switch(algorithm) {
 
             case ASTAR:
-                this.setText("Der A* Algorithmus gehört zu den informierten Suchverfahren, was bedeutet, dass er über Wissen \nbezüglich des Suchraums verfügt, welches genutzt wird um die Suchzeit zu verringern.\n" +
-                    "Der Algorithmus verwendet sowohl die realen Pfadkosten als auch die Schätzung der Restkosten \n(Heuristik) eines Knotens. Die Kostenfunktion lautet dabei wie folgt: f(n) = g(n) + h(n)\n" +
-                    "Es wird immer ein Weg gefunden (sofern vorhanden) und dieser ist auch immer der optimale Weg\n" +
-                    "Als Datenstruktur zur Speicherung der Pfade wird eine sortierte Queue (Prioritätsqueue genutzt)\n" +
+                this.setText("Der A* Algorithmus gehört zu den informierten Suchverfahren, was bedeutet, dass er über Wissen \nbezüglich des Suchraums verfügt, welches genutzt wird, um die Suchzeit zu verringern.\n" +
+                    "Der Algorithmus verwendet sowohl die realen Pfadkosten als auch die Schätzung der Restkosten \n(Heuristik) eines Knotens. Die Kostenfunktion lautet dabei wie folgt: f(n) = g(n) + h(n).\n" +
+                    "Es wird immer ein Weg gefunden (sofern vorhanden) und dieser ist auch immer der optimale Weg.\n" +
+                    "Als Datenstruktur zur Speicherung der Pfade wird eine sortierte Queue (Prioritätsqueue) genutzt.\n" +
                     "\nRegeln für die Heuristik:\n" +
                     "Damit die Optimalität und die Vollständigkeit des A* Algorithmus gewährleistet werden können, \nmüssen einige Kriterien bezüglich der Heuristik erfüllt sein.\n" +
                     "So ist die Heuristik z.B. nur dann zulässig, wenn für alle Knoten gilt, dass die Schätzung \nder Restkosten (h(n)) kleiner/gleich den tatsächlichen optimalen Restkosten eines Knotens ist.\n" +
@@ -52,8 +52,8 @@ public class ExplanationLabel extends Label {
                     "Schritt 3:  Lösche alle Pfade aus der Queue, deren Gesamtkosten größer oder gleich denen eines " +
                     "\n            anderen Knotens in der Queue sind, sofern beide Pfade auf den gleichen Knoten verweisen \n" +
                     "Schritt 4:  Sortiere die Queue, ausgehend von den Gesamtkosten der Pfade\n" +
-                    "Schritt 5:  Überprüfe ob der erste Knoten in der nun sortierten Queue auf den Zielknoten verweist\n" +
-                    "\nWenn in Schritt 5 festgestellt wird, dass der Zielknoten gefunden wurde ist der Algorithmus fertig. " +
+                    "Schritt 5:  Überprüfe, ob der erste Knoten in der nun sortierten Queue auf den Zielknoten verweist\n" +
+                    "\nWenn in Schritt 5 festgestellt wird, dass der Zielknoten gefunden wurde, ist der Algorithmus fertig. " +
                     "\nAndernfalls werden die Schritte 2-5 solange durchlaufen, bis der erste Knoten in der " +
                     "\nsortierten Queue auf den Zielknoten verweist oder bis die Queue leer ist.\n");
 
@@ -81,7 +81,7 @@ public class ExplanationLabel extends Label {
                     "(d.h. bestmögliche) Weg. Als Datenstruktur zur Speicherung der Pfade wird eine sortierte Queue\n" +
                     "(Prioritätsqueue) genutzt.\n" +
                     "\nVorgehensweise\n" +
-                    "Die Vorgehensweise des Branch and Bound-Algorithmus ist die gleiche wie bei dem A*-Algorithmus,\n" +
+                    "Die Vorgehensweise des Branch and Bound-Algorithmus ist die Gleiche wie bei dem A*-Algorithmus,\n" +
                     "mit dem Unterschied, dass die Berechnung der Gesamtkosten lediglich aus den realen Pfadkosten\n" +
                     "und nicht aus der Summe der realen Pfadkosten und der Heuristik besteht.\n\n\n\n");
 
@@ -125,7 +125,7 @@ public class ExplanationLabel extends Label {
                 break;
             case DIJKSTRA:
                 this.setText("Der Dijkstra-Algorithmus ist ein Greedy-Algorithmus. Er wird benutzt, um den kürzesten bzw.\n" +
-                    "kostengünstigsten Weg zu ermitteln. Er kann rekusiv geschrieben werden. " +
+                    "kostengünstigsten Weg zu ermitteln. Er kann rekursiv geschrieben werden. " +
                     "\nDa der Dijkstra-Algorithmus " +
                     "alle Nodes bei der Berechnung des kostengünstigsten Pfades in Betracht " +
                     "\nzieht, kann er vergleichsweise " +
