@@ -15,6 +15,7 @@ public class LabelStyleGenerator {
         parameter.size = fontSize;
         parameter.borderWidth = 0;
         parameter.padTop = 20;
+
         parameter.color = color;
         // parameter.padRight = 80;
         BitmapFont font24 = generator.generateFont(parameter); // font size 24 pixels

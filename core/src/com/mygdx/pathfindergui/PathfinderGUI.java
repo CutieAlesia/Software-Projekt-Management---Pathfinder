@@ -58,9 +58,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
     private ArrayList<Integer> algoTimes = new ArrayList<>();
     private ArrayList<Integer> algoSteps = new ArrayList<>();
-    private ArrayList<Label> labels = new ArrayList<>();
+    private ArrayList<Integer> pathSteps = new ArrayList<>();
     private ArrayList<Node> receivedNodes = new ArrayList<>();
+    private ArrayList<Node> pathNodes = new ArrayList<>();
 
+    private ArrayList<Label> labels = new ArrayList<>();
     ExplanationLabel explanationLabel;
     SelectBox<String> sbSearchAlgorithms;
 
@@ -185,8 +187,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                                 break;
                         }
                         receivedNodes.clear();
+                        pathNodes.clear();
                         launchBackend();
                         algoSteps.add(receivedNodes.size());
+                        pathSteps.add(pathNodes.size());
+
                         System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
                         bStartAlgorithm.setDisabled(true);
                         createLabel(searchAlgorithms[sbSearchAlgorithms.getSelectedIndex()]);
@@ -293,9 +298,10 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         final ScrollPane scroll = new ScrollPane(table, skin);
         scroll.setScrollbarsVisible(true);
-        LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
+
 
         table.add(explanationLabel);
+        table.padBottom(10);
         container.add(scroll);
         scroll.validate();
     }
@@ -391,6 +397,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void clearCounterLabels() {
         algoSteps.clear();
         algoTimes.clear();
+        pathSteps.clear();
         for (int i = 0; i < labels.size(); i++) {
             labels.get(i).remove();
         }
@@ -423,6 +430,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         if (node.getType() == NodeType.VISITED) {
             receivedNodes.add(node);
         }
+        if (node.getType() == NodeType.PATH){
+            pathNodes.add(node);
+        }
     }
 
     /**
@@ -434,7 +444,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label.LabelStyle labelStyle= labelStyleGenerator.generateLabelStyle("font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 16);
-        Label label = new Label(algorithmName + "\nZeit: " + algoTimes.get(algoTimes.size()-1) + "ms" + " Schritte: " + algoSteps.get(algoSteps.size()-1) + "\n", labelStyle);
+        Label label = new Label(algorithmName + "\nZeit: " + algoTimes.get(algoTimes.size()-1) + "ms" + " Schritte: " + algoSteps.get(algoSteps.size()-1) + " Zielpfad: " + pathSteps.get(pathSteps.size()-1) +"\n", labelStyle);
         if(labels.size() >= 5) {
             counterTable.removeActor(labels.remove(0));
         }
