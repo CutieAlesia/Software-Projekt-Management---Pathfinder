@@ -125,10 +125,14 @@ public class ExplanationLabel extends Label {
                 break;
             case DIJKSTRA:
                 this.setText("Der Dijkstra-Algorithmus ist ein Greedy-Algorithmus. Er wird benutzt, um den kürzesten bzw.\n" +
-                    "kostengünstigsten Weg zu ermitteln. Er kann rekusiv geschrieben werden. Da der Dijkstra-Algorithmus\n" +
-                    "alle Nodes bei der Berechnung des kostengünstigsten Pfades in Betracht zieht, kann er vergleichsweise\n" +
-                    "langsam sein. Er wird am besten bei wenigen bis mittelhohen Pfadmöglichkeiten angewendet. Bei der \n" +
-                    "Berechnung von Distanzen, z.B. innerhalb von Straßennetzwerken, ist er demnach sehr nützlich.\n" +
+                    "kostengünstigsten Weg zu ermitteln. Er kann rekusiv geschrieben werden. " +
+                    "\nDa der Dijkstra-Algorithmus " +
+                    "alle Nodes bei der Berechnung des kostengünstigsten Pfades in Betracht " +
+                    "\nzieht, kann er vergleichsweise " +
+                    "langsam sein. Er wird am besten bei wenigen bis mittelhohen " +
+                    "\nPfadmöglichkeiten angewendet. Bei der " +
+                    "Berechnung von Distanzen, z.B. innerhalb von Straßennetzwerken, " +
+                    "\nist er demnach sehr nützlich.\n" +
                     "\nVorgehensweise:\n" +
                     "Schritt 1: Die Distanz zu allen Nodes ausgehend von der Startnode wird auf unendlich gesetzt\n" +
                     "Schritt 2: Es werden die Kosten zu den benachbarten Nodes ausgehend von der Startnode berechnet\n" +
