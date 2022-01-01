@@ -159,7 +159,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         sbSearchAlgorithms.setWidth(70f);
 
-        final TextButton bStartAlgorithm = new TextButton("Start", skin);
+        final TextButton bStartAlgorithm = new TextButton("Auswaehlen", skin);
 
         bStartAlgorithm.addListener(
                 new ChangeListener() {
@@ -198,7 +198,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     }
                 });
 
-        final TextButton bNextStep = new TextButton("Next Step", skin);
+        final TextButton bNextStep = new TextButton("Weiter", skin);
 
         bNextStep.addListener(
                 new ChangeListener() {
@@ -208,20 +208,24 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     }
                 });
 
-        final TextButton bNewRandomLabyrinthDepthFirst = new TextButton("Generate new Labyrinth (1)", skin);
+        final TextButton bNewRandomLabyrinth = new TextButton("Zufallslabyrinth", skin);
 
-        bNewRandomLabyrinthDepthFirst.addListener(
+        bNewRandomLabyrinth.addListener(
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
-                        setupNewLabyrinthDepthFirst(MAP_X, MAP_Y);
+                        if (pfTimer.getPfRuntime() % 2 == 0) {
+                        setupNewLabyrinthDepthFirst(MAP_X, MAP_Y); }
+                        else {
+                            setupNewLabyrinthRecursiveDivision(MAP_X, MAP_Y);
+                        }
                         bStartAlgorithm.setDisabled(false);
                         System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
                         clearCounterLabels();
                         tileMapInputProcessor.setInputAllowed(true);
                     }
                 });
-        
-        final TextButton bNewRandomLabyrinthRecursiveDivision = new TextButton("Generate new Labyrinth(2)", skin);
+
+/*        final TextButton bNewRandomLabyrinthRecursiveDivision = new TextButton("Generate new Labyrinth(2)", skin);
 
         bNewRandomLabyrinthRecursiveDivision.addListener(
                 new ChangeListener() {
@@ -233,6 +237,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         tileMapInputProcessor.setInputAllowed(true);
                     }
                 });
+                */
 
         final TextButton bAutoStepAlgorithm = new TextButton("Autoplay", skin);
 
@@ -245,7 +250,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     }
                 });
 
-        final TextButton bResetLabyrinth = new TextButton("Reset Labyrinth", skin);
+        final TextButton bResetLabyrinth = new TextButton("Saubermachen", skin);
 
         bResetLabyrinth.addListener(
                 new ChangeListener() {
@@ -257,7 +262,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     }
                 });
 
-        final TextButton bClearField = new TextButton("Clear", skin);
+        final TextButton bClearField = new TextButton("Leeres Labyrinth", skin);
 
         bClearField.addListener(
                 new ChangeListener() {
@@ -270,16 +275,16 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 });
 
         generateLabyrinthButtonTable = new Table();
-        generateLabyrinthButtonTable.add(bNewRandomLabyrinthDepthFirst);
+        generateLabyrinthButtonTable.add(bNewRandomLabyrinth);
+        table.add(bClearField);
 //        generateLabyrinthButtonTable.row();
-        generateLabyrinthButtonTable.add(bNewRandomLabyrinthRecursiveDivision);
+//        generateLabyrinthButtonTable.add(bNewRandomLabyrinthRecursiveDivision);
         table.add(generateLabyrinthButtonTable);
         table.add(sbSearchAlgorithms);
         table.add(bStartAlgorithm);
         table.add(bNextStep);
         table.add(bAutoStepAlgorithm);
         table.add(bResetLabyrinth);
-        table.add(bClearField);
     }
 
 
@@ -327,7 +332,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         field = a.generateLabyrinth(x, y);
         map.changeProperties(field);
     }
-    
+
     /**
      * Sets up a new randomly generated labyrinth with the passed dimensions.
      *
