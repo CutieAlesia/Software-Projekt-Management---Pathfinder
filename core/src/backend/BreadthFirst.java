@@ -5,20 +5,25 @@ import API.Models.Node;
 import API.Models.NodeType;
 import util.Util;
 
+import java.util.ArrayList;
+
 /**
- * Depth First Algorithm Class
+ * Breadth First Algorithm Class
  *
  * @author backend
  */
-public class DepthFirst extends SearchAlgorithm {
+public class BreadthFirst extends SearchAlgorithm {
+
+    private ArrayList<Node> relevantNodes;
 
     /**
      * Initializes all fields
      *
      * @param manager APIManager that handles the communication between frontend and backend
      */
-    public DepthFirst(APIManager manager) {
+    public BreadthFirst(APIManager manager) {
         super(manager);
+        this.relevantNodes = new ArrayList<Node>();
     }
 
     /** Starts the recursive algorithm and runs until a path is found or there is no valid path */
@@ -54,6 +59,10 @@ public class DepthFirst extends SearchAlgorithm {
     private boolean advance(Node node) {
         // Coordinates of the neighbours that are supposed to be updated
         int[][] coords = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+        if (relevantNodes.contains(node)) {
+            relevantNodes.remove(node);
+        }
 
         // Check if the given node is the start or end node
         if (node.getType() != NodeType.START && node.getType() != NodeType.END) {
@@ -97,11 +106,12 @@ public class DepthFirst extends SearchAlgorithm {
                     return true;
                 }
 
-                // advance neighbour
-                if (advance(neighbour)) {
-                    return true;
-                }
+                if (!relevantNodes.contains(neighbour)) this.relevantNodes.add(neighbour);
             }
+        }
+
+        if (relevantNodes.size() != 0) {
+            return advance(relevantNodes.get(0));
         }
 
         return false;

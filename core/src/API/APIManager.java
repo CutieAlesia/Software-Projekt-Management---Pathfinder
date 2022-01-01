@@ -15,7 +15,7 @@ public class APIManager {
 
     private Node node;
     private List<IFrontend> frontends = new ArrayList<>();
-    private List<IBackend> backends = new ArrayList<>();
+    private IBackend backend;
 
     public APIManager() {}
 
@@ -39,9 +39,7 @@ public class APIManager {
      */
     public void sendToBackend(Node[][] matrix) {
         System.out.println("[API] Transmitting data to the backend");
-        for (IBackend endpoint : backends) {
-            endpoint.receive(matrix);
-        }
+        backend.receive(matrix);
     }
 
     /**
@@ -70,8 +68,14 @@ public class APIManager {
      * @param backend Class with the IBackend interface
      */
     public void attachBackend(IBackend backend) {
-        backends.add(backend);
+        this.backend = backend;
         System.out.println("[API] Backend added");
-        System.out.println(backends);
+        System.out.format("Active Algorithm: %s\n", backend.getClass().getSimpleName());
+    }
+
+    public void detachBackend(IBackend backend) {
+        this.backend = null;
+        System.out.println("[API] Backend detached");
+        System.out.format("Active Algorithm: %s\n", backend.getClass().getSimpleName());
     }
 }

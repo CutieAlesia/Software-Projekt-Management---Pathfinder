@@ -1,5 +1,7 @@
 # Pathfinder Project
 
+Run gradlew desktop:dist in command window to create exectuable jar file in dektop/build/libs directory
+
 ![TeamCity build status](http://185.194.217.213:8111/app/rest/builds/buildType:id:SpmPathfinder_Build/statusIcon.svg)
 ![](https://img.shields.io/github/last-commit/Kushurando/Software-Projekt-Management---Pathfinder/main)
 ___

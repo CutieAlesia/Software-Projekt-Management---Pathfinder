@@ -2,7 +2,7 @@ import API.APIManager;
 import API.Models.Node;
 import GUI.Frontend;
 import GUI.Generator.DepthFirst;
-import backend.AStar;
+import backend.Dijkstra;
 import backend.SearchAlgorithm;
 
 public class MainOld {
@@ -10,7 +10,7 @@ public class MainOld {
     public static void main(String[] args) {
         APIManager manager = new APIManager();
         Frontend frontend = new Frontend(manager);
-        SearchAlgorithm backend = new AStar(manager);
+        SearchAlgorithm backend = new Dijkstra(manager);
         manager.attachFrontend(frontend);
         manager.attachBackend(backend);
         int x = 10;
