@@ -256,7 +256,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         stage.addActor(container);
         container.align(Align.topRight);
         container.setFillParent(true);
-        container.pad(0,1050, 670, 20 );
+        container.pad(0,980, 740, 0 );
         Table table = new Table();
 
         final ScrollPane scroll = new ScrollPane(table, skin);
@@ -265,7 +265,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         ExplanationLabel explanationLabel = new ExplanationLabel(SupportedAlgorithms.ASTAR, labelStyleGenerator.generateLabelStyle(
             "font/RobotoMono-VariableFont_wght.ttf",
             Color.valueOf("#FFDCA4"),
-            12));
+            13));
 
         table.add(explanationLabel);
         container.add(scroll);
