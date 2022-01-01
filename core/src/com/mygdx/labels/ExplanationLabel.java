@@ -89,19 +89,60 @@ public class ExplanationLabel extends Label {
 
                 break;
             case BREADTHFIRST:
-                this.setText("[insert Breadth First text here]");
+                this.setText("Die Breitensuche ist ein uninformierter Pathfinding-Algorithmus. Das bedeutet, dass der Algorithmus\n" +
+                    "keine Angabe zu den Pfadkosten oder den geschätzten Kosten kennt. Er kann auch bei ungewichteten\n" +
+                    "Graphen eingesetzt werden. Dabei hat er eine Zeitkomplexität von O(b^(b+1)) und garantiert den\n" +
+                    "kürzesten Weg. Es wird mit dem Queue Prinzip gearbeitet, d.h. die Nodes werden nach dem\n" +
+                    "FIFO (First in, First out) Schema abgearbeitet.\n" +
+                    "\nVorgehensweise:\n" +
+                    "Schritt 1: Setze die Startnode in die Queue\n" +
+                    "Schritt 2: Betrachte die benachbarten Nodes und setze sie in die Queue\n" +
+                    "Schritt 3: Markiere die betrachtete Node als abgehakt und gehe zur nächsten Node in der Queue\n" +
+                    "           (nach FIFO)\n" +
+                    "Schritt 4: Bereits besuchte Nodes werden in eine Liste mit den visited Nodes hinzugefügt\n" +
+                    "Schritt 5: Von der nächsten Node ausgehend, suche wieder nach benachbarten Nodes und füge sie\n" +
+                    "           der Queue hinzu, sie dürfen dabei nicht in der Liste mit den visited Nodes sein\n" +
+                    "Schritt 6: Wiederhole Schritt 3-5 so lange, bis alle Nodes abgearbeitet wurden\n" +
+                    "Schritt 7: Ist die Queue leer, terminiere das Programm\n");
 
                 currentAlgoExplanation = SupportedAlgorithms.BREADTHFIRST;
 
                 break;
             case DEPTHFIRST:
-                this.setText("[insert Depth First text here]");
+                this.setText("[insert Depth First text here]\n" +
+                    "[insert Depth First text here]\n" +
+                    "[insert Depth First text here]\n" +
+                    "[insert Depth First text here]\n" +
+                    "[insert Depth First text here]\n" +
+                    "[insert Depth First text here]\n" +
+                    "[insert Depth First text here]\n" +
+                    "[insert Depth First text here]\n" +
+                    "[insert Depth First text here]\n" +
+                    "[insert Depth First text here]\n");
 
                 currentAlgoExplanation = SupportedAlgorithms.DEPTHFIRST;
 
                 break;
             case DIJKSTRA:
-                this.setText("[insert Dijkstra text here]");
+                this.setText("Der Dijkstra-Algorithmus ist ein Greedy-Algorithmus. Er wird benutzt, um den kürzesten bzw.\n" +
+                    "kostengünstigsten Weg zu ermitteln. Er kann rekusiv geschrieben werden. Da der Dijkstra-Algorithmus\n" +
+                    "alle Nodes bei der Berechnung des kostengünstigsten Pfades in Betracht zieht, kann er vergleichsweise\n" +
+                    "langsam sein. Er wird am besten bei wenigen bis mittelhohen Pfadmöglichkeiten angewendet. Bei der \n" +
+                    "Berechnung von Distanzen, z.B. innerhalb von Straßennetzwerken, ist er demnach sehr nützlich.\n" +
+                    "\nVorgehensweise:\n" +
+                    "Schritt 1: Die Distanz zu allen Nodes ausgehend von der Startnode wird auf unendlich gesetzt\n" +
+                    "Schritt 2: Es werden die Kosten zu den benachbarten Nodes ausgehend von der Startnode berechnet\n" +
+                    "Schritt 3: Die Startnode wird als bearbeitet abgehakt, als nächstes wird die Node mit dem\n" +
+                    "           kürzesten Weg zur Startnode betrachtet\n" +
+                    "Schritt 4: Ausgehend von der neuen Node werden alle mit dieser Node verbundenen Pfade neu berechnet\n" +
+                    "Schritt 5: Als nächstes wird wieder eine weitere Node, welche den nächstkürzeren Pfad zur Startnode\n" +
+                    "           darstellt, betrachtet und Schritt 4 & 5 werden wiederholt, bis alle mit der Startnode\n" +
+                    "           verbundenen Nodes abgearbeitet wurden. Danach gelten diese als abgehakt und Schritt 3\n" +
+                    "           wiederholt sich, aber nur diesmal ausgehend von den neuen abgehakten Nodes\n" +
+                    "Schritt 6: Schritt 3-5 werden so oft wiederholt, bis alle Nodes im System abgearbeitet wurden.\n" +
+                    "           Das Programm terminiert nur dann, wenn alle möglichen Optionen berechnet wurden,\n" +
+                    "           bzw. es durch alle Iterationen gegangen ist." +
+                    "\nDies garantiert einen kürzesten Pfad.\n");
 
                 currentAlgoExplanation = SupportedAlgorithms.DIJKSTRA;
 
