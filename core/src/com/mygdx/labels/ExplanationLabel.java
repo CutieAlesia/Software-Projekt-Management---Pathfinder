@@ -4,6 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.SupportedAlgorithms;
 
+/**
+ * Label that contains the explanation texts of our supported algorithms.
+ */
 public class ExplanationLabel extends Label {
 
     SupportedAlgorithms currentAlgoExplanation;
@@ -22,6 +25,9 @@ public class ExplanationLabel extends Label {
         currentAlgoExplanation = algorithm;
     }
 
+    /** Sets label's text to the description of the given algorithm.
+     * @param algorithm
+     */
     public void selectAlgorithmDescription(SupportedAlgorithms algorithm) {
 
         if (currentAlgoExplanation == algorithm) { return; }
@@ -55,7 +61,7 @@ public class ExplanationLabel extends Label {
 
                 break;
             case BESTFIRST:
-                this.setText("Genau wie der A*- und der Branch and Bound-Algorithmus gehört auch der Best First-Algorithmus\n" +
+                this.setText("Genau wie der A*- und der Branch and Bound-Algorithmus gehört auch der Best First-Algorithmus \n" +
                     "zu den informierten Suchverfahren. Der Best First-Algorithmus setzt lediglich auf\ndie Heuristik, was bedeutet, dass die realen Pfadkosten hier \n" +
                     "überhaupt keine Rolle spielen.\n" +
                     "Im Gegensatz zu den A*- und Branch and Bound-Algorithmen ist der Best First-Algorithmus\n" +
@@ -68,7 +74,16 @@ public class ExplanationLabel extends Label {
 
                 break;
             case BRANCHANDBOUND:
-                this.setText("[insert Branch and Bound text here]");
+                this.setText("Der Branch and Bound-Algorithmus gehört ebenfalls zu den informierten Suchverfahren. Im Gegensatz\n" +
+                    "zum A*-Algorithmus verwendet der Branch and Bound-Algorithmus ausschließlich die realen Pfadkosten,\n" +
+                    "weswegen die Kostenfunktion wie folgt lautet: f(n) = g(n).\n" +
+                    "Es wird immer ein Weg gefunden (sofern vorhanden), und dieser ist auch immer der optimale\n" +
+                    "(d.h. bestmögliche) Weg. Als Datenstruktur zur Speicherung der Pfade wird eine sortierte Queue\n" +
+                    "(Prioritätsqueue) genutzt.\n" +
+                    "\nVorgehensweise\n" +
+                    "Die Vorgehensweise des Branch and Bound-Algorithmus ist die gleiche wie bei dem A*-Algorithmus,\n" +
+                    "mit dem Unterschied, dass die Berechnung der Gesamtkosten lediglich aus den realen Pfadkosten\n" +
+                    "und nicht aus der Summe der realen Pfadkosten und der Heuristik besteht.\n\n\n\n");
 
                 currentAlgoExplanation = SupportedAlgorithms.BRANCHANDBOUND;
 
