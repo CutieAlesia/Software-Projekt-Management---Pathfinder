@@ -25,6 +25,7 @@ import API.Models.Node;
 import backend.AStar;
 import backend.BestFirst;
 import backend.BranchAndBound;
+import backend.DepthFirst;
 import backend.SearchAlgorithm;
 
 import java.util.ArrayList;
@@ -316,7 +317,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param y
      */
     private void setupNewLabyrinthDepthFirst(int x, int y) {
-        DepthFirst a = new DepthFirst();
+        GUI.Generator.DepthFirst a = new GUI.Generator.DepthFirst();
         field = a.generateLabyrinth(x, y);
         map.changeProperties(field);
     }
