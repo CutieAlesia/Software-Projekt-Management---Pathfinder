@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.SupportedAlgorithms;
+import com.mygdx.labels.ExplanationLabel;
 import com.mygdx.map.TileMap;
 import com.mygdx.map.TileMapInputProcessor;
 
@@ -36,8 +38,8 @@ import java.util.ArrayList;
 public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private Stage stage;
     private TileMap map;
-    private final int MAP_X = 49;
-    private final int MAP_Y = 49;
+    private final int MAP_X = 45;
+    private final int MAP_Y = 45;
     private Table mapTable;
     private Table buttonTable;
     private Table counterTable;
@@ -73,7 +75,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         map.setMapFillable(true);
         mapTable = new Table();
         mapTable.setFillParent(true);
-        mapTable.align(Align.bottomRight);
+        mapTable.align(Align.bottom);
 
         buttonTable = new Table();
         buttonTable.setFillParent(true);
@@ -106,6 +108,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         stage.addActor(mapTable);
 
         mapTable.add(map);
+
+        setupAStarText();
 
         // A P I
 
@@ -244,6 +248,28 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bAutoStepAlgorithm);
         table.add(bResetLabyrinth);
         table.add(bClearField);
+    }
+
+
+    private void setupAStarText(){
+        Table container = new Table();
+        stage.addActor(container);
+        container.align(Align.topRight);
+        container.setFillParent(true);
+        container.pad(0,1050, 670, 20 );
+        Table table = new Table();
+
+        final ScrollPane scroll = new ScrollPane(table, skin);
+        scroll.setScrollbarsVisible(true);
+        LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
+        ExplanationLabel explanationLabel = new ExplanationLabel(SupportedAlgorithms.ASTAR, labelStyleGenerator.generateLabelStyle(
+            "font/RobotoMono-VariableFont_wght.ttf",
+            Color.valueOf("#FFDCA4"),
+            12));
+
+        table.add(explanationLabel);
+        container.add(scroll);
+        scroll.validate();
     }
 
     /**
