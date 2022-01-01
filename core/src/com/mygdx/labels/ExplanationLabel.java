@@ -5,20 +5,29 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.SupportedAlgorithms;
 
 public class ExplanationLabel extends Label {
+
+    SupportedAlgorithms currentAlgoExplanation;
+
     public ExplanationLabel(CharSequence text, Skin skin) {
         super(text, skin);
     }
     public ExplanationLabel(SupportedAlgorithms algorithm, Skin skin) {
         super("", skin);
         selectAlgorithmDescription(algorithm);
+        currentAlgoExplanation = algorithm;
     }
     public ExplanationLabel(SupportedAlgorithms algorithm, LabelStyle style) {
         super("", style);
         selectAlgorithmDescription(algorithm);
+        currentAlgoExplanation = algorithm;
     }
 
     public void selectAlgorithmDescription(SupportedAlgorithms algorithm) {
+
+        if (currentAlgoExplanation == algorithm) { return; }
+
         switch(algorithm) {
+
             case ASTAR:
                 this.setText("Der A* Algorithmus gehört zu den informierten Suchverfahren, was bedeutet, dass er über Wissen \nbezüglich des Suchraums verfügt, welches genutzt wird um die Suchzeit zu verringern.\n" +
                     "Der Algorithmus verwendet sowohl die realen Pfadkosten als auch die Schätzung der Restkosten \n(Heuristik) eines Knotens. Die Kostenfunktion lautet dabei wie folgt: f(n) = g(n) + h(n)\n" +
@@ -41,22 +50,45 @@ public class ExplanationLabel extends Label {
                     "\nWenn in Schritt 5 festgestellt wird, dass der Zielknoten gefunden wurde ist der Algorithmus fertig. " +
                     "\nAndernfalls werden die Schritte 2-5 solange durchlaufen, bis der erste Knoten in der " +
                     "\nsortierten Queue auf den Zielknoten verweist oder bis die Queue leer ist.\n");
+
+                currentAlgoExplanation = SupportedAlgorithms.ASTAR;
+
                 break;
             case BESTFIRST:
-                this.setText("[insert Best First text here]");
+                this.setText("Best First Best First Best First Best First Best First \n Best First Best First Best First Best First \n Best First Best First Best First Best First");
+
+                currentAlgoExplanation = SupportedAlgorithms.BESTFIRST;
+
                 break;
             case BRANCHANDBOUND:
                 this.setText("[insert Branch and Bound text here]");
+
+                currentAlgoExplanation = SupportedAlgorithms.BRANCHANDBOUND;
+
                 break;
             case BREADTHFIRST:
                 this.setText("[insert Breadth First text here]");
+
+                currentAlgoExplanation = SupportedAlgorithms.BREADTHFIRST;
+
                 break;
             case DEPTHFIRST:
                 this.setText("[insert Depth First text here]");
+
+                currentAlgoExplanation = SupportedAlgorithms.DEPTHFIRST;
+
                 break;
             case DIJKSTRA:
                 this.setText("[insert Dijkstra text here]");
+
+                currentAlgoExplanation = SupportedAlgorithms.DIJKSTRA;
+
                 break;
         }
     }
+
+    public SupportedAlgorithms getCurrentAlgoExplanation() {
+        return currentAlgoExplanation;
+    }
+
 }

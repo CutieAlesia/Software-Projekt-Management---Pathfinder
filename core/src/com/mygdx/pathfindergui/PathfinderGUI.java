@@ -59,6 +59,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private ArrayList<Label> labels = new ArrayList<>();
     private ArrayList<Node> receivedNodes = new ArrayList<>();
 
+    ExplanationLabel explanationLabel;
+    SelectBox<String> sbSearchAlgorithms;
+
     //  Toggles autoplay mode
     private boolean autoStepEnabled = false;
 
@@ -109,7 +112,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         mapTable.add(map);
 
-        setupAStarText();
+        // Scrollpane with algorithm explanations
+        explanationLabel = new ExplanationLabel(SupportedAlgorithms.ASTAR, labelStyleGenerator.generateLabelStyle(
+            "font/RobotoMono-VariableFont_wght.ttf",
+            Color.valueOf("#FFDCA4"),
+            13));
+        setupExplanationText(explanationLabel);
 
         // A P I
 
@@ -139,7 +147,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      */
     private void setupPermanentButtons(Table table, final Skin skin) {
 
-        final SelectBox<String> sbSearchAlgorithms = new SelectBox<>(skin);
+        sbSearchAlgorithms = new SelectBox<>(skin);
         final String[] searchAlgorithms = {
             "AStar", "BestFirst", "BranchAndBound", "BreadthFirst", "DepthFirst", "Dijkstra"
         };
@@ -251,7 +259,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     }
 
 
-    private void setupAStarText(){
+    /**
+     * Sets up the scrollpane showing explanation texts. Call explanationLabel.selectAlgorithmDescription()
+     * during runtime to switch to the given supported algorithm's explanation.
+     * @param explanationLabel
+     */
+    private void setupExplanationText(ExplanationLabel explanationLabel){
         Table container = new Table();
         stage.addActor(container);
         container.align(Align.topRight);
@@ -262,10 +275,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         final ScrollPane scroll = new ScrollPane(table, skin);
         scroll.setScrollbarsVisible(true);
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
-        ExplanationLabel explanationLabel = new ExplanationLabel(SupportedAlgorithms.ASTAR, labelStyleGenerator.generateLabelStyle(
-            "font/RobotoMono-VariableFont_wght.ttf",
-            Color.valueOf("#FFDCA4"),
-            13));
 
         table.add(explanationLabel);
         container.add(scroll);
@@ -333,6 +342,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             clearCounterLabels();
             map.setMapEdited(false);
         }
+
+        updateExplanationLabel();
     }
 
     private void manageLabelStatus() {
@@ -403,4 +414,28 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         label.setVisible(false);
     }
+
+    private void updateExplanationLabel() {
+        switch (sbSearchAlgorithms.getSelectedIndex()) {
+            case 0:
+                explanationLabel.selectAlgorithmDescription(SupportedAlgorithms.ASTAR);
+                break;
+            case 1:
+                explanationLabel.selectAlgorithmDescription(SupportedAlgorithms.BESTFIRST);
+                break;
+            case 2:
+                explanationLabel.selectAlgorithmDescription(SupportedAlgorithms.BRANCHANDBOUND);
+                break;
+            case 3:
+                explanationLabel.selectAlgorithmDescription(SupportedAlgorithms.BREADTHFIRST);
+                break;
+            case 4:
+                explanationLabel.selectAlgorithmDescription(SupportedAlgorithms.DEPTHFIRST);
+                break;
+            case 5:
+                explanationLabel.selectAlgorithmDescription(SupportedAlgorithms.DIJKSTRA);
+                break;
+        }
+    }
+
 }
