@@ -448,9 +448,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void createLabel(String algorithmName) {
 
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
-        Label.LabelStyle labelStyle= labelStyleGenerator.generateLabelStyle("font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 16);
+        Label.LabelStyle labelStyle= labelStyleGenerator.generateLabelStyle("font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 15);
         Label label = new Label(algorithmName + "\nZeit: " + algoTimes.get(algoTimes.size()-1) + "ms" + " Schritte: " + algoSteps.get(algoSteps.size()-1) + " Zielpfad: " + pathSteps.get(pathSteps.size()-1) +"\n", labelStyle);
-        if(labels.size() >= 5) {
+        if(labels.size() >= 6) {
             counterTable.removeActor(labels.remove(0));
         }
         counterTable.add(label);
