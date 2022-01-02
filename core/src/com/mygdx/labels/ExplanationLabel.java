@@ -97,28 +97,31 @@ public class ExplanationLabel extends Label {
                     "\nVorgehensweise:\n" +
                     "Schritt 1: Setze die Startnode in die Queue\n" +
                     "Schritt 2: Betrachte die benachbarten Nodes und setze sie in die Queue\n" +
-                    "Schritt 3: Markiere die betrachtete Node als abgehakt und gehe zur nächsten Node in der Queue\n" +
+                    "Schritt 3: Markiere die betrachtete Node als abgehakt, entferne sie aus der Queue und gehe zur nächsten Node in der Queue\n" +
                     "           (nach FIFO)\n" +
                     "Schritt 4: Bereits besuchte Nodes werden in eine Liste mit den visited Nodes hinzugefügt\n" +
                     "Schritt 5: Von der nächsten Node ausgehend, suche wieder nach benachbarten Nodes und füge sie\n" +
                     "           der Queue hinzu, sie dürfen dabei nicht in der Liste mit den visited Nodes sein\n" +
                     "Schritt 6: Wiederhole Schritt 3-5 so lange, bis alle Nodes abgearbeitet wurden\n" +
-                    "Schritt 7: Ist die Queue leer, terminiere das Programm\n");
+                    "Schritt 7: Ist die Queue leer, oder wurde die Endnode gefunden, terminiere das Programm\n");
 
                 currentAlgoExplanation = SupportedAlgorithms.BREADTHFIRST;
 
                 break;
             case DEPTHFIRST:
-                this.setText("[insert Depth First text here]\n" +
-                    "[insert Depth First text here]\n" +
-                    "[insert Depth First text here]\n" +
-                    "[insert Depth First text here]\n" +
-                    "[insert Depth First text here]\n" +
-                    "[insert Depth First text here]\n" +
-                    "[insert Depth First text here]\n" +
-                    "[insert Depth First text here]\n" +
-                    "[insert Depth First text here]\n" +
-                    "[insert Depth First text here]\n");
+                this.setText("Die Tiefensuche ist ein uninformierter Pathfinding Algorithmus. D.h. der \n" +
+                    "Algorithmus kennt keine Angabe zu den Pfadkosten oder den geschätzten \n" +
+                    "kosten. Dabei hat die Tiefensuche eine Zeitkomplexität von O(|V| + |E|)(V = \n" +
+                    "Anzahl der Knoten & E = Anzahl der Kanten) und kann nicht den kürzesten Weg \n" +
+                    "garantieren. Die Tiefensuche arbeitet mit Hilfe eines Stacks d.h. die Nodes \n" +
+                    "werden nach dem LIFO (Last in, First out) Schema abgearbeitet.\n" +
+                    "Vorgehensweise\n" +
+                    "Schritt 1: Bestimme den Knoten, an dem die Suche beginnen soll\n" +
+                    "Schritt 2: Expandiere den Knoten und speichere die Reihenfolge nach den noch nicht erschlossenen Nachfolger in einem Stack\n" +
+                    "Schritt 3: Rufe rekursiv für jeden der Knoten in dem Stack auf\n" +
+                    "           Falls das gesuchte Element gefunden wurde, brich die Suche ab und liefere ein Ergebnis\n" +
+                    "           Falls es keine nicht erschlossenen Nachfolger mehr gibt, lösche den obersten Knoten aus dem Stack \n" +
+                    "           und rufe für den jetzt oberen Knoten im Stack DFS auf\n");
 
                 currentAlgoExplanation = SupportedAlgorithms.DEPTHFIRST;
 
