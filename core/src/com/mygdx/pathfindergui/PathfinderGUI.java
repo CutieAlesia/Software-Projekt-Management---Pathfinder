@@ -25,7 +25,6 @@ import API.Models.Node;
 import backend.AStar;
 import backend.BestFirst;
 import backend.BranchAndBound;
-import backend.DepthFirst;
 import backend.SearchAlgorithm;
 
 import java.util.ArrayList;
@@ -95,11 +94,16 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         counterTable.setFillParent(true);
         counterTable.align(Align.topLeft);
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
-        Label counterHeader = new Label("Zeit und Schritte des Algorithmus\n", labelStyleGenerator.generateLabelStyle( "font/RobotoMono-VariableFont_wght.ttf",Color.valueOf("#FFDCA4"),18));
+        Label counterHeader =
+                new Label(
+                        "Zeit und Schritte des Algorithmus\n",
+                        labelStyleGenerator.generateLabelStyle(
+                                "font/RobotoMono-VariableFont_wght.ttf",
+                                Color.valueOf("#FFDCA4"),
+                                18));
         counterTable.add(counterHeader);
         counterTable.row();
         counterTable.pad(60, 30, 30, 0);
-
 
         //  Buttons
 
@@ -117,10 +121,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         mapTable.add(map);
 
         // Scrollpane with algorithm explanations
-        explanationLabel = new ExplanationLabel(SupportedAlgorithms.ASTAR, labelStyleGenerator.generateLabelStyle(
-            "font/RobotoMono-VariableFont_wght.ttf",
-            Color.valueOf("#FFDCA4"),
-            13));
+        explanationLabel =
+                new ExplanationLabel(
+                        SupportedAlgorithms.ASTAR,
+                        labelStyleGenerator.generateLabelStyle(
+                                "font/RobotoMono-VariableFont_wght.ttf",
+                                Color.valueOf("#FFDCA4"),
+                                13));
         setupExplanationText(explanationLabel);
 
         // A P I
@@ -214,8 +221,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
                         if (pfTimer.getPfRuntime() % 2 == 0) {
-                        setupNewLabyrinthDepthFirst(MAP_X, MAP_Y); }
-                        else {
+                            setupNewLabyrinthDepthFirst(MAP_X, MAP_Y);
+                        } else {
                             setupNewLabyrinthRecursiveDivision(MAP_X, MAP_Y);
                         }
                         bStartAlgorithm.setDisabled(false);
@@ -225,7 +232,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     }
                 });
 
-/*        final TextButton bNewRandomLabyrinthRecursiveDivision = new TextButton("Generate new Labyrinth(2)", skin);
+        /*        final TextButton bNewRandomLabyrinthRecursiveDivision = new TextButton("Generate new Labyrinth(2)", skin);
 
         bNewRandomLabyrinthRecursiveDivision.addListener(
                 new ChangeListener() {
@@ -277,8 +284,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         generateLabyrinthButtonTable = new Table();
         generateLabyrinthButtonTable.add(bNewRandomLabyrinth);
         table.add(bClearField);
-//        generateLabyrinthButtonTable.row();
-//        generateLabyrinthButtonTable.add(bNewRandomLabyrinthRecursiveDivision);
+        //        generateLabyrinthButtonTable.row();
+        //        generateLabyrinthButtonTable.add(bNewRandomLabyrinthRecursiveDivision);
         table.add(generateLabyrinthButtonTable);
         table.add(sbSearchAlgorithms);
         table.add(bStartAlgorithm);
@@ -287,23 +294,23 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bResetLabyrinth);
     }
 
-
     /**
-     * Sets up the scrollpane showing explanation texts. Call explanationLabel.selectAlgorithmDescription()
-     * during runtime to switch to the given supported algorithm's explanation.
+     * Sets up the scrollpane showing explanation texts. Call
+     * explanationLabel.selectAlgorithmDescription() during runtime to switch to the given supported
+     * algorithm's explanation.
+     *
      * @param explanationLabel
      */
-    private void setupExplanationText(ExplanationLabel explanationLabel){
+    private void setupExplanationText(ExplanationLabel explanationLabel) {
         Table container = new Table();
         stage.addActor(container);
         container.align(Align.topRight);
         container.setFillParent(true);
-        container.pad(0,980, 740, 0 );
+        container.pad(0, 980, 740, 0);
         Table table = new Table();
 
         final ScrollPane scroll = new ScrollPane(table, skin);
         scroll.setScrollbarsVisible(true);
-
 
         table.add(explanationLabel);
         table.padBottom(10);
@@ -435,7 +442,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         if (node.getType() == NodeType.VISITED) {
             receivedNodes.add(node);
         }
-        if (node.getType() == NodeType.PATH){
+        if (node.getType() == NodeType.PATH) {
             pathNodes.add(node);
         }
     }
@@ -448,9 +455,22 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void createLabel(String algorithmName) {
 
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
-        Label.LabelStyle labelStyle= labelStyleGenerator.generateLabelStyle("font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 15);
-        Label label = new Label(algorithmName + "\nZeit: " + algoTimes.get(algoTimes.size()-1) + "ms" + " Schritte: " + algoSteps.get(algoSteps.size()-1) + " Zielpfad: " + pathSteps.get(pathSteps.size()-1) +"\n", labelStyle);
-        if(labels.size() >= 6) {
+        Label.LabelStyle labelStyle =
+                labelStyleGenerator.generateLabelStyle(
+                        "font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 15);
+        Label label =
+                new Label(
+                        algorithmName
+                                + "\nZeit: "
+                                + algoTimes.get(algoTimes.size() - 1)
+                                + "ms"
+                                + " Schritte: "
+                                + algoSteps.get(algoSteps.size() - 1)
+                                + " Zielpfad: "
+                                + pathSteps.get(pathSteps.size() - 1)
+                                + "\n",
+                        labelStyle);
+        if (labels.size() >= 6) {
             counterTable.removeActor(labels.remove(0));
         }
         counterTable.add(label);
@@ -482,5 +502,4 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 break;
         }
     }
-
 }

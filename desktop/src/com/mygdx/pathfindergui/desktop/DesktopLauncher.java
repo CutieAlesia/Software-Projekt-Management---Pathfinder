@@ -12,7 +12,7 @@ public class DesktopLauncher {
         config.width = 1820;
         config.height = 980;
         config.resizable = false;
-        config.title="Pathfinder";
+        config.title = "Pathfinder";
         config.addIcon("icon32x32.png", Files.FileType.Internal);
     }
 }
