@@ -14,10 +14,13 @@ import API.Models.Node;
 public class APIManager {
 
     private Node node;
+    private String activeAlgorithm;
     private List<IFrontend> frontends = new ArrayList<>();
     private IBackend backend;
 
-    public APIManager() {}
+    public APIManager() {
+        activeAlgorithm = null;
+    }
 
     /**
      * Sends a node update to all attached frontends
@@ -77,5 +80,13 @@ public class APIManager {
         this.backend = null;
         System.out.println("[API] Backend detached");
         System.out.format("Active Algorithm: %s\n", backend.getClass().getSimpleName());
+    }
+
+    public String getActiveAlgorithm() {
+        return activeAlgorithm;
+    }
+
+    public void setActiveAlgorithm(String activeAlgorithm) {
+        this.activeAlgorithm = activeAlgorithm;
     }
 }
