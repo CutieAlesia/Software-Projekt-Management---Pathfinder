@@ -161,8 +161,8 @@ public class ExplanationLabel extends Label {
                             + "Schritt 2: Betrachte die benachbarten Nodes und setze sie in die"
                             + " Queue\n"
                             + "Schritt 3: Markiere die betrachtete Node als abgehakt, entferne sie"
-                            + " aus der Queue und gehe zur nächsten Node in der Queue\n"
-                            + "           (nach FIFO)\n"
+                            + " aus der Queue und gehe zur\n" +
+                            "           nächsten Node in der Queue (nach FIFO)\n"
                             + "Schritt 4: Bereits besuchte Nodes werden in eine Liste mit den"
                             + " visited Nodes hinzugefügt\n"
                             + "Schritt 5: Von der nächsten Node ausgehend, suche wieder nach"
@@ -193,13 +193,14 @@ public class ExplanationLabel extends Label {
                             + "Vorgehensweise\n"
                             + "Schritt 1: Bestimme den Knoten, an dem die Suche beginnen soll\n"
                             + "Schritt 2: Expandiere den Knoten und speichere die Reihenfolge nach"
-                            + " den noch nicht erschlossenen Nachfolger in einem Stack\n"
+                            + " den noch nicht erschlossenen\n" +
+                            "           Nachfolger in einem Stack"
                             + "Schritt 3: Rufe rekursiv für jeden der Knoten in dem Stack auf\n"
                             + "           Falls das gesuchte Element gefunden wurde, brich die"
                             + " Suche ab und liefere ein Ergebnis\n"
                             + "           Falls es keine nicht erschlossenen Nachfolger mehr gibt,"
-                            + " lösche den obersten Knoten aus dem Stack \n"
-                            + "           und rufe für den jetzt oberen Knoten im Stack DFS auf\n");
+                            + " lösche den obersten Knoten\n" +
+                            "           aus dem Stack und rufe für den jetzt oberen Knoten im Stack DFS auf\n");
 
                 currentAlgoExplanation = SupportedAlgorithms.DEPTHFIRST;
 
