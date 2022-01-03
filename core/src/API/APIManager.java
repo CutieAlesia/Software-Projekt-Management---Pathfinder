@@ -78,6 +78,7 @@ public class APIManager {
 
     /**
      * Detaches a algorithm backend from the manager
+     *
      * @param backend Backend algorithm
      */
     public void detachBackend(IBackend backend) {
