@@ -76,6 +76,10 @@ public class APIManager {
         System.out.format("Active Algorithm: %s\n", backend.getClass().getSimpleName());
     }
 
+    /**
+     * Detaches a algorithm backend from the manager
+     * @param backend Backend algorithm
+     */
     public void detachBackend(IBackend backend) {
         this.backend = null;
         System.out.println("[API] Backend detached");
