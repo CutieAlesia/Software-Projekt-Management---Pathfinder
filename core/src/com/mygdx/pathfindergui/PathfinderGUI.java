@@ -172,11 +172,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     map.resetLabyrinth();
-                    // insert function call to save the current labyrinth below
 
-
-
-
+                    try {
+                    saveLabyrinth();
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -185,22 +187,38 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         bLoadLabyrinth.addListener(
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
+                    Node[][] tempField = field;
 
-                    // insert function call to load a saved labyrinth below
-                    // if load was successful assign the loaded Node[][] to PathfinderGUI's "field" attribute
-
-
-
-
-                    // necessary calls after successful load:
+                    try {
+                    field = loadLabyrinth();
+                    }
+                    catch (Exception e) {
+                        field = tempField;
+                        e.printStackTrace();
+                    }
+                    //  TODO (Frontend): properly call "Saubermachen" on successful load
+                    map.resetLabyrinth();
+                    clearCounterLabels();
                     map.changeProperties(field);
-                    //  TODO (Frontend): call "Saubermachen" on successful load
                 }
             });
 
 
         table.add(bLoadLabyrinth);
         table.add(bSaveLabyrinth);
+    }
+
+    private void saveLabyrinth() {
+        // insert functionality to save the current labyrinth here
+
+
+    }
+
+    private Node[][] loadLabyrinth() {
+        // insert functionality to load the current labyrinth here
+
+
+        return field; // placeholder, return loaded labyrinth here
     }
 
     /**
