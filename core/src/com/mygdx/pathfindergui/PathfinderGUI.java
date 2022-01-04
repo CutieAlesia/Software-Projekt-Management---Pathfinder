@@ -173,12 +173,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 public void changed(ChangeEvent event, Actor actor) {
                     map.resetLabyrinth();
 
-                    try {
-                    saveLabyrinth();
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    saveLabyrinth(map.getNodes());
                 }
             });
 
@@ -187,13 +182,14 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         bLoadLabyrinth.addListener(
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
-                    Node[][] tempField = field;
+                    map.resetLabyrinth();
+                    Node[][] tempMap = map.getNodes();
 
                     try {
                     field = loadLabyrinth();
                     }
                     catch (Exception e) {
-                        field = tempField;
+                        field = tempMap;
                         e.printStackTrace();
                     }
                     //  TODO (Frontend): properly call "Saubermachen" on successful load
@@ -208,8 +204,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bSaveLabyrinth);
     }
 
-    private void saveLabyrinth() {
-        // insert functionality to save the current labyrinth here
+    private void saveLabyrinth(Node[][] labyrinth) {
+        // insert functionality to save the given labyrinth here
 
 
     }
