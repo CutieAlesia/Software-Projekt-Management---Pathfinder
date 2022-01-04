@@ -187,12 +187,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 public void changed(ChangeEvent event, Actor actor) {
 
                     // insert function call to load a saved labyrinth below
-                    // must set PathfinderGUI's "field" attribute to the loaded Node[][]
+                    // if load was successful assign the loaded Node[][] to PathfinderGUI's "field" attribute
 
 
 
 
                     // necessary calls after successful load:
+                    map.changeProperties(field);
                     //  TODO (Frontend): call "Saubermachen" on successful load
                 }
             });
