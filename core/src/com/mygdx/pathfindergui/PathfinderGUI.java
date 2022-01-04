@@ -8,6 +8,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -26,6 +28,7 @@ import backend.AStar;
 import backend.BestFirst;
 import backend.BranchAndBound;
 import backend.SearchAlgorithm;
+import com.sun.org.apache.xml.internal.utils.res.XResourceBundle;
 
 import java.util.ArrayList;
 
@@ -65,6 +68,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private ArrayList<Label> labels = new ArrayList<>();
     ExplanationLabel explanationLabel;
     SelectBox<String> sbSearchAlgorithms;
+
 
     //  Toggles autoplay mode
     private boolean autoStepEnabled = false;
@@ -114,6 +118,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         //  Buttons
 
         skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
+
         setupPermanentButtons(buttonTable, skin);
         setupSaveLoadButtons(saveLoadButtonTable, skin);
 
@@ -167,6 +172,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void setupSaveLoadButtons(Table table, final Skin skin) {
 
         final TextButton bSaveLabyrinth = new TextButton("Speichern", skin);
+
 
         bSaveLabyrinth.addListener(
             new ChangeListener() {
@@ -226,6 +232,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void setupPermanentButtons(Table table, final Skin skin) {
 
         sbSearchAlgorithms = new SelectBox<>(skin);
+
+
         final String[] searchAlgorithms = {
             "AStar", "BestFirst", "BranchAndBound", "BreadthFirst", "DepthFirst", "Dijkstra"
         };
@@ -234,6 +242,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         sbSearchAlgorithms.setWidth(70f);
 
         final TextButton bStartAlgorithm = new TextButton("Auswaehlen", skin);
+
 
         bStartAlgorithm.addListener(
                 new ChangeListener() {
@@ -260,14 +269,19 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                                 attachNewAlgorithm(new backend.Dijkstra(manager));
                                 break;
                         }
+
                         receivedNodes.clear();
                         pathNodes.clear();
                         launchBackend();
                         algoSteps.add(receivedNodes.size());
                         pathSteps.add(pathNodes.size());
-
                         System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
                         bStartAlgorithm.setDisabled(true);
+
+                        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(bStartAlgorithm.getStyle().down, bStartAlgorithm.getStyle().down, bStartAlgorithm.getStyle().down, bStartAlgorithm.getStyle().font);
+                        textButtonStyle.fontColor = Color.BLACK;
+                        bStartAlgorithm.setStyle(new TextButton.TextButtonStyle(textButtonStyle));
+
                         createLabel(searchAlgorithms[sbSearchAlgorithms.getSelectedIndex()]);
                     }
                 });
@@ -284,6 +298,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         final TextButton bNewRandomLabyrinth = new TextButton("Zufallslabyrinth", skin);
 
+
         bNewRandomLabyrinth.addListener(
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
@@ -293,6 +308,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                             setupNewLabyrinthRecursiveDivision(MAP_X, MAP_Y);
                         }
                         bStartAlgorithm.setDisabled(false);
+                        bStartAlgorithm.setStyle(bNextStep.getStyle());
                         System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
                         clearCounterLabels();
                         tileMapInputProcessor.setInputAllowed(true);
@@ -317,6 +333,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     public void changed(ChangeEvent event, Actor actor) {
                         map.resetLabyrinth();
                         bStartAlgorithm.setDisabled(false);
+                        bStartAlgorithm.setStyle(bNextStep.getStyle());
                         System.out.println("Clicked! Is checked: " + bResetLabyrinth.isChecked());
                         tileMapInputProcessor.setInputAllowed(true);
                     }
@@ -324,11 +341,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         final TextButton bClearField = new TextButton("Leeres Labyrinth", skin);
 
+
         bClearField.addListener(
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
                         map.clearField();
                         bStartAlgorithm.setDisabled(false);
+                        bStartAlgorithm.setStyle(bNextStep.getStyle());
                         clearCounterLabels();
                         tileMapInputProcessor.setInputAllowed(true);
                     }
