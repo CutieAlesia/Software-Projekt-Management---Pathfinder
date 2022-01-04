@@ -42,6 +42,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private final int MAP_Y = 45;
     private Table mapTable;
     private Table buttonTable;
+    private Table saveLoadButtonTable;
     private Table generateLabyrinthButtonTable;
     private Table counterTable;
     private Skin skin;
@@ -89,6 +90,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         buttonTable.align(Align.topLeft);
         buttonTable.pad(30, 30, 30, 0);
 
+        saveLoadButtonTable = new Table();
+        saveLoadButtonTable.setFillParent(true);
+        saveLoadButtonTable.align(Align.bottomRight);
+        saveLoadButtonTable.pad(30, 30, 30 ,30);
+
         // Table for labels
         counterTable = new Table();
         counterTable.setFillParent(true);
@@ -109,6 +115,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
         setupPermanentButtons(buttonTable, skin);
+        setupSaveLoadButtons(saveLoadButtonTable, skin);
 
         // Table order
         // Add table containing the buttons before table containing the field to avoid dropdown
@@ -116,6 +123,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         stage.addActor(counterTable);
         stage.addActor(buttonTable);
+        stage.addActor(saveLoadButtonTable);
         stage.addActor(mapTable);
 
         mapTable.add(map);
@@ -148,6 +156,50 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(tileMapInputProcessor);
         Gdx.input.setInputProcessor(inputMultiplexer);
+    }
+
+    /**
+     * Instantiates buttons for saving and loading labyrinths and adds them to the passed table.
+     *
+     * @param table
+     * @param skin
+     */
+    private void setupSaveLoadButtons(Table table, final Skin skin) {
+
+        final TextButton bSaveLabyrinth = new TextButton("Speichern", skin);
+
+        bSaveLabyrinth.addListener(
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    map.resetLabyrinth();
+                    // insert function call to save the current labyrinth below
+
+
+
+
+                }
+            });
+
+        final TextButton bLoadLabyrinth = new TextButton("Laden", skin);
+
+        bLoadLabyrinth.addListener(
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+
+                    // insert function call to load a saved labyrinth below
+                    // must set PathfinderGUI's "field" attribute to the loaded Node[][]
+
+
+
+
+                    // necessary calls after successful load:
+                    //  TODO (Frontend): call "Saubermachen" on successful load
+                }
+            });
+
+
+        table.add(bLoadLabyrinth);
+        table.add(bSaveLabyrinth);
     }
 
     /**
@@ -231,20 +283,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         tileMapInputProcessor.setInputAllowed(true);
                     }
                 });
-
-        /*        final TextButton bNewRandomLabyrinthRecursiveDivision = new TextButton("Generate new Labyrinth(2)", skin);
-
-        bNewRandomLabyrinthRecursiveDivision.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        setupNewLabyrinthRecursiveDivision(MAP_X, MAP_Y);
-                        bStartAlgorithm.setDisabled(false);
-                        System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
-                        clearCounterLabels();
-                        tileMapInputProcessor.setInputAllowed(true);
-                    }
-                });
-                */
 
         final TextButton bAutoStepAlgorithm = new TextButton("Autoplay", skin);
 
