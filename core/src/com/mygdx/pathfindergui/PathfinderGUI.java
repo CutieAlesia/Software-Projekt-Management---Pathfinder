@@ -8,6 +8,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -42,10 +44,14 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private final int MAP_Y = 45;
     private Table mapTable;
     private Table buttonTable;
+    private Table userGuideButtonTable;
     private Table generateLabyrinthButtonTable;
     private Table counterTable;
     private Skin skin;
     private InputMultiplexer inputMultiplexer;
+
+    private SpriteBatch batch;
+    private Texture userGuide;
 
     private TileMapInputProcessor tileMapInputProcessor;
 
@@ -67,6 +73,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
     //  Toggles autoplay mode
     private boolean autoStepEnabled = false;
+    // Toggles user guide
+    private boolean userGuideEnabled = false;
 
     /**
      * Sets up the stage. WIP!
@@ -89,6 +97,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         buttonTable.align(Align.topLeft);
         buttonTable.pad(30, 30, 30, 0);
 
+        userGuideButtonTable = new Table();
+        userGuideButtonTable.setFillParent(true);
+        userGuideButtonTable.align(Align.bottomLeft);
+        userGuideButtonTable.pad(0, 30, 30, 0);
+
+
+
         // Table for labels
         counterTable = new Table();
         counterTable.setFillParent(true);
@@ -109,6 +124,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
         setupPermanentButtons(buttonTable, skin);
+        setupUserGuideButton(userGuideButtonTable, skin);
 
         // Table order
         // Add table containing the buttons before table containing the field to avoid dropdown
@@ -116,6 +132,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         stage.addActor(counterTable);
         stage.addActor(buttonTable);
+        stage.addActor(userGuideButtonTable);
         stage.addActor(mapTable);
 
         mapTable.add(map);
@@ -148,6 +165,10 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(tileMapInputProcessor);
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        userGuide = new Texture("userguide.png");
+        batch = new SpriteBatch();
+
     }
 
     /**
@@ -294,6 +315,18 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bResetLabyrinth);
     }
 
+    private void setupUserGuideButton(Table table, final Skin skin) {
+        final TextButton bToggleUserGuide = new TextButton("Hilfe", skin);
+
+        bToggleUserGuide.addListener(
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    userGuideEnabled = !userGuideEnabled;
+                }
+            });
+        table.add(bToggleUserGuide);
+    }
+
     /**
      * Sets up the scrollpane showing explanation texts. Call
      * explanationLabel.selectAlgorithmDescription() during runtime to switch to the given supported
@@ -374,6 +407,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0.1f, 0.2f, 0.3f, 1);
 
+        batch.begin();
+        if (userGuideEnabled) {
+            batch.draw(userGuide, 0, 0);
+        }
+        batch.end();
+
         manageLabelStatus();
 
         stage.act(Gdx.graphics.getDeltaTime());
@@ -392,6 +431,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         }
 
         updateExplanationLabel();
+
     }
 
     private void manageLabelStatus() {
