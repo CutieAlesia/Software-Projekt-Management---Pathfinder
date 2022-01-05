@@ -8,8 +8,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -28,7 +26,6 @@ import backend.AStar;
 import backend.BestFirst;
 import backend.BranchAndBound;
 import backend.SearchAlgorithm;
-import com.sun.org.apache.xml.internal.utils.res.XResourceBundle;
 
 import java.util.ArrayList;
 
@@ -242,7 +239,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         sbSearchAlgorithms.setWidth(70f);
 
         final TextButton bStartAlgorithm = new TextButton("Auswaehlen", skin);
-
+        final TextButton.TextButtonStyle defaultTextButtonStyle = bStartAlgorithm.getStyle();
 
         bStartAlgorithm.addListener(
                 new ChangeListener() {
@@ -278,9 +275,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
                         bStartAlgorithm.setDisabled(true);
 
-                        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(bStartAlgorithm.getStyle().down, bStartAlgorithm.getStyle().down, bStartAlgorithm.getStyle().down, bStartAlgorithm.getStyle().font);
-                        textButtonStyle.fontColor = Color.BLACK;
-                        bStartAlgorithm.setStyle(new TextButton.TextButtonStyle(textButtonStyle));
+                        setTextButtonStylePressed(bStartAlgorithm);
 
                         createLabel(searchAlgorithms[sbSearchAlgorithms.getSelectedIndex()]);
                     }
@@ -308,7 +303,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                             setupNewLabyrinthRecursiveDivision(MAP_X, MAP_Y);
                         }
                         bStartAlgorithm.setDisabled(false);
-                        bStartAlgorithm.setStyle(bNextStep.getStyle());
+                        resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
                         System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
                         clearCounterLabels();
                         tileMapInputProcessor.setInputAllowed(true);
@@ -333,7 +328,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     public void changed(ChangeEvent event, Actor actor) {
                         map.resetLabyrinth();
                         bStartAlgorithm.setDisabled(false);
-                        bStartAlgorithm.setStyle(bNextStep.getStyle());
+                        resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
                         System.out.println("Clicked! Is checked: " + bResetLabyrinth.isChecked());
                         tileMapInputProcessor.setInputAllowed(true);
                     }
@@ -347,7 +342,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     public void changed(ChangeEvent event, Actor actor) {
                         map.clearField();
                         bStartAlgorithm.setDisabled(false);
-                        bStartAlgorithm.setStyle(bNextStep.getStyle());
+                        resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
                         clearCounterLabels();
                         tileMapInputProcessor.setInputAllowed(true);
                     }
@@ -364,6 +359,25 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bNextStep);
         table.add(bAutoStepAlgorithm);
         table.add(bResetLabyrinth);
+    }
+
+    /**
+     * sets TextButtonStyle to 'pressed'
+     * @param button
+     */
+    private void setTextButtonStylePressed(TextButton button){
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(button.getStyle().down, button.getStyle().down, button.getStyle().down, button.getStyle().font);
+        textButtonStyle.fontColor = Color.BLACK;
+        button.setStyle(new TextButton.TextButtonStyle(textButtonStyle));
+    }
+
+    /**
+     * resets the TextButtonStyle of the changed button
+     * @param changedButton
+     * @param defaultStyle
+     */
+    private void resetTextButtonStyle(TextButton changedButton, TextButton.TextButtonStyle defaultStyle){
+        changedButton.setStyle(defaultStyle);
     }
 
     /**
