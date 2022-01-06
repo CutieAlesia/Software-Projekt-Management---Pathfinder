@@ -42,10 +42,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private final int MAP_Y = 45;
     private Table mapTable;
     private Table buttonTable;
+    private Skin skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
+    private final TextButton bStartAlgorithm = new TextButton("Auswaehlen", skin);
     private Table saveLoadButtonTable;
     private Table generateLabyrinthButtonTable;
     private Table counterTable;
-    private Skin skin;
+
     private InputMultiplexer inputMultiplexer;
 
     private TileMapInputProcessor tileMapInputProcessor;
@@ -114,7 +116,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         //  Buttons
 
-        skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
+        
 
         setupPermanentButtons(buttonTable, skin);
         setupSaveLoadButtons(saveLoadButtonTable, skin);
@@ -237,8 +239,50 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         sbSearchAlgorithms.setItems(searchAlgorithms);
 
         sbSearchAlgorithms.setWidth(70f);
+        
+        
+        sbSearchAlgorithms.addListener(
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        tileMapInputProcessor.setInputAllowed(false);
 
-        final TextButton bStartAlgorithm = new TextButton("Auswaehlen", skin);
+                        switch (sbSearchAlgorithms.getSelectedIndex()) {
+                            case 0:
+                                attachNewAlgorithm(new AStar(manager));
+                                break;
+                            case 1:
+                                attachNewAlgorithm(new BestFirst(manager));
+                                break;
+                            case 2:
+                                attachNewAlgorithm(new BranchAndBound(manager));
+                                break;
+                            case 3:
+                                attachNewAlgorithm(new backend.BreadthFirst(manager));
+                                break;
+                            case 4:
+                                attachNewAlgorithm(new backend.DepthFirst(manager));
+                                break;
+                            case 5:
+                                attachNewAlgorithm(new backend.Dijkstra(manager));
+                                break;
+                        }
+
+                        receivedNodes.clear();
+                        pathNodes.clear();
+                        map.resetLabyrinth();
+                        launchBackend();
+                        algoSteps.add(receivedNodes.size());
+                        pathSteps.add(pathNodes.size());
+                        System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
+                        bStartAlgorithm.setDisabled(false);
+
+                        setTextButtonStylePressed(bStartAlgorithm);
+
+                        createLabel(searchAlgorithms[sbSearchAlgorithms.getSelectedIndex()]);
+                    }
+                });
+
+        
         final TextButton.TextButtonStyle defaultTextButtonStyle = bStartAlgorithm.getStyle();
 
         bStartAlgorithm.addListener(
@@ -269,6 +313,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
                         receivedNodes.clear();
                         pathNodes.clear();
+                        map.resetLabyrinth();
                         launchBackend();
                         algoSteps.add(receivedNodes.size());
                         pathSteps.add(pathNodes.size());
