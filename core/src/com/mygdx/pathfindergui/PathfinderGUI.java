@@ -296,10 +296,10 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 	                        bStartAlgorithm.setDisabled(false);
                     	}
                     	else {
-                    		if(!map.getProcessedNodes().isEmpty()) {
+//                    		if(!map.getProcessedNodes().isEmpty()) {
 	                            setTextButtonStylePressed(bStartAlgorithm);
 		                        bStartAlgorithm.setDisabled(true);
-                    		}
+//                    		}
                     	}
                     }
                 });
@@ -377,6 +377,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
                         System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
                         clearCounterLabels();
+                        lastSelected = -1;
                         tileMapInputProcessor.setInputAllowed(true);
                     }
                 });
@@ -392,7 +393,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 }
             });
 
-        final TextButton bResetLabyrinth = new TextButton("Saubermachen", skin);
+        final TextButton bResetLabyrinth = new TextButton("Editieren", skin);
 
         bResetLabyrinth.addListener(
                 new ChangeListener() {
@@ -401,6 +402,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         bStartAlgorithm.setDisabled(false);
                         resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
                         System.out.println("Clicked! Is checked: " + bResetLabyrinth.isChecked());
+                        lastSelected = -1;
                         tileMapInputProcessor.setInputAllowed(true);
                     }
                 });
@@ -415,6 +417,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         bStartAlgorithm.setDisabled(false);
                         resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
                         clearCounterLabels();
+                        lastSelected = -1;
                         tileMapInputProcessor.setInputAllowed(true);
                     }
                 });
