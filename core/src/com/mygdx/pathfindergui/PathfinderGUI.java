@@ -50,6 +50,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private Skin skin;
     private InputMultiplexer inputMultiplexer;
 
+    TextButton.TextButtonStyle defaultButtonStyle;
+
     private SpriteBatch batch;
     private Texture userGuide;
 
@@ -110,12 +112,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         counterTable.align(Align.topLeft);
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label counterHeader =
-                new Label(
-                        "Zeit und Schritte des Algorithmus\n",
-                        labelStyleGenerator.generateLabelStyle(
-                                "font/RobotoMono-VariableFont_wght.ttf",
-                                Color.valueOf("#FFDCA4"),
-                                18));
+            new Label(
+                "Zeit und Schritte des Algorithmus\n",
+                labelStyleGenerator.generateLabelStyle(
+                    "font/RobotoMono-VariableFont_wght.ttf",
+                    Color.valueOf("#FFDCA4"),
+                    18));
         counterTable.add(counterHeader);
         counterTable.row();
         counterTable.pad(60, 30, 30, 0);
@@ -123,6 +125,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         //  Buttons
 
         skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
+
         setupPermanentButtons(buttonTable, skin);
         setupUserGuideButton(userGuideButtonTable, skin);
 
@@ -139,12 +142,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         // Scrollpane with algorithm explanations
         explanationLabel =
-                new ExplanationLabel(
-                        SupportedAlgorithms.ASTAR,
-                        labelStyleGenerator.generateLabelStyle(
-                                "font/RobotoMono-VariableFont_wght.ttf",
-                                Color.valueOf("#FFDCA4"),
-                                13));
+            new ExplanationLabel(
+                SupportedAlgorithms.ASTAR,
+                labelStyleGenerator.generateLabelStyle(
+                    "font/RobotoMono-VariableFont_wght.ttf",
+                    Color.valueOf("#FFDCA4"),
+                    13));
         setupExplanationText(explanationLabel);
 
         // A P I
@@ -190,68 +193,68 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         final TextButton bStartAlgorithm = new TextButton("Auswaehlen", skin);
 
         bStartAlgorithm.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        tileMapInputProcessor.setInputAllowed(false);
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    tileMapInputProcessor.setInputAllowed(false);
 
-                        switch (sbSearchAlgorithms.getSelectedIndex()) {
-                            case 0:
-                                attachNewAlgorithm(new AStar(manager));
-                                break;
-                            case 1:
-                                attachNewAlgorithm(new BestFirst(manager));
-                                break;
-                            case 2:
-                                attachNewAlgorithm(new BranchAndBound(manager));
-                                break;
-                            case 3:
-                                attachNewAlgorithm(new backend.BreadthFirst(manager));
-                                break;
-                            case 4:
-                                attachNewAlgorithm(new backend.DepthFirst(manager));
-                                break;
-                            case 5:
-                                attachNewAlgorithm(new backend.Dijkstra(manager));
-                                break;
-                        }
-                        receivedNodes.clear();
-                        pathNodes.clear();
-                        launchBackend();
-                        algoSteps.add(receivedNodes.size());
-                        pathSteps.add(pathNodes.size());
-
-                        System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
-                        bStartAlgorithm.setDisabled(true);
-                        createLabel(searchAlgorithms[sbSearchAlgorithms.getSelectedIndex()]);
+                    switch (sbSearchAlgorithms.getSelectedIndex()) {
+                        case 0:
+                            attachNewAlgorithm(new AStar(manager));
+                            break;
+                        case 1:
+                            attachNewAlgorithm(new BestFirst(manager));
+                            break;
+                        case 2:
+                            attachNewAlgorithm(new BranchAndBound(manager));
+                            break;
+                        case 3:
+                            attachNewAlgorithm(new backend.BreadthFirst(manager));
+                            break;
+                        case 4:
+                            attachNewAlgorithm(new backend.DepthFirst(manager));
+                            break;
+                        case 5:
+                            attachNewAlgorithm(new backend.Dijkstra(manager));
+                            break;
                     }
-                });
+                    receivedNodes.clear();
+                    pathNodes.clear();
+                    launchBackend();
+                    algoSteps.add(receivedNodes.size());
+                    pathSteps.add(pathNodes.size());
+
+                    System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
+                    bStartAlgorithm.setDisabled(true);
+                    createLabel(searchAlgorithms[sbSearchAlgorithms.getSelectedIndex()]);
+                }
+            });
 
         final TextButton bNextStep = new TextButton("Weiter", skin);
 
         bNextStep.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        map.visualiseNode();
-                        System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
-                    }
-                });
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    map.visualiseNode();
+                    System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
+                }
+            });
 
         final TextButton bNewRandomLabyrinth = new TextButton("Zufallslabyrinth", skin);
 
         bNewRandomLabyrinth.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        if (pfTimer.getPfRuntime() % 2 == 0) {
-                            setupNewLabyrinthDepthFirst(MAP_X, MAP_Y);
-                        } else {
-                            setupNewLabyrinthRecursiveDivision(MAP_X, MAP_Y);
-                        }
-                        bStartAlgorithm.setDisabled(false);
-                        System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
-                        clearCounterLabels();
-                        tileMapInputProcessor.setInputAllowed(true);
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    if (pfTimer.getPfRuntime() % 2 == 0) {
+                        setupNewLabyrinthDepthFirst(MAP_X, MAP_Y);
+                    } else {
+                        setupNewLabyrinthRecursiveDivision(MAP_X, MAP_Y);
                     }
-                });
+                    bStartAlgorithm.setDisabled(false);
+                    System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
+                    clearCounterLabels();
+                    tileMapInputProcessor.setInputAllowed(true);
+                }
+            });
 
         /*        final TextButton bNewRandomLabyrinthRecursiveDivision = new TextButton("Generate new Labyrinth(2)", skin);
 
@@ -270,37 +273,37 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         final TextButton bAutoStepAlgorithm = new TextButton("Autoplay", skin);
 
         bAutoStepAlgorithm.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        autoStepEnabled = !autoStepEnabled;
-                        System.out.println(
-                                "Clicked! Is checked: " + bAutoStepAlgorithm.isChecked());
-                    }
-                });
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    autoStepEnabled = !autoStepEnabled;
+                    System.out.println(
+                        "Clicked! Is checked: " + bAutoStepAlgorithm.isChecked());
+                }
+            });
 
         final TextButton bResetLabyrinth = new TextButton("Saubermachen", skin);
 
         bResetLabyrinth.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        map.resetLabyrinth();
-                        bStartAlgorithm.setDisabled(false);
-                        System.out.println("Clicked! Is checked: " + bResetLabyrinth.isChecked());
-                        tileMapInputProcessor.setInputAllowed(true);
-                    }
-                });
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    map.resetLabyrinth();
+                    bStartAlgorithm.setDisabled(false);
+                    System.out.println("Clicked! Is checked: " + bResetLabyrinth.isChecked());
+                    tileMapInputProcessor.setInputAllowed(true);
+                }
+            });
 
         final TextButton bClearField = new TextButton("Leeres Labyrinth", skin);
 
         bClearField.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        map.clearField();
-                        bStartAlgorithm.setDisabled(false);
-                        clearCounterLabels();
-                        tileMapInputProcessor.setInputAllowed(true);
-                    }
-                });
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    map.clearField();
+                    bStartAlgorithm.setDisabled(false);
+                    clearCounterLabels();
+                    tileMapInputProcessor.setInputAllowed(true);
+                }
+            });
 
         generateLabyrinthButtonTable = new Table();
         generateLabyrinthButtonTable.add(bNewRandomLabyrinth);
@@ -323,11 +326,17 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      */
     private void setupUserGuideButton(Table table, final Skin skin) {
         final TextButton bToggleUserGuide = new TextButton("Hilfe", skin);
+        final TextButton.TextButtonStyle defaultTextButtonStyle = bToggleUserGuide.getStyle();
 
         bToggleUserGuide.addListener(
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     userGuideEnabled = !userGuideEnabled;
+                    if(userGuideEnabled) {
+                        setTextButtonStylePressed(bToggleUserGuide);
+                    } else {
+                        resetTextButtonStyle(bToggleUserGuide, defaultTextButtonStyle);
+                    }
                 }
             });
         table.add(bToggleUserGuide);
@@ -356,7 +365,24 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         container.add(scroll);
         scroll.validate();
     }
+    /**
+     * sets TextButtonStyle to 'pressed'
+     * @param button
+     */
+    private void setTextButtonStylePressed(TextButton button){
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(button.getStyle().down, button.getStyle().down, button.getStyle().down, button.getStyle().font);
+        textButtonStyle.fontColor = Color.BLACK;
+        button.setStyle(new TextButton.TextButtonStyle(textButtonStyle));
+    }
 
+    /**
+     * resets the TextButtonStyle of the changed button
+     * @param changedButton
+     * @param defaultStyle
+     */
+    private void resetTextButtonStyle(TextButton changedButton, TextButton.TextButtonStyle defaultStyle){
+        changedButton.setStyle(defaultStyle);
+    }
     /**
      * Attaches passed algorithm to the currently loaded labyrinth.
      *
@@ -504,20 +530,20 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label.LabelStyle labelStyle =
-                labelStyleGenerator.generateLabelStyle(
-                        "font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 15);
+            labelStyleGenerator.generateLabelStyle(
+                "font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 15);
         Label label =
-                new Label(
-                        algorithmName
-                                + "\nZeit: "
-                                + algoTimes.get(algoTimes.size() - 1)
-                                + "ms"
-                                + " Schritte: "
-                                + algoSteps.get(algoSteps.size() - 1)
-                                + " Zielpfad: "
-                                + pathSteps.get(pathSteps.size() - 1)
-                                + "\n",
-                        labelStyle);
+            new Label(
+                algorithmName
+                    + "\nZeit: "
+                    + algoTimes.get(algoTimes.size() - 1)
+                    + "ms"
+                    + " Schritte: "
+                    + algoSteps.get(algoSteps.size() - 1)
+                    + " Zielpfad: "
+                    + pathSteps.get(pathSteps.size() - 1)
+                    + "\n",
+                labelStyle);
         if (labels.size() >= 6) {
             counterTable.removeActor(labels.remove(0));
         }
