@@ -315,6 +315,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bResetLabyrinth);
     }
 
+    /**
+     * Instantiates a button to toggle the user guide overlay and adds them to the given table.
+     *
+     * @param table
+     * @param skin
+     */
     private void setupUserGuideButton(Table table, final Skin skin) {
         final TextButton bToggleUserGuide = new TextButton("Hilfe", skin);
 
@@ -407,11 +413,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0.1f, 0.2f, 0.3f, 1);
 
-        batch.begin();
-        if (userGuideEnabled) {
-            batch.draw(userGuide, 0, 0);
-        }
-        batch.end();
 
         manageLabelStatus();
 
@@ -431,6 +432,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         }
 
         updateExplanationLabel();
+
+        // Draw user guide overlay
+        batch.begin();
+        if (userGuideEnabled) {
+            batch.draw(userGuide, 0, 0);
+        }
+        batch.end();
 
     }
 
