@@ -268,10 +268,14 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 	                                attachNewAlgorithm(new backend.Dijkstra(manager));
 	                                break;
 	                        }
-	                        lastSelected = sbSearchAlgorithms.getSelectedIndex();
+	                        
 	                        resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
 	
 	                        bStartAlgorithm.setDisabled(false);
+                    	}
+                    	else {
+                            setTextButtonStylePressed(bStartAlgorithm);
+	                        bStartAlgorithm.setDisabled(true);
                     	}
                     }
                 });
@@ -311,6 +315,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         if(autoStepEnabled) {
                         	autoStepEnabled = false;
                         }
+                        lastSelected = sbSearchAlgorithms.getSelectedIndex();
                         launchBackend();
                         algoSteps.add(receivedNodes.size());
                         pathSteps.add(pathNodes.size());
