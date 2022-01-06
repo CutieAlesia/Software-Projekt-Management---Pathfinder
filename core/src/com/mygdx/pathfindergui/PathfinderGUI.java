@@ -8,6 +8,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -44,10 +46,16 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private Table buttonTable;
     private Skin skin;
     private Table saveLoadButtonTable;
+    private Table userGuideButtonTable;
     private Table generateLabyrinthButtonTable;
     private Table counterTable;
 
     private InputMultiplexer inputMultiplexer;
+
+    TextButton.TextButtonStyle defaultButtonStyle;
+
+    private SpriteBatch batch;
+    private Texture userGuide;
 
     private TileMapInputProcessor tileMapInputProcessor;
 
@@ -71,6 +79,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
     //  Toggles autoplay mode
     private boolean autoStepEnabled = false;
+    // Toggles user guide
+    private boolean userGuideEnabled = false;
 
     /**
      * Sets up the stage. WIP!
@@ -98,28 +108,35 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         saveLoadButtonTable.align(Align.bottomRight);
         saveLoadButtonTable.pad(30, 30, 30 ,30);
 
+        userGuideButtonTable = new Table();
+        userGuideButtonTable.setFillParent(true);
+        userGuideButtonTable.align(Align.bottomLeft);
+        userGuideButtonTable.pad(0, 30, 30, 0);
+
+
+
         // Table for labels
         counterTable = new Table();
         counterTable.setFillParent(true);
         counterTable.align(Align.topLeft);
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label counterHeader =
-                new Label(
-                        "Zeit und Schritte des Algorithmus\n",
-                        labelStyleGenerator.generateLabelStyle(
-                                "font/RobotoMono-VariableFont_wght.ttf",
-                                Color.valueOf("#FFDCA4"),
-                                18));
+            new Label(
+                "Zeit und Schritte des Algorithmus\n",
+                labelStyleGenerator.generateLabelStyle(
+                    "font/RobotoMono-VariableFont_wght.ttf",
+                    Color.valueOf("#FFDCA4"),
+                    18));
         counterTable.add(counterHeader);
         counterTable.row();
         counterTable.pad(60, 30, 30, 0);
 
         //  Buttons
 
-        
-    	skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
+        skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
         setupPermanentButtons(buttonTable, skin);
         setupSaveLoadButtons(saveLoadButtonTable, skin);
+        setupUserGuideButton(userGuideButtonTable, skin);
 
         // Table order
         // Add table containing the buttons before table containing the field to avoid dropdown
@@ -128,18 +145,19 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         stage.addActor(counterTable);
         stage.addActor(buttonTable);
         stage.addActor(saveLoadButtonTable);
+        stage.addActor(userGuideButtonTable);
         stage.addActor(mapTable);
 
         mapTable.add(map);
 
         // Scrollpane with algorithm explanations
         explanationLabel =
-                new ExplanationLabel(
-                        SupportedAlgorithms.ASTAR,
-                        labelStyleGenerator.generateLabelStyle(
-                                "font/RobotoMono-VariableFont_wght.ttf",
-                                Color.valueOf("#FFDCA4"),
-                                13));
+            new ExplanationLabel(
+                SupportedAlgorithms.ASTAR,
+                labelStyleGenerator.generateLabelStyle(
+                    "font/RobotoMono-VariableFont_wght.ttf",
+                    Color.valueOf("#FFDCA4"),
+                    13));
         setupExplanationText(explanationLabel);
 
         // A P I
@@ -160,6 +178,10 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(tileMapInputProcessor);
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        userGuide = new Texture("userguide.png");
+        batch = new SpriteBatch();
+
     }
 
     /**
@@ -241,9 +263,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         sbSearchAlgorithms.setWidth(70f);
         final TextButton bStartAlgorithm = new TextButton("Ausfuehren", skin);
-        
+
         final TextButton.TextButtonStyle defaultTextButtonStyle = bStartAlgorithm.getStyle();
-        
+
         sbSearchAlgorithms.addListener(
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
@@ -268,9 +290,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 	                                attachNewAlgorithm(new backend.Dijkstra(manager));
 	                                break;
 	                        }
-	                        
+
 	                        resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
-	
+
 	                        bStartAlgorithm.setDisabled(false);
                     	}
                     	else {
@@ -285,11 +307,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
 
         bStartAlgorithm.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        tileMapInputProcessor.setInputAllowed(false);
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    tileMapInputProcessor.setInputAllowed(false);
 
-                        
+
                         switch (sbSearchAlgorithms.getSelectedIndex()) {
                             case 0:
                                 attachNewAlgorithm(new AStar(manager));
@@ -313,7 +335,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         map.resetLabyrinth();
                         receivedNodes.clear();
                         pathNodes.clear();
-                        
+
                         if(autoStepEnabled) {
                         	autoStepEnabled = false;
                         }
@@ -333,12 +355,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         final TextButton bNextStep = new TextButton("Weiter", skin);
 
         bNextStep.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        map.visualiseNode();
-                        System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
-                    }
-                });
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    map.visualiseNode();
+                    System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
+                }
+            });
 
         final TextButton bNewRandomLabyrinth = new TextButton("Zufallslabyrinth", skin);
 
@@ -362,13 +384,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         final TextButton bAutoStepAlgorithm = new TextButton("Autoplay", skin);
 
         bAutoStepAlgorithm.addListener(
-                new ChangeListener() {
-                    public void changed(ChangeEvent event, Actor actor) {
-                        autoStepEnabled = !autoStepEnabled;
-                        System.out.println(
-                                "Clicked! Is checked: " + bAutoStepAlgorithm.isChecked());
-                    }
-                });
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    autoStepEnabled = !autoStepEnabled;
+                    System.out.println(
+                        "Clicked! Is checked: " + bAutoStepAlgorithm.isChecked());
+                }
+            });
 
         final TextButton bResetLabyrinth = new TextButton("Saubermachen", skin);
 
@@ -409,18 +431,42 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bAutoStepAlgorithm);
         table.add(bResetLabyrinth);
     }
-    
-    
+
+
  /**
-  * Checks if the selected index changed to a different index. 
+  * Checks if the selected index changed to a different index.
   * @return
   */
-    
+
     private boolean checklastAndCurrentSelection() {
     	if(sbSearchAlgorithms.getSelectedIndex() != lastSelected) {
     		return true;
     	}
     	return false;
+    }
+
+    /**
+     * Instantiates a button to toggle the user guide overlay and adds them to the given table.
+     *
+     * @param table
+     * @param skin
+     */
+    private void setupUserGuideButton(Table table, final Skin skin) {
+        final TextButton bToggleUserGuide = new TextButton("Hilfe", skin);
+        final TextButton.TextButtonStyle defaultTextButtonStyle = bToggleUserGuide.getStyle();
+
+        bToggleUserGuide.addListener(
+            new ChangeListener() {
+                public void changed(ChangeEvent event, Actor actor) {
+                    userGuideEnabled = !userGuideEnabled;
+                    if(userGuideEnabled) {
+                        setTextButtonStylePressed(bToggleUserGuide);
+                    } else {
+                        resetTextButtonStyle(bToggleUserGuide, defaultTextButtonStyle);
+                    }
+                }
+            });
+        table.add(bToggleUserGuide);
     }
 
     /**
@@ -522,6 +568,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0.1f, 0.2f, 0.3f, 1);
 
+
         manageLabelStatus();
 
         stage.act(Gdx.graphics.getDeltaTime());
@@ -540,6 +587,14 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         }
 
         updateExplanationLabel();
+
+        // Draw user guide overlay
+        batch.begin();
+        if (userGuideEnabled) {
+            batch.draw(userGuide, 0, 0);
+        }
+        batch.end();
+
     }
 
     private void manageLabelStatus() {
@@ -604,20 +659,20 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label.LabelStyle labelStyle =
-                labelStyleGenerator.generateLabelStyle(
-                        "font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 15);
+            labelStyleGenerator.generateLabelStyle(
+                "font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 15);
         Label label =
-                new Label(
-                        algorithmName
-                                + "\nZeit: "
-                                + algoTimes.get(algoTimes.size() - 1)
-                                + "ms"
-                                + " Schritte: "
-                                + algoSteps.get(algoSteps.size() - 1)
-                                + " Zielpfad: "
-                                + pathSteps.get(pathSteps.size() - 1)
-                                + "\n",
-                        labelStyle);
+            new Label(
+                algorithmName
+                    + "\nZeit: "
+                    + algoTimes.get(algoTimes.size() - 1)
+                    + "ms"
+                    + " Schritte: "
+                    + algoSteps.get(algoSteps.size() - 1)
+                    + " Zielpfad: "
+                    + pathSteps.get(pathSteps.size() - 1)
+                    + "\n",
+                labelStyle);
         if (labels.size() >= 6) {
             counterTable.removeActor(labels.remove(0));
         }
