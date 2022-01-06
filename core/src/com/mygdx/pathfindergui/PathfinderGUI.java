@@ -42,8 +42,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private final int MAP_Y = 45;
     private Table mapTable;
     private Table buttonTable;
-    private Skin skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
-    private final TextButton bStartAlgorithm = new TextButton("Auswaehlen", skin);
+    private Skin skin;
     private Table saveLoadButtonTable;
     private Table generateLabyrinthButtonTable;
     private Table counterTable;
@@ -65,8 +64,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private ArrayList<Node> pathNodes = new ArrayList<>();
 
     private ArrayList<Label> labels = new ArrayList<>();
-    ExplanationLabel explanationLabel;
-    SelectBox<String> sbSearchAlgorithms;
+    private ExplanationLabel explanationLabel;
+    private SelectBox<String> sbSearchAlgorithms;
+    private int lastSelected;
 
 
     //  Toggles autoplay mode
@@ -117,7 +117,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         //  Buttons
 
         
-
+    	skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
         setupPermanentButtons(buttonTable, skin);
         setupSaveLoadButtons(saveLoadButtonTable, skin);
 
@@ -230,6 +230,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      */
     private void setupPermanentButtons(Table table, final Skin skin) {
 
+
         sbSearchAlgorithms = new SelectBox<>(skin);
 
 
@@ -239,57 +240,50 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         sbSearchAlgorithms.setItems(searchAlgorithms);
 
         sbSearchAlgorithms.setWidth(70f);
+        final TextButton bStartAlgorithm = new TextButton("Ausfuehren", skin);
         
+        final TextButton.TextButtonStyle defaultTextButtonStyle = bStartAlgorithm.getStyle();
         
         sbSearchAlgorithms.addListener(
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
-                        tileMapInputProcessor.setInputAllowed(false);
-
-                        switch (sbSearchAlgorithms.getSelectedIndex()) {
-                            case 0:
-                                attachNewAlgorithm(new AStar(manager));
-                                break;
-                            case 1:
-                                attachNewAlgorithm(new BestFirst(manager));
-                                break;
-                            case 2:
-                                attachNewAlgorithm(new BranchAndBound(manager));
-                                break;
-                            case 3:
-                                attachNewAlgorithm(new backend.BreadthFirst(manager));
-                                break;
-                            case 4:
-                                attachNewAlgorithm(new backend.DepthFirst(manager));
-                                break;
-                            case 5:
-                                attachNewAlgorithm(new backend.Dijkstra(manager));
-                                break;
-                        }
-
-                        receivedNodes.clear();
-                        pathNodes.clear();
-                        map.resetLabyrinth();
-                        launchBackend();
-                        algoSteps.add(receivedNodes.size());
-                        pathSteps.add(pathNodes.size());
-                        System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
-                        bStartAlgorithm.setDisabled(false);
-
-                        setTextButtonStylePressed(bStartAlgorithm);
-
-                        createLabel(searchAlgorithms[sbSearchAlgorithms.getSelectedIndex()]);
+                    	if(checklastAndCurrentSelection()) {
+	                        switch (sbSearchAlgorithms.getSelectedIndex()) {
+	                            case 0:
+	                                attachNewAlgorithm(new AStar(manager));
+	                                break;
+	                            case 1:
+	                                attachNewAlgorithm(new BestFirst(manager));
+	                                break;
+	                            case 2:
+	                                attachNewAlgorithm(new BranchAndBound(manager));
+	                                break;
+	                            case 3:
+	                                attachNewAlgorithm(new backend.BreadthFirst(manager));
+	                                break;
+	                            case 4:
+	                                attachNewAlgorithm(new backend.DepthFirst(manager));
+	                                break;
+	                            case 5:
+	                                attachNewAlgorithm(new backend.Dijkstra(manager));
+	                                break;
+	                        }
+	                        lastSelected = sbSearchAlgorithms.getSelectedIndex();
+	                        resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
+	
+	                        bStartAlgorithm.setDisabled(false);
+                    	}
                     }
                 });
 
-        
-        final TextButton.TextButtonStyle defaultTextButtonStyle = bStartAlgorithm.getStyle();
+
 
         bStartAlgorithm.addListener(
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
                         tileMapInputProcessor.setInputAllowed(false);
 
+                        
                         switch (sbSearchAlgorithms.getSelectedIndex()) {
                             case 0:
                                 attachNewAlgorithm(new AStar(manager));
@@ -310,10 +304,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                                 attachNewAlgorithm(new backend.Dijkstra(manager));
                                 break;
                         }
-
+                        map.resetLabyrinth();
                         receivedNodes.clear();
                         pathNodes.clear();
-                        map.resetLabyrinth();
+                        
+                        if(autoStepEnabled) {
+                        	autoStepEnabled = false;
+                        }
                         launchBackend();
                         algoSteps.add(receivedNodes.size());
                         pathSteps.add(pathNodes.size());
@@ -404,6 +401,19 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bNextStep);
         table.add(bAutoStepAlgorithm);
         table.add(bResetLabyrinth);
+    }
+    
+    
+ /**
+  * Checks if the selected index changed to a different index. 
+  * @return
+  */
+    
+    private boolean checklastAndCurrentSelection() {
+    	if(sbSearchAlgorithms.getSelectedIndex() != lastSelected) {
+    		return true;
+    	}
+    	return false;
     }
 
     /**
