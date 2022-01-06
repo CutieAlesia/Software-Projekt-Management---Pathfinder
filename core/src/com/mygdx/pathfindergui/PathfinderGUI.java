@@ -274,8 +274,10 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 	                        bStartAlgorithm.setDisabled(false);
                     	}
                     	else {
-                            setTextButtonStylePressed(bStartAlgorithm);
-	                        bStartAlgorithm.setDisabled(true);
+                    		if(!map.getProcessedNodes().isEmpty()) {
+	                            setTextButtonStylePressed(bStartAlgorithm);
+		                        bStartAlgorithm.setDisabled(true);
+                    		}
                     	}
                     }
                 });
