@@ -27,7 +27,12 @@ import backend.BestFirst;
 import backend.BranchAndBound;
 import backend.SearchAlgorithm;
 
+import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * PathfinderGUI. Manages all of the GUI's components. Prepares GUI objects and places them onto the
@@ -204,17 +209,148 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bSaveLabyrinth);
     }
 
+    /**
+     * takes the maze and saves it into a text file
+     *
+     * @param labyrinth The current maze
+     */
     private void saveLabyrinth(Node[][] labyrinth) {
-        // insert functionality to save the given labyrinth here
+        if(labyrinth == null || labyrinth.length == 0 || labyrinth[0].length == 0) {
+            return;
+        }
 
+        File file;
 
+        try {
+            file = new File("savefiles/save.txt");
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        save(labyrinth, file);
     }
 
+    /**
+     * Takes a Node[][] and saves it into a given file
+     *
+     * @param field The maze
+     * @param file The file that the maze is supposed to be written to
+     */
+    private void save(Node[][] field, File file) {
+        FileWriter writer;
+
+        try {
+            writer = new FileWriter(file);
+        } catch(IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        for(int i=0; i<field.length; i++) {
+            for(int j=0; j<field[i].length; j++) {
+                Node node = field[i][j];
+                int x = node.getHorIndex();
+                int y = node.getVertIndex();
+                NodeType type = node.getType();
+                String end = j == field[i].length - 1 ? "\n" : "\t";
+
+                if(type == NodeType.VISITED || type == NodeType.PATH) {
+                    type = NodeType.NORMAL;
+                }
+
+                try {
+                    writer.write("[" + x + "," + y + "," + type + "]" + end);
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        try {
+            writer.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens a filebrowser and returns a saved maze, based on the file content
+     *
+     * @return maze that was saved in a selected file
+     */
     private Node[][] loadLabyrinth() {
-        // insert functionality to load the current labyrinth here
+        JFileChooser chooser = new JFileChooser();
+        File file;
 
+        int selection = chooser.showOpenDialog(null);
 
-        return field; // placeholder, return loaded labyrinth here
+        if(selection == JFileChooser.APPROVE_OPTION) {
+            file = chooser.getSelectedFile();
+        } else {
+            System.out.println("Could not open file");
+            return field;
+        }
+
+        Node[][] matrix = load(file);
+        return matrix != null ? matrix : field;
+    }
+
+    /**
+     * Takes a file, reads it and returns a maze that is created from the files content
+     *
+     * @return loaded maze
+     * @param file File where the maze is saved
+     */
+    private Node[][] load(File file) {
+        if(file == null) return null;
+
+        ArrayList<Node> nodes = new ArrayList<Node>();
+        int width = 0;
+        int height = 0;
+
+        Scanner scanner;
+
+        try {
+            scanner = new Scanner(file);
+
+            while(scanner.hasNext()) {
+                String line = scanner.nextLine();
+                String[] entries = line.split("\t");
+
+                for(String entry : entries) {
+                    entry = entry.substring(1, entry.length() - 1);
+                    String[] values = entry.split(",");
+
+                    int x = Integer.parseInt(values[0]);
+                    int y = Integer.parseInt(values[1]);
+                    NodeType type = NodeType.valueOf(values[2]);
+
+                    Node node = new Node(y, x);
+                    node.setType(type);
+                    nodes.add(node);
+                }
+
+                width = entries.length;
+                height++;
+            }
+
+            scanner.close();
+
+            Node[][] field = new Node[height][width];
+
+            for(int i=0; i<height; i++) {
+                for(int j=0; j<width; j++) {
+                    field[i][j] = nodes.remove(0);
+                }
+            }
+            return field;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
