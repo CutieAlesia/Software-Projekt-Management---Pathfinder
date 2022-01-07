@@ -47,17 +47,10 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private TileMap map;
     private final int MAP_X = 45;
     private final int MAP_Y = 45;
-    private Table mapTable;
-    private Table buttonTable;
     private Skin skin;
-    private Table saveLoadButtonTable;
-    private Table userGuideButtonTable;
-    private Table generateLabyrinthButtonTable;
     private Table counterTable;
 
     private InputMultiplexer inputMultiplexer;
-
-    TextButton.TextButtonStyle defaultButtonStyle;
 
     private SpriteBatch batch;
     private Texture userGuide;
@@ -78,6 +71,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
     private ArrayList<Label> labels = new ArrayList<>();
     private ExplanationLabel explanationLabel;
+    private TextButton bStartAlgorithm;
     private SelectBox<String> sbSearchAlgorithms;
     private int lastSelected;
 
@@ -98,22 +92,22 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         stage = new Stage(viewport);
         setupEmptyField(MAP_X, MAP_Y);
         map.setMapFillable(true);
-        mapTable = new Table();
+        Table mapTable = new Table();
         mapTable.setFillParent(true);
         mapTable.align(Align.bottom);
 
-        buttonTable = new Table();
+        Table buttonTable = new Table();
         buttonTable.setFillParent(true);
         // buttonTable.setBounds(20, -20, 20, 20);
         buttonTable.align(Align.topLeft);
         buttonTable.pad(30, 30, 30, 0);
 
-        saveLoadButtonTable = new Table();
+        Table saveLoadButtonTable = new Table();
         saveLoadButtonTable.setFillParent(true);
         saveLoadButtonTable.align(Align.bottomRight);
         saveLoadButtonTable.pad(30, 30, 30 ,30);
 
-        userGuideButtonTable = new Table();
+        Table userGuideButtonTable = new Table();
         userGuideButtonTable.setFillParent(true);
         userGuideButtonTable.align(Align.bottomLeft);
         userGuideButtonTable.pad(0, 30, 30, 0);
@@ -198,7 +192,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void setupSaveLoadButtons(Table table, final Skin skin) {
 
         final TextButton bSaveLabyrinth = new TextButton("Speichern", skin);
-
+        final TextButton.TextButtonStyle defaultTextButtonStyle = bSaveLabyrinth.getStyle();
 
         bSaveLabyrinth.addListener(
             new ChangeListener() {
@@ -215,18 +209,14 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     map.resetLabyrinth();
-                    Node[][] tempMap = map.getNodes();
 
-                    try {
                     field = loadLabyrinth();
-                    }
-                    catch (Exception e) {
-                        field = tempMap;
-                        e.printStackTrace();
-                    }
-                    //  TODO (Frontend): properly call "Saubermachen" on successful load
+
+                    // calls to un-disable buttons
                     map.resetLabyrinth();
                     clearCounterLabels();
+                    bStartAlgorithm.setDisabled(false);
+                    resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
                     map.changeProperties(field);
                 }
             });
@@ -398,7 +388,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         sbSearchAlgorithms.setItems(searchAlgorithms);
 
         sbSearchAlgorithms.setWidth(70f);
-        final TextButton bStartAlgorithm = new TextButton("Ausfuehren", skin);
+        bStartAlgorithm = new TextButton("Ausfuehren", skin);
 
         final TextButton.TextButtonStyle defaultTextButtonStyle = bStartAlgorithm.getStyle();
 
@@ -432,10 +422,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 	                        bStartAlgorithm.setDisabled(false);
                     	}
                     	else {
-//                    		if(!map.getProcessedNodes().isEmpty()) {
 	                            setTextButtonStylePressed(bStartAlgorithm);
 		                        bStartAlgorithm.setDisabled(true);
-//                    		}
                     	}
                     }
                 });
@@ -558,7 +546,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     }
                 });
 
-        generateLabyrinthButtonTable = new Table();
+        Table generateLabyrinthButtonTable = new Table();
         generateLabyrinthButtonTable.add(bNewRandomLabyrinth);
         table.add(bClearField);
         //        generateLabyrinthButtonTable.row();
