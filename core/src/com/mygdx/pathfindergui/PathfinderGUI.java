@@ -179,7 +179,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         inputMultiplexer.addProcessor(tileMapInputProcessor);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        userGuide = new Texture("userguide.png");
+        userGuide = new Texture("userguide_v2.png");
         batch = new SpriteBatch();
 
     }
