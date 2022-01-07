@@ -143,9 +143,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         stage.addActor(counterTable);
         stage.addActor(buttonTable);
-        stage.addActor(saveLoadButtonTable);
         stage.addActor(userGuideButtonTable);
         stage.addActor(mapTable);
+        stage.addActor(saveLoadButtonTable);
 
         mapTable.add(map);
 
