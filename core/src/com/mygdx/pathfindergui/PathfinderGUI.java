@@ -749,11 +749,29 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     public void launchBackend() {
         manager.initMatrix(field);
         map.changeProperties(field);
+        removeInputProcessors();
         long startTime = System.currentTimeMillis();
         backend.run();
         long endTime = System.currentTimeMillis();
         long algoTime = (endTime - startTime);
         algoTimes.add((int) algoTime);
+        addInputProcessors();
+    }
+    
+    /**
+     * removes the stage and tileMapInputProcessor
+     */
+    private void removeInputProcessors(){
+    	inputMultiplexer.removeProcessor(stage);
+    	inputMultiplexer.removeProcessor(tileMapInputProcessor);
+    }
+    
+    /**
+     * adds the stage and tileMapInputProcessor as InputProcessors.
+     */
+    private void addInputProcessors(){
+    	inputMultiplexer.addProcessor(stage);
+    	inputMultiplexer.addProcessor(tileMapInputProcessor);
     }
 
     @Override
