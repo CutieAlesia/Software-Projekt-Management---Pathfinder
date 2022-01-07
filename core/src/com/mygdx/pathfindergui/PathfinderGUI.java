@@ -236,15 +236,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             return;
         }
 
-        File file;
+        JFileChooser chooser = new JFileChooser();
+        int choice = chooser.showOpenDialog(null);
 
-        try {
-            file = new File("savefiles/save.txt");
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
+        if (choice != JFileChooser.APPROVE_OPTION) return;
+        File file = chooser.getSelectedFile();
 
         save(labyrinth, file);
     }
