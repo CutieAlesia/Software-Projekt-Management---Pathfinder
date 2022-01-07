@@ -118,6 +118,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         counterTable = new Table();
         counterTable.setFillParent(true);
         counterTable.align(Align.topLeft);
+
+
+
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label counterHeader =
             new Label(
@@ -127,9 +130,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     Color.valueOf("#FFDCA4"),
                     18));
         counterTable.add(counterHeader);
-        counterTable.row();
+        counterTable.row().align(Align.left);
         counterTable.pad(60, 30, 30, 0);
-
+        counterHeader.setAlignment(Align.topLeft);
         //  Buttons
 
         skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
@@ -757,7 +760,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         algoTimes.add((int) algoTime);
         addInputProcessors();
     }
-    
+
     /**
      * removes the stage and tileMapInputProcessor
      */
@@ -765,7 +768,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     	inputMultiplexer.removeProcessor(stage);
     	inputMultiplexer.removeProcessor(tileMapInputProcessor);
     }
-    
+
     /**
      * adds the stage and tileMapInputProcessor as InputProcessors.
      */
@@ -797,7 +800,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param algorithmName
      */
     private void createLabel(String algorithmName) {
-
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label.LabelStyle labelStyle =
             labelStyleGenerator.generateLabelStyle(
@@ -817,8 +819,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         if (labels.size() >= 6) {
             counterTable.removeActor(labels.remove(0));
         }
+
         counterTable.add(label);
-        counterTable.row();
+        counterTable.row().align(Align.left);
         labels.add(label);
 
         label.setVisible(false);
