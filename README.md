@@ -1,7 +1,5 @@
 # Pathfinder Project
 
-Run gradlew desktop:dist in command window to create exectuable jar file in dektop/build/libs directory
-
 ![TeamCity build status](http://185.194.217.213:8111/app/rest/builds/buildType:id:SeWalkWithMe_Build/statusIcon.svg)
 ![](https://img.shields.io/github/last-commit/Kushurando/Software-Projekt-Management---Pathfinder/dev)
 ___
@@ -38,7 +36,7 @@ _Gradle 2.0 or higher required_
 gradlew desktop:dist
 ```
 
-**4.** You can find the finished jar in the build/libs folder
+**4.** You can find the finished jar in the desktop/build/libs folder
 Run it by double click or by console:
 ```bash
 java -jar desktop-1.0.jar
