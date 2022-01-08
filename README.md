@@ -1,6 +1,6 @@
 # Pathfinder Project
 
-![TeamCity build status](http://185.194.217.213:8111/app/rest/builds/buildType:id:SeWalkWithMe_Build/statusIcon.svg)
+![TeamCity build status](http://185.194.217.213:8111/app/rest/builds/buildType:id:SpmPathfinder_Build/statusIcon.svg)
 ![](https://img.shields.io/github/last-commit/Kushurando/Software-Projekt-Management---Pathfinder/dev)
 ___
 ### Module Info
