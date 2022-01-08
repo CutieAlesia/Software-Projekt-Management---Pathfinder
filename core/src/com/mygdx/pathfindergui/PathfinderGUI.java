@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 /**
  * PathfinderGUI. Manages all of the GUI's components. Prepares GUI objects and places them onto the
  * stage.
@@ -49,6 +50,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private final int MAP_Y = 45;
     private Skin skin;
     private Table counterTable;
+    private Table buttonTable;
+    private Table saveLoadButtonTable;
+    private Table userGuideButtonTable;
 
     private InputMultiplexer inputMultiplexer;
 
@@ -79,6 +83,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private boolean autoStepEnabled = false;
     // Toggles user guide
     private boolean userGuideEnabled = false;
+    
+    
+    
+    
+    private int disableInputCount;
 
     /**
      * Defines the program's layout and instantiates classes that will be needed at runtime.
@@ -99,17 +108,17 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         mapTable.setFillParent(true);
         mapTable.align(Align.bottom);
 
-        Table buttonTable = new Table();
+        buttonTable = new Table();
         buttonTable.setFillParent(true);
         buttonTable.align(Align.topLeft);
         buttonTable.pad(30, 30, 30, 0);
 
-        Table saveLoadButtonTable = new Table();
+        saveLoadButtonTable = new Table();
         saveLoadButtonTable.setFillParent(true);
         saveLoadButtonTable.align(Align.bottomRight);
         saveLoadButtonTable.pad(30, 30, 30 ,30);
 
-        Table userGuideButtonTable = new Table();
+        userGuideButtonTable = new Table();
         userGuideButtonTable.setFillParent(true);
         userGuideButtonTable.align(Align.bottomLeft);
         userGuideButtonTable.pad(0, 30, 30, 0);
@@ -191,9 +200,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     map.resetLabyrinth();
-
+                    disableInputs();
                     saveLabyrinth(map.getNodes());
-                    tileMapInputProcessor.setInputAllowed(true);
+                    disableInputCount = 20;
                 }
             });
 
@@ -203,17 +212,17 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     map.resetLabyrinth();
-
+                    disableInputs();
                     field = loadLabyrinth();
 
                     // calls to un-disable buttons
                     map.resetLabyrinth();
                     clearCounterLabels();
-                    bStartAlgorithm.setDisabled(false);
+                    
+                    disableInputCount = 20;
                     resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
                     map.changeProperties(field);
                     tileMapInputProcessor.resetStash();
-                    tileMapInputProcessor.setInputAllowed(true);
                 }
             });
 
@@ -717,6 +726,14 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             batch.draw(userGuide, 0, 0);
         }
         batch.end();
+        
+        
+        if(disableInputCount > 0) {
+        	disableInputCount--;
+        }
+        else if(disableInputCount <= 0) {
+        	enableInputs();
+        }
 
     }
 
@@ -830,4 +847,60 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 break;
         }
     }
+    
+    /**
+     * disables the buttons and the TileMapInputProcessor
+     */
+    private void disableInputs() {
+    	for(Actor actor : buttonTable.getChildren().toArray(Actor.class)) {
+    		if(actor instanceof TextButton) {
+    			System.out.println(actor);
+    			((TextButton)actor).setDisabled(true);
+    			
+    		}
+    	}
+    	
+    	for(Actor actor : userGuideButtonTable.getChildren().toArray(Actor.class)) {
+    		if(actor instanceof TextButton) {
+    			((TextButton)actor).setDisabled(true);
+    			
+    		}
+    	}
+    	
+    	for(Actor actor : saveLoadButtonTable.getChildren().toArray(Actor.class)) {
+    		if(actor instanceof TextButton) {
+    			((TextButton)actor).setDisabled(true);
+    			
+    		}
+    	}
+    	tileMapInputProcessor.setInputAllowed(false);
+    }
+
+
+    /**
+     * enables the buttons and the TileMapInputProcessor
+     */
+private void enableInputs() {
+	for(Actor actor : buttonTable.getChildren().toArray(Actor.class)) {
+		if(actor instanceof TextButton) {
+			((TextButton)actor).setDisabled(false);
+			
+		}
+	}
+	
+	for(Actor actor : userGuideButtonTable.getChildren().toArray(Actor.class)) {
+		if(actor instanceof TextButton) {
+			((TextButton)actor).setDisabled(false);
+			
+		}
+	}
+	
+	for(Actor actor : saveLoadButtonTable.getChildren().toArray(Actor.class)) {
+		if(actor instanceof TextButton) {
+			((TextButton)actor).setDisabled(false);
+			
+		}
+	}
+	tileMapInputProcessor.setInputAllowed(true);
+	}
 }
