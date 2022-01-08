@@ -82,7 +82,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private boolean userGuideEnabled = false;
 
     /**
-     * Sets up the stage. WIP!
+     * Sets up the stage. 
      *
      * @author frontend
      */
@@ -203,6 +203,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     map.resetLabyrinth();
 
                     saveLabyrinth(map.getNodes());
+                    tileMapInputProcessor.setInputAllowed(true);
                 }
             });
 
@@ -221,6 +222,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     bStartAlgorithm.setDisabled(false);
                     resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
                     map.changeProperties(field);
+                    tileMapInputProcessor.resetStash();
+                    tileMapInputProcessor.setInputAllowed(true);
                 }
             });
 
@@ -466,7 +469,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         launchBackend();
                         algoSteps.add(receivedNodes.size());
                         pathSteps.add(pathNodes.size());
-                        System.out.println("Clicked! Is checked: " + bStartAlgorithm.isChecked());
                         bStartAlgorithm.setDisabled(true);
 
                         setTextButtonStylePressed(bStartAlgorithm);
@@ -481,7 +483,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     map.visualiseNode();
-                    System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
                 }
             });
 
@@ -498,10 +499,10 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         }
                         bStartAlgorithm.setDisabled(false);
                         resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
-                        System.out.println("Clicked! Is checked: " + bNextStep.isChecked());
                         clearCounterLabels();
                         lastSelected = -1;
                         tileMapInputProcessor.setInputAllowed(true);
+                        tileMapInputProcessor.resetStash();
                     }
                 });
 
@@ -511,20 +512,17 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             new ChangeListener() {
                 public void changed(ChangeEvent event, Actor actor) {
                     autoStepEnabled = !autoStepEnabled;
-                    System.out.println(
-                        "Clicked! Is checked: " + bAutoStepAlgorithm.isChecked());
                 }
             });
 
-        final TextButton bResetLabyrinth = new TextButton("Editieren", skin);
+        final TextButton bEditMode = new TextButton("Editieren", skin);
 
-        bResetLabyrinth.addListener(
+        bEditMode.addListener(
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
                         map.resetLabyrinth();
                         bStartAlgorithm.setDisabled(false);
                         resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
-                        System.out.println("Clicked! Is checked: " + bResetLabyrinth.isChecked());
                         lastSelected = -1;
                         tileMapInputProcessor.setInputAllowed(true);
                     }
@@ -542,6 +540,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         clearCounterLabels();
                         lastSelected = -1;
                         tileMapInputProcessor.setInputAllowed(true);
+                        tileMapInputProcessor.resetStash();
                     }
                 });
 
@@ -555,7 +554,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bStartAlgorithm);
         table.add(bNextStep);
         table.add(bAutoStepAlgorithm);
-        table.add(bResetLabyrinth);
+        table.add(bEditMode);
     }
 
 
@@ -759,7 +758,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         map.visualiseNode();
     }
 
-
+    
     @Override
     public void update(Node node) {
         map.receiveNode(node);

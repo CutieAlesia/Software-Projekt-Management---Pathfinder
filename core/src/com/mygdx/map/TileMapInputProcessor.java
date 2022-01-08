@@ -80,8 +80,7 @@ public class TileMapInputProcessor implements InputProcessor {
                                     != NodeType.END) {
                         map.changeNode(NodeType.NORMAL, nodePositionStash);
                         map.changeNode(nodeTypeStash, foundTilesCoordinates);
-                        nodePositionStash = null;
-                        nodeTypeStash = null;
+                        resetStash();
                     }
                 }
             }
@@ -279,6 +278,15 @@ public class TileMapInputProcessor implements InputProcessor {
     private double dotProduct(Vector2 a, Vector2 b) {
 
         return a.x * b.x + a.y * b.y;
+    }
+    
+    /**
+     * Sets nodePositionStash and nodeTypeStash to null
+     */
+    
+    public void resetStash() {
+        nodePositionStash = null;
+        nodeTypeStash = null;
     }
 
     public boolean isInputAllowed() {
