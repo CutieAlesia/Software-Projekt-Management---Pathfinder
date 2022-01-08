@@ -30,6 +30,8 @@ import backend.BranchAndBound;
 import backend.SearchAlgorithm;
 
 import javax.swing.*;
+
+import java.awt.Dimension;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -242,6 +244,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         }
 
         JFileChooser chooser = new JFileChooser();
+        chooser.setPreferredSize(new Dimension(1200, 700));
         int choice = chooser.showSaveDialog(null);
 
         if (choice != JFileChooser.APPROVE_OPTION) return;
@@ -300,6 +303,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      */
     private Node[][] loadLabyrinth() {
         JFileChooser chooser = new JFileChooser();
+        chooser.setPreferredSize(new Dimension(1200, 700));
         File file;
 
         int selection = chooser.showOpenDialog(null);
