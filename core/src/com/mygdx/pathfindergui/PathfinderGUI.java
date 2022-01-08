@@ -112,14 +112,10 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         userGuideButtonTable.align(Align.bottomLeft);
         userGuideButtonTable.pad(0, 30, 30, 0);
 
-
-
         // Table for labels
         counterTable = new Table();
         counterTable.setFillParent(true);
         counterTable.align(Align.topLeft);
-
-
 
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label counterHeader =
@@ -240,7 +236,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         }
 
         JFileChooser chooser = new JFileChooser();
-        int choice = chooser.showOpenDialog(null);
+        int choice = chooser.showSaveDialog(null);
 
         if (choice != JFileChooser.APPROVE_OPTION) return;
         File file = chooser.getSelectedFile();
@@ -336,16 +332,21 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 String[] entries = line.split("\t");
 
                 for(String entry : entries) {
-                    entry = entry.substring(1, entry.length() - 1);
-                    String[] values = entry.split(",");
+                    try {
+                        entry = entry.substring(1, entry.length() - 1);
+                        String[] values = entry.split(",");
 
-                    int x = Integer.parseInt(values[0]);
-                    int y = Integer.parseInt(values[1]);
-                    NodeType type = NodeType.valueOf(values[2]);
+                        int x = Integer.parseInt(values[0]);
+                        int y = Integer.parseInt(values[1]);
+                        NodeType type = NodeType.valueOf(values[2]);
 
-                    Node node = new Node(y, x);
-                    node.setType(type);
-                    nodes.add(node);
+                        Node node = new Node(y, x);
+                        node.setType(type);
+                        nodes.add(node);
+                    } catch(Exception e) {
+                        System.out.println("Something went wrong!");
+                        return field;
+                    }
                 }
 
                 width = entries.length;
@@ -353,6 +354,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             }
 
             scanner.close();
+
+            if(nodes.size() != width * height || width != 45 || height != 45) {
+                System.out.println("Something went wrong!");
+                return field;
+            }
 
             Node[][] field = new Node[height][width];
 
