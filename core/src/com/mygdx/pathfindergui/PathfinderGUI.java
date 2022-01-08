@@ -118,6 +118,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         counterTable = new Table();
         counterTable.setFillParent(true);
         counterTable.align(Align.topLeft);
+
+
+
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label counterHeader =
             new Label(
@@ -127,9 +130,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     Color.valueOf("#FFDCA4"),
                     18));
         counterTable.add(counterHeader);
-        counterTable.row();
+        counterTable.row().align(Align.left);
         counterTable.pad(60, 30, 30, 0);
-
+        counterHeader.setAlignment(Align.topLeft);
         //  Buttons
 
         skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
@@ -691,7 +694,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0.1f, 0.2f, 0.3f, 1);
 
-
         manageLabelStatus();
 
         stage.act(Gdx.graphics.getDeltaTime());
@@ -749,30 +751,14 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     public void launchBackend() {
         manager.initMatrix(field);
         map.changeProperties(field);
-        removeInputProcessors();
         long startTime = System.currentTimeMillis();
         backend.run();
         long endTime = System.currentTimeMillis();
         long algoTime = (endTime - startTime);
         algoTimes.add((int) algoTime);
-        addInputProcessors();
+        map.visualiseNode();
     }
-    
-    /**
-     * removes the stage and tileMapInputProcessor
-     */
-    private void removeInputProcessors(){
-    	inputMultiplexer.removeProcessor(stage);
-    	inputMultiplexer.removeProcessor(tileMapInputProcessor);
-    }
-    
-    /**
-     * adds the stage and tileMapInputProcessor as InputProcessors.
-     */
-    private void addInputProcessors(){
-    	inputMultiplexer.addProcessor(stage);
-    	inputMultiplexer.addProcessor(tileMapInputProcessor);
-    }
+
 
     @Override
     public void update(Node node) {
@@ -797,7 +783,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param algorithmName
      */
     private void createLabel(String algorithmName) {
-
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label.LabelStyle labelStyle =
             labelStyleGenerator.generateLabelStyle(
@@ -817,8 +802,9 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         if (labels.size() >= 6) {
             counterTable.removeActor(labels.remove(0));
         }
+
         counterTable.add(label);
-        counterTable.row();
+        counterTable.row().align(Align.left);
         labels.add(label);
 
         label.setVisible(false);
