@@ -169,6 +169,7 @@ public class TileMap extends Actor {
                 tileDimensions / 2 * sizeX + margin + marginBottom);
 
         this.mapFillable = true;
+        fillMap();
     }
 
     /** Clears the processedNodes and reverts the changes of the Labyrinths. */
@@ -200,9 +201,9 @@ public class TileMap extends Actor {
     public void clearField() {
 
         processedNodes.clear();
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                Node n = new Node(i, j);
+        for (int i = 0; i < sizeY; i++) {
+            for (int j = 0; j < sizeX; j++) {
+                Node n = new Node(j, i);
                 updateNode(n);
             }
         }

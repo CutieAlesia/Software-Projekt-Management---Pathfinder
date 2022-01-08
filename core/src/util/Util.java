@@ -97,6 +97,6 @@ public class Util {
         int diagonales = Math.min(vertDiff, horDiff);
         int straightLines = Math.max(vertDiff, horDiff) - diagonales;
 
-        return diagonales * 14 + straightLines * 10;
+        return diagonales * 20 + straightLines * 10;
     }
 }

@@ -39,7 +39,7 @@ public class ExplanationLabel extends Label {
         switch (algorithm) {
             case ASTAR:
                 this.setText(
-                        "Der A* Algorithmus gehört zu den informierten Suchverfahren, was bedeutet,"
+                        "Der A*-Algorithmus gehört zu den informierten Suchverfahren, was bedeutet,"
                             + " dass er über Wissen \n"
                             + "bezüglich des Suchraums verfügt, welches genutzt wird, um die"
                             + " Suchzeit zu verringern.\n"
@@ -53,7 +53,7 @@ public class ExplanationLabel extends Label {
                             + " Queue (Prioritätsqueue) genutzt.\n"
                             + "\n"
                             + "Regeln für die Heuristik:\n"
-                            + "Damit die Optimalität und die Vollständigkeit des A* Algorithmus"
+                            + "Damit die Optimalität und die Vollständigkeit des A*-Algorithmus"
                             + " gewährleistet werden können, \n"
                             + "müssen einige Kriterien bezüglich der Heuristik erfüllt sein.\n"
                             + "So ist die Heuristik z.B. nur dann zulässig, wenn für alle Knoten"
@@ -65,7 +65,7 @@ public class ExplanationLabel extends Label {
                             + "explizit 0 betragen.  \n"
                             + "\n"
                             + "Vorgehensweise\n"
-                            + "Die Vorgehensweise des A* Algorithmus wird im Folgenden"
+                            + "Die Vorgehensweise des A*-Algorithmus wird im Folgenden"
                             + " stichpunktartig beschrieben:\n"
                             + "\n"
                             + "Schritt 1:  Nimm den Startknoten, berechne die Gesamtkosten"
@@ -179,7 +179,7 @@ public class ExplanationLabel extends Label {
                 break;
             case DEPTHFIRST:
                 this.setText(
-                        "Die Tiefensuche ist ein uninformierter Pathfinding Algorithmus. D.h. der"
+                        "Die Tiefensuche ist ein uninformierter Pathfinding Algorithmus. D.h., der"
                             + " \n"
                             + "Algorithmus kennt keine Angabe zu den Pfadkosten oder den"
                             + " geschätzten \n"
@@ -190,7 +190,7 @@ public class ExplanationLabel extends Label {
                             + "garantieren. Die Tiefensuche arbeitet mit Hilfe eines Stacks d.h."
                             + " die Nodes \n"
                             + "werden nach dem LIFO (Last in, First out) Schema abgearbeitet.\n"
-                            + "Vorgehensweise\n"
+                            + "\nVorgehensweise\n"
                             + "Schritt 1: Bestimme den Knoten, an dem die Suche beginnen soll\n"
                             + "Schritt 2: Expandiere den Knoten und speichere die Reihenfolge nach"
                             + " den noch nicht erschlossenen\n"
