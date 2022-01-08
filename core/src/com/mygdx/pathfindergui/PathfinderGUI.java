@@ -75,14 +75,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private SelectBox<String> sbSearchAlgorithms;
     private int lastSelected;
 
-
     //  Toggles autoplay mode
     private boolean autoStepEnabled = false;
     // Toggles user guide
     private boolean userGuideEnabled = false;
 
     /**
-     * Sets up the stage. 
+     * Defines the program's layout and instantiates classes that will be needed at runtime.
      *
      * @author frontend
      */
@@ -90,15 +89,18 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     public void create() {
         ScreenViewport viewport = new ScreenViewport();
         stage = new Stage(viewport);
+
+        // Set up map
         setupEmptyField(MAP_X, MAP_Y);
         map.setMapFillable(true);
+
+        // Table layout
         Table mapTable = new Table();
         mapTable.setFillParent(true);
         mapTable.align(Align.bottom);
 
         Table buttonTable = new Table();
         buttonTable.setFillParent(true);
-        // buttonTable.setBounds(20, -20, 20, 20);
         buttonTable.align(Align.topLeft);
         buttonTable.pad(30, 30, 30, 0);
 
@@ -113,10 +115,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         userGuideButtonTable.pad(0, 30, 30, 0);
 
         // Table for labels
-        counterTable = new Table();
-        counterTable.setFillParent(true);
-        counterTable.align(Align.topLeft);
-
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label counterHeader =
             new Label(
@@ -125,21 +123,22 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     "font/RobotoMono-VariableFont_wght.ttf",
                     Color.valueOf("#FFDCA4"),
                     18));
+
+        counterTable = new Table();
+        counterTable.setFillParent(true);
+        counterTable.align(Align.topLeft);
         counterTable.add(counterHeader);
         counterTable.row().align(Align.left);
         counterTable.pad(60, 30, 30, 0);
         counterHeader.setAlignment(Align.topLeft);
-        //  Buttons
 
+        //  Buttons
         skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
-        setupPermanentButtons(buttonTable, skin);
+        setupMainMenu(buttonTable, skin);
         setupSaveLoadButtons(saveLoadButtonTable, skin);
         setupUserGuideButton(userGuideButtonTable, skin);
 
-        // Table order
-        // Add table containing the buttons before table containing the field to avoid dropdown
-        // transparency issue
-
+        // Must add table containing the buttons before table containing the field
         stage.addActor(counterTable);
         stage.addActor(buttonTable);
         stage.addActor(userGuideButtonTable);
@@ -158,25 +157,20 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                     13));
         setupExplanationText(explanationLabel);
 
-        // A P I
-
+        // API
         manager = new APIManager();
         manager.attachFrontend(this);
 
-        //        backend = new AStar(manager);
-        //        manager.attachBackend(backend);
-
-        // attachNewAlgorithm(new AStar(manager));
-
         pfTimer = PFTimer.getInstance();
 
+        // Input handling
         tileMapInputProcessor = new TileMapInputProcessor(map, stage);
         inputMultiplexer = new InputMultiplexer();
-
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(tileMapInputProcessor);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
+        // User guide
         userGuide = new Texture("userguide_v2.png");
         batch = new SpriteBatch();
 
@@ -358,7 +352,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
             scanner.close();
 
-            if(nodes.size() != width * height || width != 45 || height != 45) {
+            if(nodes.size() != width * height || width != MAP_X || height != MAP_Y) {
                 System.out.println("Something went wrong!");
                 return field;
             }
@@ -384,7 +378,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param table Table to add the buttons to.
      * @param skin The skin used for the buttons.
      */
-    private void setupPermanentButtons(Table table, final Skin skin) {
+    private void setupMainMenu(Table table, final Skin skin) {
 
 
         sbSearchAlgorithms = new SelectBox<>(skin);
@@ -553,8 +547,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Table generateLabyrinthButtonTable = new Table();
         generateLabyrinthButtonTable.add(bNewRandomLabyrinth);
         table.add(bClearField);
-        //        generateLabyrinthButtonTable.row();
-        //        generateLabyrinthButtonTable.add(bNewRandomLabyrinthRecursiveDivision);
+
         table.add(generateLabyrinthButtonTable);
         table.add(sbSearchAlgorithms);
         table.add(bStartAlgorithm);
@@ -764,7 +757,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         map.visualiseNode();
     }
 
-    
+
     @Override
     public void update(Node node) {
         map.receiveNode(node);
