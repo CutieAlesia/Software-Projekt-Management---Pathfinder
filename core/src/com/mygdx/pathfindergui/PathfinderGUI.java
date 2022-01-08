@@ -694,7 +694,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0.1f, 0.2f, 0.3f, 1);
 
-
         manageLabelStatus();
 
         stage.act(Gdx.graphics.getDeltaTime());
@@ -752,30 +751,14 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     public void launchBackend() {
         manager.initMatrix(field);
         map.changeProperties(field);
-        removeInputProcessors();
         long startTime = System.currentTimeMillis();
         backend.run();
         long endTime = System.currentTimeMillis();
         long algoTime = (endTime - startTime);
         algoTimes.add((int) algoTime);
-        addInputProcessors();
+        map.visualiseNode();
     }
 
-    /**
-     * removes the stage and tileMapInputProcessor
-     */
-    private void removeInputProcessors(){
-    	inputMultiplexer.removeProcessor(stage);
-    	inputMultiplexer.removeProcessor(tileMapInputProcessor);
-    }
-
-    /**
-     * adds the stage and tileMapInputProcessor as InputProcessors.
-     */
-    private void addInputProcessors(){
-    	inputMultiplexer.addProcessor(stage);
-    	inputMultiplexer.addProcessor(tileMapInputProcessor);
-    }
 
     @Override
     public void update(Node node) {
