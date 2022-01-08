@@ -279,11 +279,8 @@ public class TileMapInputProcessor implements InputProcessor {
 
         return a.x * b.x + a.y * b.y;
     }
-    
-    /**
-     * Sets nodePositionStash and nodeTypeStash to null
-     */
-    
+
+    /** Sets nodePositionStash and nodeTypeStash to null */
     public void resetStash() {
         nodePositionStash = null;
         nodeTypeStash = null;

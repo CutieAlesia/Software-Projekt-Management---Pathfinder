@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 /**
  * PathfinderGUI. Manages all of the GUI's components. Prepares GUI objects and places them onto the
  * stage.
@@ -85,10 +84,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private boolean autoStepEnabled = false;
     // Toggles user guide
     private boolean userGuideEnabled = false;
-    
-    
-    
-    
+
     private int disableInputCount;
 
     /**
@@ -118,7 +114,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         saveLoadButtonTable = new Table();
         saveLoadButtonTable.setFillParent(true);
         saveLoadButtonTable.align(Align.bottomRight);
-        saveLoadButtonTable.pad(30, 30, 30 ,30);
+        saveLoadButtonTable.pad(30, 30, 30, 30);
 
         userGuideButtonTable = new Table();
         userGuideButtonTable.setFillParent(true);
@@ -128,12 +124,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         // Table for labels
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label counterHeader =
-            new Label(
-                "Zeit und Schritte des Algorithmus\n",
-                labelStyleGenerator.generateLabelStyle(
-                    "font/RobotoMono-VariableFont_wght.ttf",
-                    Color.valueOf("#FFDCA4"),
-                    18));
+                new Label(
+                        "Zeit und Schritte des Algorithmus\n",
+                        labelStyleGenerator.generateLabelStyle(
+                                "font/RobotoMono-VariableFont_wght.ttf",
+                                Color.valueOf("#FFDCA4"),
+                                18));
 
         counterTable = new Table();
         counterTable.setFillParent(true);
@@ -160,12 +156,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         // Scrollpane with algorithm explanations
         explanationLabel =
-            new ExplanationLabel(
-                SupportedAlgorithms.ASTAR,
-                labelStyleGenerator.generateLabelStyle(
-                    "font/RobotoMono-VariableFont_wght.ttf",
-                    Color.valueOf("#FFDCA4"),
-                    13));
+                new ExplanationLabel(
+                        SupportedAlgorithms.ASTAR,
+                        labelStyleGenerator.generateLabelStyle(
+                                "font/RobotoMono-VariableFont_wght.ttf",
+                                Color.valueOf("#FFDCA4"),
+                                13));
         setupExplanationText(explanationLabel);
 
         // API
@@ -184,7 +180,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         // User guide
         userGuide = new Texture("userguide_v2.png");
         batch = new SpriteBatch();
-
     }
 
     /**
@@ -199,35 +194,34 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         final TextButton.TextButtonStyle defaultTextButtonStyle = bSaveLabyrinth.getStyle();
 
         bSaveLabyrinth.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    map.resetLabyrinth();
-                    disableInputs();
-                    saveLabyrinth(map.getNodes());
-                    disableInputCount = 20;
-                }
-            });
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        map.resetLabyrinth();
+                        disableInputs();
+                        saveLabyrinth(map.getNodes());
+                        disableInputCount = 20;
+                    }
+                });
 
         final TextButton bLoadLabyrinth = new TextButton("Laden", skin);
 
         bLoadLabyrinth.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    map.resetLabyrinth();
-                    disableInputs();
-                    field = loadLabyrinth();
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        map.resetLabyrinth();
+                        disableInputs();
+                        field = loadLabyrinth();
 
-                    // calls to un-disable buttons
-                    map.resetLabyrinth();
-                    clearCounterLabels();
-                    
-                    disableInputCount = 20;
-                    resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
-                    map.changeProperties(field);
-                    tileMapInputProcessor.resetStash();
-                }
-            });
+                        // calls to un-disable buttons
+                        map.resetLabyrinth();
+                        clearCounterLabels();
 
+                        disableInputCount = 20;
+                        resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
+                        map.changeProperties(field);
+                        tileMapInputProcessor.resetStash();
+                    }
+                });
 
         table.add(bLoadLabyrinth);
         table.add(bSaveLabyrinth);
@@ -239,7 +233,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param labyrinth The current maze
      */
     private void saveLabyrinth(Node[][] labyrinth) {
-        if(labyrinth == null || labyrinth.length == 0 || labyrinth[0].length == 0) {
+        if (labyrinth == null || labyrinth.length == 0 || labyrinth[0].length == 0) {
             return;
         }
 
@@ -264,26 +258,26 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         try {
             writer = new FileWriter(file);
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
 
-        for(int i=0; i<field.length; i++) {
-            for(int j=0; j<field[i].length; j++) {
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field[i].length; j++) {
                 Node node = field[i][j];
                 int x = node.getHorIndex();
                 int y = node.getVertIndex();
                 NodeType type = node.getType();
                 String end = j == field[i].length - 1 ? "\n" : "\t";
 
-                if(type == NodeType.VISITED || type == NodeType.PATH) {
+                if (type == NodeType.VISITED || type == NodeType.PATH) {
                     type = NodeType.NORMAL;
                 }
 
                 try {
                     writer.write("[" + x + "," + y + "," + type + "]" + end);
-                } catch(IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -291,7 +285,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         try {
             writer.close();
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -308,7 +302,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
         int selection = chooser.showOpenDialog(null);
 
-        if(selection == JFileChooser.APPROVE_OPTION) {
+        if (selection == JFileChooser.APPROVE_OPTION) {
             file = chooser.getSelectedFile();
         } else {
             System.out.println("Could not open file");
@@ -326,7 +320,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      * @param file File where the maze is saved
      */
     private Node[][] load(File file) {
-        if(file == null) return null;
+        if (file == null) return null;
 
         ArrayList<Node> nodes = new ArrayList<Node>();
         int width = 0;
@@ -337,11 +331,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         try {
             scanner = new Scanner(file);
 
-            while(scanner.hasNext()) {
+            while (scanner.hasNext()) {
                 String line = scanner.nextLine();
                 String[] entries = line.split("\t");
 
-                for(String entry : entries) {
+                for (String entry : entries) {
                     try {
                         entry = entry.substring(1, entry.length() - 1);
                         String[] values = entry.split(",");
@@ -353,7 +347,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         Node node = new Node(y, x);
                         node.setType(type);
                         nodes.add(node);
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         System.out.println("Something went wrong!");
                         return field;
                     }
@@ -365,21 +359,21 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
 
             scanner.close();
 
-            if(nodes.size() != width * height || width != MAP_X || height != MAP_Y) {
+            if (nodes.size() != width * height || width != MAP_X || height != MAP_Y) {
                 System.out.println("Something went wrong!");
                 return field;
             }
 
             Node[][] field = new Node[height][width];
 
-            for(int i=0; i<height; i++) {
-                for(int j=0; j<width; j++) {
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
                     field[i][j] = nodes.remove(0);
                 }
             }
             return field;
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -393,9 +387,7 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
      */
     private void setupMainMenu(Table table, final Skin skin) {
 
-
         sbSearchAlgorithms = new SelectBox<>(skin);
-
 
         final String[] searchAlgorithms = {
             "AStar", "BestFirst", "BranchAndBound", "BreadthFirst", "DepthFirst", "Dijkstra"
@@ -410,46 +402,42 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         sbSearchAlgorithms.addListener(
                 new ChangeListener() {
                     public void changed(ChangeEvent event, Actor actor) {
-                    	if(checklastAndCurrentSelection()) {
-	                        switch (sbSearchAlgorithms.getSelectedIndex()) {
-	                            case 0:
-	                                attachNewAlgorithm(new AStar(manager));
-	                                break;
-	                            case 1:
-	                                attachNewAlgorithm(new BestFirst(manager));
-	                                break;
-	                            case 2:
-	                                attachNewAlgorithm(new BranchAndBound(manager));
-	                                break;
-	                            case 3:
-	                                attachNewAlgorithm(new backend.BreadthFirst(manager));
-	                                break;
-	                            case 4:
-	                                attachNewAlgorithm(new backend.DepthFirst(manager));
-	                                break;
-	                            case 5:
-	                                attachNewAlgorithm(new backend.Dijkstra(manager));
-	                                break;
-	                        }
+                        if (checklastAndCurrentSelection()) {
+                            switch (sbSearchAlgorithms.getSelectedIndex()) {
+                                case 0:
+                                    attachNewAlgorithm(new AStar(manager));
+                                    break;
+                                case 1:
+                                    attachNewAlgorithm(new BestFirst(manager));
+                                    break;
+                                case 2:
+                                    attachNewAlgorithm(new BranchAndBound(manager));
+                                    break;
+                                case 3:
+                                    attachNewAlgorithm(new backend.BreadthFirst(manager));
+                                    break;
+                                case 4:
+                                    attachNewAlgorithm(new backend.DepthFirst(manager));
+                                    break;
+                                case 5:
+                                    attachNewAlgorithm(new backend.Dijkstra(manager));
+                                    break;
+                            }
 
-	                        resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
+                            resetTextButtonStyle(bStartAlgorithm, defaultTextButtonStyle);
 
-	                        bStartAlgorithm.setDisabled(false);
-                    	}
-                    	else {
-	                            setTextButtonStylePressed(bStartAlgorithm);
-		                        bStartAlgorithm.setDisabled(true);
-                    	}
+                            bStartAlgorithm.setDisabled(false);
+                        } else {
+                            setTextButtonStylePressed(bStartAlgorithm);
+                            bStartAlgorithm.setDisabled(true);
+                        }
                     }
                 });
 
-
-
         bStartAlgorithm.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    tileMapInputProcessor.setInputAllowed(false);
-
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        tileMapInputProcessor.setInputAllowed(false);
 
                         switch (sbSearchAlgorithms.getSelectedIndex()) {
                             case 0:
@@ -475,8 +463,8 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                         receivedNodes.clear();
                         pathNodes.clear();
 
-                        if(autoStepEnabled) {
-                        	autoStepEnabled = false;
+                        if (autoStepEnabled) {
+                            autoStepEnabled = false;
                         }
                         lastSelected = sbSearchAlgorithms.getSelectedIndex();
                         launchBackend();
@@ -493,14 +481,13 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         final TextButton bNextStep = new TextButton("Weiter", skin);
 
         bNextStep.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    map.visualiseNode();
-                }
-            });
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        map.visualiseNode();
+                    }
+                });
 
         final TextButton bNewRandomLabyrinth = new TextButton("Zufallslabyrinth", skin);
-
 
         bNewRandomLabyrinth.addListener(
                 new ChangeListener() {
@@ -522,11 +509,11 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         final TextButton bAutoStepAlgorithm = new TextButton("Autoplay", skin);
 
         bAutoStepAlgorithm.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    autoStepEnabled = !autoStepEnabled;
-                }
-            });
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        autoStepEnabled = !autoStepEnabled;
+                    }
+                });
 
         final TextButton bEditMode = new TextButton("Editieren", skin);
 
@@ -542,7 +529,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 });
 
         final TextButton bClearField = new TextButton("Leeres Labyrinth", skin);
-
 
         bClearField.addListener(
                 new ChangeListener() {
@@ -569,17 +555,16 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         table.add(bEditMode);
     }
 
-
- /**
-  * Checks if the selected index changed to a different index.
-  * @return
-  */
-
+    /**
+     * Checks if the selected index changed to a different index.
+     *
+     * @return
+     */
     private boolean checklastAndCurrentSelection() {
-    	if(sbSearchAlgorithms.getSelectedIndex() != lastSelected) {
-    		return true;
-    	}
-    	return false;
+        if (sbSearchAlgorithms.getSelectedIndex() != lastSelected) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -593,35 +578,43 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         final TextButton.TextButtonStyle defaultTextButtonStyle = bToggleUserGuide.getStyle();
 
         bToggleUserGuide.addListener(
-            new ChangeListener() {
-                public void changed(ChangeEvent event, Actor actor) {
-                    userGuideEnabled = !userGuideEnabled;
-                    if(userGuideEnabled) {
-                        setTextButtonStylePressed(bToggleUserGuide);
-                    } else {
-                        resetTextButtonStyle(bToggleUserGuide, defaultTextButtonStyle);
+                new ChangeListener() {
+                    public void changed(ChangeEvent event, Actor actor) {
+                        userGuideEnabled = !userGuideEnabled;
+                        if (userGuideEnabled) {
+                            setTextButtonStylePressed(bToggleUserGuide);
+                        } else {
+                            resetTextButtonStyle(bToggleUserGuide, defaultTextButtonStyle);
+                        }
                     }
-                }
-            });
+                });
         table.add(bToggleUserGuide);
     }
 
     /**
      * sets TextButtonStyle to 'pressed'
+     *
      * @param button
      */
-    private void setTextButtonStylePressed(TextButton button){
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(button.getStyle().down, button.getStyle().down, button.getStyle().down, button.getStyle().font);
+    private void setTextButtonStylePressed(TextButton button) {
+        TextButton.TextButtonStyle textButtonStyle =
+                new TextButton.TextButtonStyle(
+                        button.getStyle().down,
+                        button.getStyle().down,
+                        button.getStyle().down,
+                        button.getStyle().font);
         textButtonStyle.fontColor = Color.BLACK;
         button.setStyle(new TextButton.TextButtonStyle(textButtonStyle));
     }
 
     /**
      * resets the TextButtonStyle of the changed button
+     *
      * @param changedButton
      * @param defaultStyle
      */
-    private void resetTextButtonStyle(TextButton changedButton, TextButton.TextButtonStyle defaultStyle){
+    private void resetTextButtonStyle(
+            TextButton changedButton, TextButton.TextButtonStyle defaultStyle) {
         changedButton.setStyle(defaultStyle);
     }
 
@@ -730,15 +723,12 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
             batch.draw(userGuide, 0, 0);
         }
         batch.end();
-        
-        
-        if(disableInputCount > 0) {
-        	disableInputCount--;
-        }
-        else if(disableInputCount <= 0) {
-        	enableInputs();
-        }
 
+        if (disableInputCount > 0) {
+            disableInputCount--;
+        } else if (disableInputCount <= 0) {
+            enableInputs();
+        }
     }
 
     private void manageLabelStatus() {
@@ -778,7 +768,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
         map.visualiseNode();
     }
 
-
     @Override
     public void update(Node node) {
         map.receiveNode(node);
@@ -804,20 +793,20 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void createLabel(String algorithmName) {
         LabelStyleGenerator labelStyleGenerator = new LabelStyleGenerator();
         Label.LabelStyle labelStyle =
-            labelStyleGenerator.generateLabelStyle(
-                "font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 15);
+                labelStyleGenerator.generateLabelStyle(
+                        "font/RobotoMono-VariableFont_wght.ttf", Color.valueOf("#FFDCA4"), 15);
         Label label =
-            new Label(
-                algorithmName
-                    + "\nZeit: "
-                    + algoTimes.get(algoTimes.size() - 1)
-                    + "ms"
-                    + " Schritte: "
-                    + algoSteps.get(algoSteps.size() - 1)
-                    + " Zielpfad: "
-                    + pathSteps.get(pathSteps.size() - 1)
-                    + "\n",
-                labelStyle);
+                new Label(
+                        algorithmName
+                                + "\nZeit: "
+                                + algoTimes.get(algoTimes.size() - 1)
+                                + "ms"
+                                + " Schritte: "
+                                + algoSteps.get(algoSteps.size() - 1)
+                                + " Zielpfad: "
+                                + pathSteps.get(pathSteps.size() - 1)
+                                + "\n",
+                        labelStyle);
         if (labels.size() >= 6) {
             counterTable.removeActor(labels.remove(0));
         }
@@ -851,60 +840,49 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
                 break;
         }
     }
-    
-    /**
-     * disables the buttons and the TileMapInputProcessor
-     */
+
+    /** disables the buttons and the TileMapInputProcessor */
     private void disableInputs() {
-    	for(Actor actor : buttonTable.getChildren().toArray(Actor.class)) {
-    		if(actor instanceof TextButton) {
-    			System.out.println(actor);
-    			((TextButton)actor).setDisabled(true);
-    			
-    		}
-    	}
-    	
-    	for(Actor actor : userGuideButtonTable.getChildren().toArray(Actor.class)) {
-    		if(actor instanceof TextButton) {
-    			((TextButton)actor).setDisabled(true);
-    			
-    		}
-    	}
-    	
-    	for(Actor actor : saveLoadButtonTable.getChildren().toArray(Actor.class)) {
-    		if(actor instanceof TextButton) {
-    			((TextButton)actor).setDisabled(true);
-    			
-    		}
-    	}
-    	tileMapInputProcessor.setInputAllowed(false);
+        for (Actor actor : buttonTable.getChildren().toArray(Actor.class)) {
+            if (actor instanceof TextButton) {
+                System.out.println(actor);
+                ((TextButton) actor).setDisabled(true);
+            }
+        }
+
+        for (Actor actor : userGuideButtonTable.getChildren().toArray(Actor.class)) {
+            if (actor instanceof TextButton) {
+                ((TextButton) actor).setDisabled(true);
+            }
+        }
+
+        for (Actor actor : saveLoadButtonTable.getChildren().toArray(Actor.class)) {
+            if (actor instanceof TextButton) {
+                ((TextButton) actor).setDisabled(true);
+            }
+        }
+        tileMapInputProcessor.setInputAllowed(false);
     }
 
+    /** enables the buttons and the TileMapInputProcessor */
+    private void enableInputs() {
+        for (Actor actor : buttonTable.getChildren().toArray(Actor.class)) {
+            if (actor instanceof TextButton) {
+                ((TextButton) actor).setDisabled(false);
+            }
+        }
 
-    /**
-     * enables the buttons and the TileMapInputProcessor
-     */
-private void enableInputs() {
-	for(Actor actor : buttonTable.getChildren().toArray(Actor.class)) {
-		if(actor instanceof TextButton) {
-			((TextButton)actor).setDisabled(false);
-			
-		}
-	}
-	
-	for(Actor actor : userGuideButtonTable.getChildren().toArray(Actor.class)) {
-		if(actor instanceof TextButton) {
-			((TextButton)actor).setDisabled(false);
-			
-		}
-	}
-	
-	for(Actor actor : saveLoadButtonTable.getChildren().toArray(Actor.class)) {
-		if(actor instanceof TextButton) {
-			((TextButton)actor).setDisabled(false);
-			
-		}
-	}
-	tileMapInputProcessor.setInputAllowed(true);
-	}
+        for (Actor actor : userGuideButtonTable.getChildren().toArray(Actor.class)) {
+            if (actor instanceof TextButton) {
+                ((TextButton) actor).setDisabled(false);
+            }
+        }
+
+        for (Actor actor : saveLoadButtonTable.getChildren().toArray(Actor.class)) {
+            if (actor instanceof TextButton) {
+                ((TextButton) actor).setDisabled(false);
+            }
+        }
+        tileMapInputProcessor.setInputAllowed(true);
+    }
 }
