@@ -845,7 +845,6 @@ public class PathfinderGUI extends ApplicationAdapter implements IFrontend {
     private void disableInputs() {
         for (Actor actor : buttonTable.getChildren().toArray(Actor.class)) {
             if (actor instanceof TextButton) {
-                System.out.println(actor);
                 ((TextButton) actor).setDisabled(true);
             }
         }
